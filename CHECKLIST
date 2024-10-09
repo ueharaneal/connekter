@@ -1,0 +1,13 @@
+[x] Clean up files
+[x] Create Navbar 
+[] install valibot 
+[] create sighnup page 
+[] create signup validator 
+[] create signup form 
+[] create signup server action 
+[] Handle errors 
+[] Hash password 
+[] create signin page 
+[] create signin validator 
+[] create signin form 
+[] create signin server action 
