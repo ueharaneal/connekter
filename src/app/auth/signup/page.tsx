@@ -1,4 +1,5 @@
 import React from "react"
+import SignUpForm from "@/components/auth/SignupForm"
 
 function SignUp() {
 	return (
@@ -7,6 +8,7 @@ function SignUp() {
 				<h1 className='text-3xl font-bold tracking-tight'> Sign Up </h1>
 				<div className='h-1 bg-muted my-4' />
 				{/* SignUp form  */}
+				<SignUpForm />
 				{/* Oauth Links */}
 				{/* Go to signin link */}
 			</div>

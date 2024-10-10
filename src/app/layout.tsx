@@ -16,7 +16,8 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={``}>
 				{" "}
-				<Navbar /> {children}
+				<Navbar />
+				<div className=' flex flex-col mx-10'>{children}</div>
 			</body>
 		</html>
 	)
