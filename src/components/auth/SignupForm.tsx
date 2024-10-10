@@ -38,7 +38,7 @@ function SignupForm() {
 			<CardContent>
 				<Form {...form}>
 					<form
-						onSubmit={() => form.handleSubmit(onSubmit)}
+						onSubmit={form.handleSubmit(onSubmit)}
 						className='flex-col flex gap-y-3'
 					>
 						<div className='flex flex-row w-full gap-x-4 justify-around'>
@@ -103,7 +103,11 @@ function SignupForm() {
 								<FormItem>
 									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<Input type='password' {...field} />
+										<Input
+											type='password'
+											{...field}
+											placeholder='Password'
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -116,18 +120,27 @@ function SignupForm() {
 								<FormItem>
 									<FormLabel>Confirm Password</FormLabel>
 									<FormControl>
-										<Input type='password' {...field} />
+										<Input
+											type='password'
+											{...field}
+											placeholder='Confirm password'
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+						<Button
+							type='submit'
+							disabled={form.formState.isSubmitting}
+							className='w-full'
+						>
+							Sign Up
+						</Button>
 					</form>
 				</Form>
 			</CardContent>
-			<CardFooter>
-				<Button>Sign Up</Button>
-			</CardFooter>
+			<CardFooter></CardFooter>
 		</Card>
 	)
 }
