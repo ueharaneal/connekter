@@ -1,6 +1,6 @@
 "use server";
-import argon2 from "argon2";
-import { SignInSchema } from "@/validators/auth-validators";
+
+import nextAuth from "@/../auth";
 
 type Res =
   | { success: true }
@@ -8,8 +8,15 @@ type Res =
 
 export async function signinUserAction(values: unknown): Promise<Res> {
   try {
+    if (
+      typeof values !== "object" ||
+      values === null ||
+      Array.isArray(values)
+    ) {
+      throw new Error("Invalid JSON object");
+    }
     //handle logic in auth.ts
-
+    nextAuth.signIn("credentials", { ...values, redirect: false });
     return { success: true };
   } catch {
     return { success: false, error: "", statusCode: 400 };

@@ -37,19 +37,12 @@ function SignInForm() {
     const res = await signinUserAction(values);
     if (res.success) {
       toast({
-        title: "Account Created",
+        title: "Login Successful",
       });
       form.reset();
     } else {
       switch (res.statusCode) {
         case 400:
-          res.error.forEach((error) => {
-            form.setError(error.field as keyof SignInInput, {
-              message: error.message,
-            });
-          });
-          break;
-        case 500:
           toast({
             title: "Error",
             description: "Internal server error",
