@@ -60,6 +60,15 @@ function SignupForm() {
             });
           });
           break;
+        case 409:
+          const errorMessage = res.error;
+          toast({
+            title: errorMessage,
+            variant: "destructive",
+          });
+          form.setError("email", { message: "Email already exists" });
+          break;
+
         case 500:
           const error = res.error || "Internal Server error";
           toast({
@@ -80,9 +89,9 @@ function SignupForm() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex-col flex gap-y-3"
+            className="flex flex-col gap-y-3"
           >
-            <div className="flex flex-row w-full gap-x-4 justify-around">
+            <div className="flex w-full flex-row justify-around gap-x-4">
               <FormField
                 control={form.control}
                 name="firstName"

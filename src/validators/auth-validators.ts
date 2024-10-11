@@ -31,7 +31,7 @@ export const SignInSchema = z.object({
     .string()
     .email("Must be a valid email")
     .transform((val) => val.trim().toLowerCase()),
-  password: z.string().min(6, "Must be atleast 6 characters long"),
+  password: z.string(),
 });
 
 export type SignInInput = z.infer<typeof SignInSchema>;

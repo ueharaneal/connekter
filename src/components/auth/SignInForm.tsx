@@ -37,7 +37,7 @@ function SignInForm() {
     const res = await signinUserAction(values);
     if (res.success) {
       toast({
-        title: "Login successful",
+        title: "Account Created",
       });
       form.reset();
     } else {
@@ -60,12 +60,12 @@ function SignInForm() {
 
   return (
     <Card>
-      <CardHeader>Sign Up</CardHeader>
+      <CardHeader>Sign In</CardHeader>
       <CardContent>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex-col flex gap-y-3"
+            className="flex flex-col gap-y-3"
           >
             <FormField
               control={form.control}
