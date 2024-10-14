@@ -2,7 +2,7 @@ import React from "react";
 import nextAuth from "@/../auth";
 import { type User } from "next-auth";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import SignoutButton from "@/components/common/SignoutButton";
 
 export default async function ProfilePage() {
   const session = await nextAuth.auth();
@@ -23,7 +23,7 @@ const SignedIn = ({ user }: { user: User }) => {
   return (
     <>
       <h2 className="text-2xl font-bold tracking-tight">User Information</h2>
-      <table className="mt-4 table-auto divide-y">
+      <table className="my-6 table-auto divide-y">
         <thead>
           <tr className="divide-x">
             <th>First Name</th>
@@ -49,7 +49,7 @@ const SignedIn = ({ user }: { user: User }) => {
           </tr>
         </tbody>
       </table>
-      <Button className="mt-2"> Sign Out</Button>
+      <SignoutButton />
     </>
   );
 };

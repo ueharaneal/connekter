@@ -19,7 +19,7 @@ import { SignInSchema, type SignInInput } from "@/validators/auth-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { signinUserAction } from "@/actions/signin-user-action";
+import { signinUserAction } from "@/actions/auth/signin-user-action";
 import { useToast } from "@/hooks/use-toast";
 
 function SignInForm() {

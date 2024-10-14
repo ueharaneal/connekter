@@ -20,7 +20,7 @@ import { SignupSchema, type SignupInput } from "@/validators/auth-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { signupUserAction } from "@/actions/signup-user-action";
+import { signupUserAction } from "@/actions/auth/signup-user-action";
 import { useToast } from "@/hooks/use-toast";
 
 function SignupForm() {
