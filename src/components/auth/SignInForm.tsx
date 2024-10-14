@@ -33,19 +33,31 @@ function SignInForm() {
   });
 
   const onSubmit = async (values: SignInInput) => {
-    console.log(values);
     const res = await signinUserAction(values);
+
     if (res.success) {
+      //hard window change
+      window.location.href = "/profile";
       toast({
         title: "Login Successful",
+        variant: "default",
       });
       form.reset();
     } else {
       switch (res.statusCode) {
-        case 400:
+        case 500:
+          form.setError("email", { message: "" });
+          form.setError("password", { message: "" });
           toast({
             title: "Error",
             description: "Internal server error",
+            variant: "destructive",
+          });
+        case 401:
+          form.setError("password", { message: "Incorrect Email or Password" });
+          toast({
+            title: res.error,
+            variant: "destructive",
           });
       }
     }
