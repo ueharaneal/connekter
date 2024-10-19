@@ -5,12 +5,27 @@ import Google from "next-auth/providers/google";
 import { SignInSchema } from "@/validators/auth-validators";
 import { findUserByEmail } from "@/lib/server-utils/userQueries";
 import argon2 from "argon2";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import db from "@/db";
 
 const nextAuth = NextAuth({
+  adapter: DrizzleAdapter(db), //adds the user to db when using external provider
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET as string,
   pages: {
     signIn: "/auth/signin",
+  },
+  callbacks: {
+    jwt({ token, user }) {
+      console.log("user", user);
+      if (user?.id) token.id = user.id;
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id!;
+      console.log("token in session", token);
+      return session;
+    },
   },
   providers: [
     Credentials({
