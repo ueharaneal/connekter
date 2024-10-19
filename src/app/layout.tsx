@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/navbar/Navbar";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className={``}>
         {" "}
         <Navbar />
-        <div className=" flex flex-col mx-10">{children}</div>
+        <div className="mx-10 flex flex-col">{children}</div>
         <Toaster />
       </body>
     </html>
