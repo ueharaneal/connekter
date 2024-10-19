@@ -2,6 +2,7 @@ import React from "react";
 import SignUpForm from "@/components/auth/SignupForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import OAuthSignInButtons from "@/components/auth/OAuthSignInButtons";
 
 function SignUp() {
   return (
@@ -12,6 +13,8 @@ function SignUp() {
         {/* SignUp form  */}
         <SignUpForm />
         {/* Oauth Links */}
+        <div className="my-4 h-1 bg-muted" />
+        <OAuthSignInButtons signUp={true} />
         {/* Go to signin link */}
         <div className="mt-5 text-center text-sm">
           Already have an Account?
