@@ -1,12 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SignoutButton from "@/components/common/SignoutButton";
-import nextAuth from "@/../auth";
+import { useSession } from "next-auth/react";
+import Spinner from "@/components/ui/Spinner";
 
-export const NavbarLinks = async () => {
-  const session = await nextAuth.auth();
+export const NavbarLinks = () => {
+  const session = useSession();
 
-  return session?.user ? <SignedIn /> : <SignedOut />;
+  switch (session.status) {
+    case "loading":
+      return <CustomSessionLoader />;
+
+    case "unauthenticated":
+      return <SignedOut />;
+    case "authenticated":
+      return <SignedIn />;
+    default:
+      return null;
+  }
+};
+
+export const CustomSessionLoader = () => {
+  return (
+    <Button variant="ghost" size="sm">
+      <Spinner />
+    </Button>
+  );
 };
 
 export const SignedIn = () => {

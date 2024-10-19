@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/layout/navbar/Navbar";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Providers } from "@/components/auth/Providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,10 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={``}>
-        {" "}
-        <Navbar />
-        <div className="mx-10 flex flex-col">{children}</div>
-        <Toaster />
+        <Providers>
+          <Navbar />
+          <div className="mx-10 flex flex-col">{children}</div>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
