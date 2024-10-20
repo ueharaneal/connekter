@@ -7,9 +7,16 @@ import { findUserByEmail } from "@/lib/server-utils/userQueries";
 import argon2 from "argon2";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/db";
+import * as schema from "@/db/schema";
 
 const nextAuth = NextAuth({
-  adapter: DrizzleAdapter(db), //adds the user to db when using external provider
+  adapter: DrizzleAdapter(db, {
+    accountsTable: schema.accounts,
+    usersTable: schema.users,
+    sessionsTable: schema.sessions,
+    authenticatorsTable: schema.authenticators,
+    verificationTokensTable: schema.verificationTokens,
+  }), //adds the user to db when using external provider
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET as string,
   pages: {
@@ -17,13 +24,16 @@ const nextAuth = NextAuth({
   },
   callbacks: {
     jwt({ token, user }) {
+      //first login is the only chance to attach to token
       console.log("user", user);
       if (user?.id) token.id = user.id;
+      if (user?.role) token.role = user.role;
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id!;
-      console.log("token in session", token);
+      session.user.role = token.role!;
+
       return session;
     },
   },

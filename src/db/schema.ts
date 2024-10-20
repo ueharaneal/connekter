@@ -86,7 +86,7 @@ export const verificationTokens = pgTable(
 );
 
 export const authenticators = pgTable("authenticator", {
-  credentialID: text("credentialID").notNull().unique().primaryKey(),
+  credentialID: text("credentialID").notNull().unique(),
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

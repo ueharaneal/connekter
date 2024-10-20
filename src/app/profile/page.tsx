@@ -26,6 +26,7 @@ const SignedIn = ({ user }: { user: User }) => {
       <table className="my-6 table-auto divide-y">
         <thead>
           <tr className="divide-x">
+            <th>User ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -34,6 +35,8 @@ const SignedIn = ({ user }: { user: User }) => {
         </thead>
         <tbody className="">
           <tr className="mt-2 divide-x">
+            <td>{user.id}</td>
+            <td>{user.name}</td>
             <td>{user.email}</td>
             <td>
               {user.image && (

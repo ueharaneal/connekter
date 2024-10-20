@@ -4,11 +4,14 @@ import { type User as DefaultUser } from "next-auth";
 import { users } from "@/db/schema";
 
 declare module "next-auth" {
-  interface User extends DefaultUser {}
+  interface User extends DefaultUser {
+    role: (typeof users.$inferSelect)["role"];
+  }
 }
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     id: (typeof users.$inferInsert)["id"];
+    role: (typeof users.$inferSelect)["role"];
   }
 }
