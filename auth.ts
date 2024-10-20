@@ -8,6 +8,7 @@ import argon2 from "argon2";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/db";
 import * as schema from "@/db/schema";
+import { oathVerifyEmailAction } from "@/actions/auth/oauth-verify-email-actions";
 
 const nextAuth = NextAuth({
   adapter: DrizzleAdapter(db, {
@@ -24,7 +25,7 @@ const nextAuth = NextAuth({
   },
   callbacks: {
     jwt({ token, user }) {
-      //first login is the only chance to attach to token
+      //first login is the only chance to attach to token because that the only time we will get the user object back
       console.log("user", user);
       if (user?.id) token.id = user.id;
       if (user?.role) token.role = user.role;
@@ -35,6 +36,14 @@ const nextAuth = NextAuth({
       session.user.role = token.role!;
 
       return session;
+    },
+  },
+  events: {
+    async linkAccount({ user, account }) {
+      if (["google", "github"].includes(account.provider)) {
+        //verify the user's email
+        if (user?.email) await oathVerifyEmailAction(user?.email);
+      }
     },
   },
   providers: [
