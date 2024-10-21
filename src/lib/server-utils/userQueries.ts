@@ -11,3 +11,13 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
     })) ?? null;
   return user;
 };
+
+export const findUserById = async (id: string): Promise<User> => {
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, id),
+  });
+
+  if (!user) throw new Error("User not found.");
+
+  return user;
+};
