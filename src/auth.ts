@@ -24,7 +24,10 @@ const nextAuth = NextAuth({
     signIn: "/auth/signin",
   },
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
       //first login is the only chance to attach to token because that the only time we will get the user object back
       console.log("user", user);
       if (user?.id) token.id = user.id;

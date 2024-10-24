@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -16,7 +16,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -27,15 +26,21 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { type User } from "next-auth";
-import { UpdateIcon } from "@radix-ui/react-icons";
 import { PencilIcon } from "lucide-react";
 import { updateUserInfo } from "@/actions/auth/update-user-info-action";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type UpdateUserInfoProps = { user: User };
 
 function UpdateUserInfo({ user }: UpdateUserInfoProps) {
+  const session = useSession();
+  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
   const { id, name: defaultName } = user;
+
   const form = useForm<UpdateUserInfoInput>({
     resolver: zodResolver(UpdateUserInfoSchema),
     defaultValues: {
@@ -46,10 +51,21 @@ function UpdateUserInfo({ user }: UpdateUserInfoProps) {
   const { handleSubmit, formState } = form;
 
   const onSubmit = async (values: UpdateUserInfoInput) => {
-    console.log(values);
     const res = await updateUserInfo(values);
     if (res.success) {
+      const updatedUser = res.data;
+
+      if (session?.data?.user) {
+        await session.update({
+          ...session.data,
+          user: {
+            name: updatedUser.name,
+          },
+        });
+        router.refresh();
+      }
       toast("Update Successful");
+      setIsOpen(false);
     } else {
       if (Array.isArray(res.error)) {
         const errorMessages = res.error.map((err) => err.message).join(", ");
@@ -61,7 +77,7 @@ function UpdateUserInfo({ user }: UpdateUserInfoProps) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
         <PencilIcon />
       </DialogTrigger>
