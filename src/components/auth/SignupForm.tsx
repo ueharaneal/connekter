@@ -21,10 +21,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signupUserAction } from "@/actions/auth/signup-user-action";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 function SignupForm() {
-  const { toast } = useToast();
   const form = useForm<SignupInput>({
     defaultValues: {
       firstName: "",
@@ -41,9 +40,7 @@ function SignupForm() {
     console.log(res);
 
     if (res.success) {
-      toast({
-        title: "Log in Successful",
-      });
+      toast("Log in Successful", {});
       form.reset();
     } else {
       switch (res.statusCode) {
@@ -54,27 +51,18 @@ function SignupForm() {
             form.setError(errorItem.field as keyof SignupInput, {
               message: errorItem.message,
             });
-            toast({
-              title: errorItem.message,
-              variant: "destructive",
-            });
+            toast.error(errorItem.message, {});
           });
           break;
         case 409:
           const errorMessage = res.error;
-          toast({
-            title: errorMessage,
-            variant: "destructive",
-          });
+          toast.error(errorMessage);
           form.setError("email", { message: "Email already exists" });
           break;
 
         case 500:
           const error = res.error || "Internal Server error";
-          toast({
-            title: error,
-            variant: "destructive",
-          });
+          toast.error(error);
 
           //form.setError("confirmPassword", { message: error });
           break;

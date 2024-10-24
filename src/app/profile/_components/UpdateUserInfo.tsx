@@ -29,6 +29,8 @@ import { useForm } from "react-hook-form";
 import { type User } from "next-auth";
 import { UpdateIcon } from "@radix-ui/react-icons";
 import { PencilIcon } from "lucide-react";
+import { updateUserInfo } from "@/actions/auth/update-user-info-action";
+import { toast } from "sonner";
 
 type UpdateUserInfoProps = { user: User };
 
@@ -45,6 +47,17 @@ function UpdateUserInfo({ user }: UpdateUserInfoProps) {
 
   const onSubmit = async (values: UpdateUserInfoInput) => {
     console.log(values);
+    const res = await updateUserInfo(values);
+    if (res.success) {
+      toast("Update Successful");
+    } else {
+      if (Array.isArray(res.error)) {
+        const errorMessages = res.error.map((err) => err.message).join(", ");
+        toast.error(errorMessages);
+      } else {
+        toast.error(res.error);
+      }
+    }
   };
 
   return (

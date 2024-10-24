@@ -35,7 +35,7 @@ export const updateUserInfo = async (values: unknown): Promise<Res> => {
       return { success: false, error: "Unauthorized", statusCode: 401 };
     }
 
-    if (session.user.name !== name) {
+    if (session.user.name !== session.user.name) {
       return { success: false, error: "Unauthorized", statusCode: 401 };
     }
 

@@ -20,10 +20,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signinUserAction } from "@/actions/auth/signin-user-action";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 function SignInForm() {
-  const { toast } = useToast();
   const form = useForm<SignInInput>({
     defaultValues: {
       email: "",
@@ -38,27 +37,19 @@ function SignInForm() {
     if (res.success) {
       //hard window change
       window.location.href = "/profile";
-      toast({
-        title: "Login Successful",
-        variant: "default",
-      });
+      toast("Login Successful");
       form.reset();
     } else {
       switch (res.statusCode) {
         case 500:
           form.setError("email", { message: "" });
           form.setError("password", { message: "" });
-          toast({
-            title: "Error",
+          toast.error("Error", {
             description: "Internal server error",
-            variant: "destructive",
           });
         case 401:
           form.setError("password", { message: "Incorrect Email or Password" });
-          toast({
-            title: res.error,
-            variant: "destructive",
-          });
+          toast.error(res.error);
       }
     }
   };
