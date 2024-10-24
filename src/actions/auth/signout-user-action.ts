@@ -1,5 +1,5 @@
 "use server";
-import nextAuth from "@/../auth";
+import nextAuth from "@/auth";
 
 export async function signoutUserAction() {
   try {

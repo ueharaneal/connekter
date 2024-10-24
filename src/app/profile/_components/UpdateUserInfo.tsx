@@ -38,6 +38,7 @@ function UpdateUserInfo({ user }: UpdateUserInfoProps) {
     resolver: zodResolver(UpdateUserInfoSchema),
     defaultValues: {
       name: defaultName ?? "",
+      id, // we add the id so that we know that the actualy person is updateing themselves
     },
   });
   const { handleSubmit, formState } = form;
@@ -49,9 +50,7 @@ function UpdateUserInfo({ user }: UpdateUserInfoProps) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button size="icon">
-          <PencilIcon />
-        </Button>
+        <PencilIcon />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

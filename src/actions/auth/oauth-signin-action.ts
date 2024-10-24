@@ -1,5 +1,5 @@
 "use server";
-import nextAuth from "@/../auth";
+import nextAuth from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 
 export async function oathSignInAction(provider: "google" | "github") {

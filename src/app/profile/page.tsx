@@ -1,5 +1,5 @@
 import React from "react";
-import nextAuth from "@/../auth";
+import nextAuth from "@/auth";
 import type { User } from "next-auth";
 import Image from "next/image";
 import SignoutButton from "@/components/common/SignoutButton";

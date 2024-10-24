@@ -45,8 +45,6 @@ export async function signupUserAction(values: unknown): Promise<Res> {
     const newUser = await db
       .insert(users)
       .values({
-        firstName,
-        lastName,
         email,
         password: hashedPassword,
       })

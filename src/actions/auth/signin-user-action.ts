@@ -1,6 +1,6 @@
 "use server";
 
-import nextAuth from "@/../auth";
+import nextAuth from "@/auth";
 import { AuthError } from "next-auth";
 
 type Res =
