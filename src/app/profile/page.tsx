@@ -1,8 +1,9 @@
 import React from "react";
 import nextAuth from "@/../auth";
-import { type User } from "next-auth";
+import type { User } from "next-auth";
 import Image from "next/image";
 import SignoutButton from "@/components/common/SignoutButton";
+import UpdateUserInfo from "./_components/UpdateUserInfo";
 
 export default async function ProfilePage() {
   const session = await nextAuth.auth();
@@ -22,6 +23,9 @@ export default async function ProfilePage() {
 const SignedIn = ({ user }: { user: User }) => {
   return (
     <>
+      <div className="flex items-center justify-between">
+        <UpdateUserInfo user={user} />
+      </div>
       <h2 className="text-2xl font-bold tracking-tight">User Information</h2>
       <table className="my-6 table-auto divide-y">
         <thead>
