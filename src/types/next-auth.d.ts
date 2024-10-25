@@ -6,6 +6,7 @@ import { users } from "@/db/schema";
 declare module "next-auth" {
   interface User extends DefaultUser {
     role: (typeof users.$inferSelect)["role"];
+    emailVerified: (typeof users.$inferInsert)["emailVerified"];
   }
 }
 
