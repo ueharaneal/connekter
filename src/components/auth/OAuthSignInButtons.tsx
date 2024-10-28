@@ -1,15 +1,27 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { SiGoogle, SiGoogleHex } from "@icons-pack/react-simple-icons";
 import { oathSignInAction } from "@/actions/auth/oauth-signin-action";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type OAuthSigninButtonProps = {
   signUp: boolean;
 };
-function OAuthSignInButtons({ signUp }: OAuthSigninButtonProps) {
+export function OAuthSignInButton({ signUp }: OAuthSigninButtonProps) {
+  const [errorMessage, setErrorMessage] = useState("");
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
   const text = signUp ? "Sign Up" : "Sign In";
 
+  useEffect(() => {
+    if (!error) return;
+    if (error === "OAuthAccountNotLinked") {
+      setErrorMessage("This account is already in use. Please sign in");
+    } else {
+      setErrorMessage("An error occured. Please try again. ");
+    }
+  }, [error]);
   const clickHandler = async (provider: "google") => {
     try {
       await oathSignInAction(provider);
@@ -29,8 +41,29 @@ function OAuthSignInButtons({ signUp }: OAuthSigninButtonProps) {
         <SiGoogle className="mr-2" color="#34A853" />
         {text} with Google
       </Button>
+      {errorMessage && (
+        <p className="mt-2 text-sm font-medium text-destructive">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }
 
-export default OAuthSignInButtons;
+type OAuthSigninButtonSkeletonProps = OAuthSigninButtonProps;
+
+export function OAuthSignInButtonSkeleton({
+  signUp,
+}: OAuthSigninButtonSkeletonProps) {
+  const text = signUp ? "Sign up" : "Sign in";
+  return (
+    <div className="w-full">
+      <Button variant="secondary" className="w-full">
+        <SiGoogle className="mr-2" color="#34A853" />
+        {text} in with Google
+      </Button>
+    </div>
+  );
+}
+
+export default OAuthSignInButtonSkeleton;

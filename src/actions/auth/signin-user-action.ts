@@ -35,6 +35,13 @@ export async function signinUserAction(values: unknown): Promise<Res> {
             error: "Incorrect Email or Password",
             statusCode: 401,
           };
+        case "OAuthAccountAlreadyLinked" as AuthError["type"]:
+          console.log("yes");
+          return {
+            success: false,
+            error: "Login with your Google account",
+            statusCode: 401,
+          };
         default:
           return {
             success: false,

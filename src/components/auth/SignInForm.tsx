@@ -48,7 +48,7 @@ function SignInForm() {
             description: "Internal server error",
           });
         case 401:
-          form.setError("password", { message: "Incorrect Email or Password" });
+          form.setError("password", { message: res.error });
           toast.error(res.error);
       }
     }
