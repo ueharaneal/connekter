@@ -11,7 +11,12 @@ function OAuthSignInButtons({ signUp }: OAuthSigninButtonProps) {
   const text = signUp ? "Sign Up" : "Sign In";
 
   const clickHandler = async (provider: "google") => {
-    await oathSignInAction(provider);
+    try {
+      await oathSignInAction(provider);
+    } catch (error) {
+      // This Catch is to prevent users to sign in with a different provider with an email that already exists.
+      console.log(error);
+    }
   };
 
   return (
