@@ -28,12 +28,19 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnProfile = nextUrl.pathname.startsWith("/profile");
       const isOnAuth = nextUrl.pathname.startsWith("/auth");
+      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
+
       if (isOnProfile) {
         if (isLoggedIn) return true;
         return Response.redirect(new URL("auth/signin", nextUrl));
       }
       if (isOnAuth) {
         if (!isLoggedIn) return;
+        return Response.redirect(new URL("/", nextUrl));
+      }
+      if (isOnAdmin) {
+        if (isLoggedIn && auth?.user?.role === "admin") return true;
+        console.log("test", auth?.user);
         return Response.redirect(new URL("/", nextUrl));
       }
       return true;

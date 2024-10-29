@@ -21,3 +21,8 @@ export const findUserById = async (id: string): Promise<User> => {
 
   return user;
 };
+
+export const findAllUsers = async () => {
+  const allUsers = await db.query.users.findMany();
+  return allUsers;
+};
