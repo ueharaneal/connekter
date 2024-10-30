@@ -35,7 +35,7 @@ export const authConfig = {
         return Response.redirect(new URL("auth/signin", nextUrl));
       }
       if (isOnAuth) {
-        if (!isLoggedIn) return;
+        if (!isLoggedIn) return true;
         return Response.redirect(new URL("/", nextUrl));
       }
       if (isOnAdmin) {

@@ -22,8 +22,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signupUserAction } from "@/actions/auth/signup-user-action";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function SignupForm() {
+  const router = useRouter();
   const form = useForm<SignupInput>({
     defaultValues: {
       firstName: "",
@@ -42,6 +44,7 @@ function SignupForm() {
     if (res.success) {
       toast("Log in Successful", {});
       form.reset();
+      router.push("/auth/signup/success");
     } else {
       switch (res.statusCode) {
         case 400:

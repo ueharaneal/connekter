@@ -2,8 +2,11 @@
 import argon2 from "argon2";
 import { SignupSchema } from "@/validators/auth-validators";
 import db from "@/db";
-import { lower, users } from "@/db/schema";
+import { lower, users, verificationTokens } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { createVerificationTokenActions } from "./create-verification-token";
+import { sendEmail } from "@/lib/server-utils/sendEmail";
+import { VerifyEmail } from "../../../packages/transactionals/emails/VerifyEmail";
 
 type ErrorItem = {
   field: string;
@@ -36,7 +39,27 @@ export async function signupUserAction(values: unknown): Promise<Res> {
   });
 
   if (existingUser) {
-    return { success: false, error: "Email already exist", statusCode: 409 };
+    if (!existingUser.emailVerified) {
+      const verificationToken = await createVerificationTokenActions(
+        existingUser.email,
+      );
+      await sendEmail({
+        to: existingUser.email,
+        subject: "Verify your email",
+        content: VerifyEmail({
+          name: existingUser.name ?? "User",
+          verificationToken: verificationToken.token,
+        }),
+      });
+      return {
+        success: false,
+        error: "User exist but not verified. Verification link resent",
+        statusCode: 409,
+      };
+      //send verification email
+    } else {
+      return { success: false, error: "Email already exist", statusCode: 409 };
+    }
   }
 
   try {
@@ -48,10 +71,18 @@ export async function signupUserAction(values: unknown): Promise<Res> {
         email,
         password: hashedPassword,
       })
-      .returning({ id: users.id })
+      .returning({
+        id: users.id,
+        email: users.email,
+        emailVerified: users.emailVerified,
+      })
       .then((res) => res![0]);
 
-    console.log("inserted id", newUser.id);
+    const verificationToken = await createVerificationTokenActions(
+      newUser.email,
+    );
+    console.log(verificationToken);
+    //todo send verification email
 
     return { success: true };
   } catch (err) {

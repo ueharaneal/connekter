@@ -18,7 +18,7 @@ function SignUp() {
         {/* Oauth Links */}
         <div className="my-4 h-1 bg-muted" />
         <Suspense fallback={<OAuthSignInButtonSkeleton signUp={false} />}>
-          <OAuthSignInButton signUp={false} />
+          <OAuthSignInButton signUp={true} />
         </Suspense>
         {/* Go to signin link */}
         <div className="mt-5 text-center text-sm">
