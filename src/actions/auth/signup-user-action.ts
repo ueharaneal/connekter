@@ -48,7 +48,7 @@ export async function signupUserAction(values: unknown): Promise<Res> {
         subject: "Verify your email",
         content: VerifyEmail({
           name: existingUser.name ?? "User",
-          verificationToken: verificationToken.token,
+          verificationToken: verificationToken,
         }),
       });
       return {

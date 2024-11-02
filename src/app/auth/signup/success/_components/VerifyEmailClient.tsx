@@ -16,7 +16,7 @@ export default function VerificationEmailClient() {
   };
 
   return (
-    <div className="container flex h-screen flex-col items-center justify-center">
+    <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center">
