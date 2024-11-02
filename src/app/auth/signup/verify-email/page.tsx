@@ -2,6 +2,7 @@ import { findVerificationTokenByToken } from "@/lib/server-utils/auth/tokenQueri
 import TokenIsInvalidState from "./_components/TokenIsInvalidState";
 import React from "react";
 import EmailVerifiedSuccess from "./_components/EmailVerifiedSuccess";
+import { verifyCredentialsEmailAction } from "@/actions/auth/verify-credentials-email-action";
 
 type PageProps = { searchParams: { token: string } };
 async function Page({ searchParams }: PageProps) {
@@ -17,7 +18,14 @@ async function Page({ searchParams }: PageProps) {
 
   if (isExpired) return <TokenIsInvalidState state="expired" />;
 
-  return <EmailVerifiedSuccess />;
+  //verify the user
+  const res = await verifyCredentialsEmailAction(verificationToken.token);
+
+  return res.success ? (
+    <EmailVerifiedSuccess />
+  ) : (
+    <TokenIsInvalidState state="invalid" />
+  );
 }
 
 export default Page;
