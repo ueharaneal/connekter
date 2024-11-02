@@ -2,12 +2,16 @@ import { Button } from "@react-email/components";
 import { Html } from "@react-email/components";
 import { Section } from "@react-email/components";
 import { Text } from "@react-email/components";
-import { ReactNode } from "react";
 
 interface VerifyEmailProps {
   name: string;
   verificationToken: string;
 }
+
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? `http://localhost:3000`
+    : `http://localhost:3000`;
 
 export const VerifyEmail = ({ name, verificationToken }: VerifyEmailProps) => {
   return (
@@ -18,7 +22,10 @@ export const VerifyEmail = ({ name, verificationToken }: VerifyEmailProps) => {
           Click the button below to verify your email address and activate your
           account.
         </Text>
-        <Button href={verificationToken} style={styles.button}>
+        <Button
+          href={`${baseUrl}/auth/signup/verify-email?token=${verificationToken}`}
+          style={styles.button}
+        >
           Verify Email
         </Button>
         <Text style={styles.body}>

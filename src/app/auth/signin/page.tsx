@@ -6,6 +6,7 @@ import {
   OAuthSignInButtonSkeleton,
   OAuthSignInButton,
 } from "@/components/auth/OAuthSignInButtons";
+import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 
 export default function SignInPage() {
   return (
@@ -30,6 +31,8 @@ export default function SignInPage() {
           </Button>
           to sign up
         </div>
+        {/* Forgot Password Dialog */}
+        <ForgotPasswordForm />
       </div>
     </main>
   );
