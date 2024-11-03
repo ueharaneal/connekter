@@ -20,7 +20,18 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <div className="mx-10 flex flex-col">{children}</div>
-          <Toaster />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              unstyled: false,
+              classNames: {
+                error: "bg-red-200 border-red-500 text-black",
+                success: "bg-green-100 text-black border-green-400",
+                warning: "text-yellow-400",
+                info: "bg-blue-400",
+              },
+            }}
+          />
         </Providers>
       </body>
     </html>
