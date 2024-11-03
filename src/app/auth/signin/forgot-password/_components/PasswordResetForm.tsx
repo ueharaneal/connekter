@@ -25,7 +25,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link";
 import { passwordResetAction } from "@/actions/auth/password-reset-action";
-
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const formSchema = z
   .object({
     password: z.string().min(6, "Password must be at least 6 characters long"),
@@ -46,6 +47,7 @@ export default function PasswordResetForm({
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,9 +60,10 @@ export default function PasswordResetForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Here you would typically call your API to handle the password reset
     // For this example, we'll simulate an API call with a timeout
-    console.log(values);
     const res = await passwordResetAction({ email, token, values });
+    toast.success("Password Successfully Updated!");
     setSubmitSuccess(true);
+    router.push("/auth/sigin");
   }
 
   return (
