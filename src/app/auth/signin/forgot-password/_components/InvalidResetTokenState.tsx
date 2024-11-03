@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardHeader,
@@ -11,22 +10,22 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
-type TokenStateProps = {
+type ResetTokenStateProps = {
   state: "invalid" | "expired";
 };
 
-export default function EmptyTokenState({
+export function InvalidResetTokenState({
   state = "invalid",
-}: TokenStateProps) {
+}: ResetTokenStateProps) {
   const isInvalid = state === "invalid";
 
-  const title = isInvalid ? "Invalid Token" : "Expired Token";
+  const title = isInvalid ? "Invalid Reset Token" : "Expired Reset Token";
   const description = isInvalid
-    ? "The verification token is invalid."
-    : "The verification token has expired.";
+    ? "The password reset token is invalid."
+    : "The password reset token has expired.";
   const content = isInvalid
-    ? "This can happen if the token has already been used or is incorrect. Please request a new verification email or contact support if the problem persists."
-    : "This can happen if too much time has passed since the token was issued. Please request a new verification email to continue the process.";
+    ? "This can happen if the token has already been used or is incorrect. Please go to the sign in page to request a new password reset email or contact support if the problem persists."
+    : "This can happen if too much time has passed since the token was issued. Please go to the sign in page to request a new password reset email to continue the process.";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
@@ -43,7 +42,7 @@ export default function EmptyTokenState({
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button asChild>
-            <Link href="/auth/signup">Request new verification email</Link>
+            <Link href="/auth/signin">Go to sign in page</Link>
           </Button>
         </CardFooter>
       </Card>

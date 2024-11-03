@@ -62,7 +62,7 @@ export async function forgotPasswordAction(values: unknown): Promise<Res> {
       subject: "Password Reset",
       content: ForgotPasswordEmail({
         userFirstName: curUser.name ?? "User",
-        resetPasswordUrl: `http://localhost:3000`,
+        resetPasswordUrl: `http://localhost:3000/auth/signin/forgot-password?token=${verificationToken}`,
       }),
     });
   } catch (error) {
