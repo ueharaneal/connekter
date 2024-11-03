@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signinUserAction } from "@/actions/auth/signin-user-action";
 import { toast } from "sonner";
+import ForgotPasswordForm from "./ForgotPasswordForm";
 
 function SignInForm() {
   const form = useForm<SignInInput>({
@@ -55,13 +56,13 @@ function SignInForm() {
   };
 
   return (
-    <Card>
+    <Card className="felxs w-full flex-col items-center">
       <CardHeader>Sign In</CardHeader>
       <CardContent>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-3"
+            className="flex w-full flex-col gap-y-3"
           >
             <FormField
               control={form.control}
@@ -74,6 +75,7 @@ function SignInForm() {
                       type="text"
                       {...field}
                       placeholder="e.g. johnSmith@example.com"
+                      className="w-full"
                     />
                   </FormControl>
                   <FormMessage />
@@ -104,7 +106,9 @@ function SignInForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter className="flex w-full justify-center">
+        <ForgotPasswordForm />
+      </CardFooter>
     </Card>
   );
 }

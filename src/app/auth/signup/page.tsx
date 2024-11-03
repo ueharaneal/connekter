@@ -26,7 +26,7 @@ function SignUp() {
           <Button asChild variant="link" className="-mx-3">
             <Link href="/auth/signin"> Click Here</Link>
           </Button>
-          to sign up
+          to sign in
         </div>
       </div>
     </main>
