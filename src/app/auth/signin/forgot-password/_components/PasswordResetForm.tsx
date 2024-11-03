@@ -63,7 +63,7 @@ export default function PasswordResetForm({
     const res = await passwordResetAction({ email, token, values });
     toast.success("Password Successfully Updated!");
     setSubmitSuccess(true);
-    router.push("/auth/sigin");
+    router.push("/auth/signin");
   }
 
   return (
