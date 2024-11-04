@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "email dev"
+    "dev": "email dev",
+    "build": "email build"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "@react-email/components": "^0.0.25"
   },
   "devDependencies": {
-    "react-email": "3.0.1"
+    "react-email": "3.0.1",
+    "next": "*"
   }
 }
