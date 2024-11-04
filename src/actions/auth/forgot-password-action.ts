@@ -6,7 +6,7 @@ import { ForgotPasswordSchema } from "@/validators/forgot-password-validators";
 import { eq } from "drizzle-orm";
 import { createVerificationTokenActions } from "./create-verification-token";
 import { sendEmail } from "@/lib/server-utils/sendEmail";
-import ForgotPasswordEmail from "../../../packages/transactionals/emails/ForgotPasswordEmail";
+import ForgotPasswordEmail from "@/../packages/transactionals/emails/ForgotPasswordEmail";
 
 type ErrorItem = {
   field: string;

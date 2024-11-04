@@ -2,7 +2,7 @@ import { baseProcedure, createTRPCRouter } from "../trpc";
 import { z } from "zod";
 import db from "@/server/db";
 
-export const userRouter = createTRPCRouter({
+export const usersRouter = createTRPCRouter({
   getUsers: baseProcedure.query(async () => {
     const allUsers = await db.query.users.findMany();
 
