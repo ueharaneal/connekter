@@ -14,10 +14,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@react-email/components": "^0.0.25"
-  },
   "devDependencies": {
     "react-email": "3.0.1"
+  },
+  "dependencies": {
+    "@react-email/components": "^0.0.26"
   }
 }
