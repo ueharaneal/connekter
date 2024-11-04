@@ -1,18 +1,29 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+const images = [
+  {
+    src: "https://plus.unsplash.com/premium_photo-1664301132849-f52af765df79?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "Contractor working",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1611843467160-25afb8df1074?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "Garden",
+  },
+];
+
 export function Header() {
   return (
     <header className="relative overflow-hidden text-white">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/placeholder.svg?height=1080&width=1920"
+          src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Header background"
           layout="fill"
           objectFit="cover"
           priority
         />
-        <div className="absolute inset-0 bg-purple-900/70" />
+        <div className="absolute inset-0 bg-blue-900/80" />
       </div>
       <div className="container relative z-10 mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
@@ -42,16 +53,11 @@ export function Header() {
           </div>
           <div className="relative h-64 md:h-auto">
             <div className="absolute inset-0 grid grid-cols-2 gap-4">
-              {[
-                "Contractor working",
-                "Happy client",
-                "Project completion",
-                "Diverse contractors",
-              ].map((alt, index) => (
+              {images.map((img, index) => (
                 <Image
                   key={index}
-                  src="/placeholder.svg?height=300&width=300"
-                  alt={alt}
+                  src="https://plus.unsplash.com/premium_photo-1664301132849-f52af765df79?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt={img.alt}
                   width={300}
                   height={300}
                   className={`h-full w-full rounded-lg object-cover ${index % 2 ? "mt-8" : ""}`}

@@ -23,7 +23,7 @@ export default function RootLayout({
           <TRPCProvider>
             <HydrateClient>
               <Navbar />
-              <div className="mx-10 flex flex-col">{children}</div>
+              <div className="flex flex-col">{children}</div>
               <Toaster
                 position="top-right"
                 toastOptions={{
