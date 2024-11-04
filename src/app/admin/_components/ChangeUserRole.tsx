@@ -1,6 +1,6 @@
 "use client";
 import { changeUserRoleAction } from "@/actions/auth/change-user-role-action";
-import { users } from "@/db/schema";
+import { users } from "@/server/db/schema";
 import React, { useTransition } from "react";
 
 type ChangeUserRoleInputProps = {

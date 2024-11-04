@@ -1,7 +1,7 @@
 import type { JWT as DefaultJWT } from "next-auth/jwt";
 import { type User as DefaultUser } from "next-auth";
 
-import { users } from "@/db/schema";
+import { users } from "@/server/db/schema";
 
 declare module "next-auth" {
   interface User extends DefaultUser {

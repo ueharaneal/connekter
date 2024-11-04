@@ -3,8 +3,8 @@ import { findVerificationTokenByToken } from "@/lib/server-utils/auth/tokenQueri
 import { findUserByEmail } from "@/lib/server-utils/userQueries";
 import { z } from "zod";
 import argon2 from "argon2";
-import db from "@/db";
-import { users } from "@/db/schema";
+import db from "@/server/db";
+import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 type Res =
   | { success: true }

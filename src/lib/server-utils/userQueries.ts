@@ -1,7 +1,7 @@
 import "server-only";
 
-import db from "@/db";
-import { users, type User } from "@/db/schema";
+import db from "@/server/db";
+import { users, type User } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const findUserByEmail = async (email: string): Promise<User | null> => {

@@ -1,7 +1,7 @@
 "use server";
 
-import db from "@/db";
-import { users, verificationTokens } from "@/db/schema";
+import db from "@/server/db";
+import { users, verificationTokens } from "@/server/db/schema";
 import { findVerificationTokenByToken } from "@/lib/server-utils/auth/tokenQueries";
 import { findUserByEmail } from "@/lib/server-utils/userQueries";
 import { eq } from "drizzle-orm";

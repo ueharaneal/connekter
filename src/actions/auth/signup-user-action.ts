@@ -1,8 +1,8 @@
 "use server";
 import argon2 from "argon2";
 import { SignupSchema } from "@/validators/auth-validators";
-import db from "@/db";
-import { lower, users, verificationTokens } from "@/db/schema";
+import db from "@/server/db";
+import { lower, users, verificationTokens } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { createVerificationTokenActions } from "./create-verification-token";
 import { sendEmail } from "@/lib/server-utils/sendEmail";

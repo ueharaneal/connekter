@@ -3,8 +3,8 @@
 //this file has everything except for the credential providers.
 import type { NextAuthConfig } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import db from "@/db";
-import * as schema from "@/db/schema";
+import db from "@/server/db";
+import * as schema from "@/server/db/schema";
 import { oathVerifyEmailAction } from "./actions/auth/oauth-verify-email-actions";
 import Google from "next-auth/providers/google";
 
