@@ -1,7 +1,7 @@
 "use server";
 
-import db from "@/db";
-import { verificationTokens } from "@/db/schema";
+import db from "@/server/db";
+import { verificationTokens } from "@/server/db/schema";
 import { VERIFICATION_TOKEN_EXP_MIN } from "@/lib/constants";
 
 export async function createVerificationTokenActions(

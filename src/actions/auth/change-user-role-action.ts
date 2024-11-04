@@ -1,6 +1,6 @@
 "use server";
-import db from "@/db";
-import { users } from "@/db/schema";
+import db from "@/server/db";
+import { users } from "@/server/db/schema";
 import { findUserByEmail } from "@/lib/server-utils/userQueries";
 import { eq } from "drizzle-orm";
 import nextAuth from "@/auth";

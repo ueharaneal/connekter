@@ -1,7 +1,7 @@
 "use server";
 
-import db from "@/db";
-import { users } from "@/db/schema";
+import db from "@/server/db";
+import { users } from "@/server/db/schema";
 import { ForgotPasswordSchema } from "@/validators/forgot-password-validators";
 import { eq } from "drizzle-orm";
 import { createVerificationTokenActions } from "./create-verification-token";

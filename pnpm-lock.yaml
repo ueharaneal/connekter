@@ -47,6 +47,18 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.11.1
         version: 0.11.1(typescript@5.6.3)(zod@3.23.8)
+      '@tanstack/react-query':
+        specifier: ^5.59.19
+        version: 5.59.19(react@18.3.1)
+      '@trpc/client':
+        specifier: 11.0.0-rc.608
+        version: 11.0.0-rc.608(@trpc/server@11.0.0-rc.608)
+      '@trpc/react-query':
+        specifier: 11.0.0-rc.608
+        version: 11.0.0-rc.608(@tanstack/react-query@5.59.19(react@18.3.1))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@trpc/server':
+        specifier: 11.0.0-rc.608
+        version: 11.0.0-rc.608
       '@typescript-eslint/parser':
         specifier: ^8.10.0
         version: 8.10.0(eslint@8.57.1)(typescript@5.6.3)
@@ -59,6 +71,9 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
+      client-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -98,6 +113,9 @@ importers:
       sonner:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       tailwind-merge:
         specifier: ^2.5.3
         version: 2.5.4
@@ -903,6 +921,31 @@ packages:
       typescript:
         optional: true
 
+  '@tanstack/query-core@5.59.17':
+    resolution: {integrity: sha512-jWdDiif8kaqnRGHNXAa9CnudtxY5v9DUxXhodgqX2Rwzj+1UwStDHEbBd9IA5C7VYAaJ2s+BxFR6PUBs8ERorA==}
+
+  '@tanstack/react-query@5.59.19':
+    resolution: {integrity: sha512-xLRfyFyQOFcLltKCds0LijfC6/HQJrrTTnZB8ciyn74LIkVAm++vZJ6eUVG20RmJtdP8REdy7vSOYW4M3//XLA==}
+    peerDependencies:
+      react: ^18 || ^19
+
+  '@trpc/client@11.0.0-rc.608':
+    resolution: {integrity: sha512-ZvhYhewiXXo3Kfy7JazVShsJUJTyqgkEV1rjhioJ6r3aIGw0ZS6zyyjcq1w99DTIzRP//FgB239NG5c66Ki9sw==}
+    peerDependencies:
+      '@trpc/server': 11.0.0-rc.608+f75de97b3
+
+  '@trpc/react-query@11.0.0-rc.608':
+    resolution: {integrity: sha512-V0UJltzCfdn3PqePqbB8TK64aNXVBpdoLEC4OdMtTYiZTsAnH1jTwrNOBji3Xwm8Q0n4jaUDrIz5M/5IPjYrGg==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.59.15
+      '@trpc/client': 11.0.0-rc.608+f75de97b3
+      '@trpc/server': 11.0.0-rc.608+f75de97b3
+      react: '>=18.2.0'
+      react-dom: '>=18.2.0'
+
+  '@trpc/server@11.0.0-rc.608':
+    resolution: {integrity: sha512-+qxeyWlS+1zlTbekG7C+khDGZn788kLJG+ufO8mH/kgbRC+/a0OZSk7tyQI2Pf+UWeKc6KzrTi7TRBOOEBBE1A==}
+
   '@types/canvas-confetti@1.6.4':
     resolution: {integrity: sha512-fNyZ/Fdw/Y92X0vv7B+BD6ysHL4xVU5dJcgzgxLdGbn8O3PezZNIJpml44lKM0nsGur+o/6+NZbZeNTt00U1uA==}
 
@@ -1186,6 +1229,10 @@ packages:
   cookie@0.7.1:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
+
+  copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
 
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -1849,6 +1896,10 @@ packages:
   is-weakset@2.0.3:
     resolution: {integrity: sha512-LvIm3/KWzS9oRFHugab7d+M/GcBXuXX5xZkzPmN+NxihdQlZUQ4dWuSV1xR/sq6upL1TJEDrfBgRepHFdBtSNQ==}
     engines: {node: '>= 0.4'}
+
+  is-what@4.1.16:
+    resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
+    engines: {node: '>=12.13'}
 
   isarray@2.0.5:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
@@ -2573,6 +2624,10 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
 
+  superjson@2.2.1:
+    resolution: {integrity: sha512-8iGv75BYOa0xRJHK5vRLEjE2H/i4lulTjzpUXic3Eg8akftYjkmQDa8JARQ42rlczXyFR3IeRoeFCc7RxHsYZA==}
+    engines: {node: '>=16'}
+
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
@@ -3288,6 +3343,27 @@ snapshots:
     optionalDependencies:
       typescript: 5.6.3
 
+  '@tanstack/query-core@5.59.17': {}
+
+  '@tanstack/react-query@5.59.19(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.59.17
+      react: 18.3.1
+
+  '@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608)':
+    dependencies:
+      '@trpc/server': 11.0.0-rc.608
+
+  '@trpc/react-query@11.0.0-rc.608(@tanstack/react-query@5.59.19(react@18.3.1))(@trpc/client@11.0.0-rc.608(@trpc/server@11.0.0-rc.608))(@trpc/server@11.0.0-rc.608)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@tanstack/react-query': 5.59.19(react@18.3.1)
+      '@trpc/client': 11.0.0-rc.608(@trpc/server@11.0.0-rc.608)
+      '@trpc/server': 11.0.0-rc.608
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  '@trpc/server@11.0.0-rc.608': {}
+
   '@types/canvas-confetti@1.6.4': {}
 
   '@types/cookie@0.6.0': {}
@@ -3614,6 +3690,10 @@ snapshots:
 
   cookie@0.7.1: {}
 
+  copy-anything@3.0.5:
+    dependencies:
+      is-what: 4.1.16
+
   cross-spawn@7.0.3:
     dependencies:
       path-key: 3.1.1
@@ -3931,7 +4011,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.0(eslint@8.57.1)
       eslint-plugin-react: 7.37.1(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1)
@@ -3962,7 +4042,7 @@ snapshots:
       is-bun-module: 1.2.1
       is-glob: 4.0.3
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
       - eslint-import-resolver-node
@@ -3980,7 +4060,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.10.0(eslint@8.57.1)(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -4429,6 +4509,8 @@ snapshots:
     dependencies:
       call-bind: 1.0.7
       get-intrinsic: 1.2.4
+
+  is-what@4.1.16: {}
 
   isarray@2.0.5: {}
 
@@ -5085,6 +5167,10 @@ snapshots:
       mz: 2.7.0
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
+
+  superjson@2.2.1:
+    dependencies:
+      copy-anything: 3.0.5
 
   supports-color@7.2.0:
     dependencies:

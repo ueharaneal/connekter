@@ -1,10 +1,8 @@
 "use server";
-
-import { z } from "zod";
 import { UpdateUserInfoSchema } from "@/validators/updateUserInfoValidators";
 import nextAuth from "@/auth";
-import { User, users } from "../../db/schema";
-import db from "@/db";
+import { User, users } from "../../server/db/schema";
+import db from "@/server/db";
 import { eq } from "drizzle-orm";
 type ErrorItem = {
   field: string;
