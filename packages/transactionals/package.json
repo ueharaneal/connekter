@@ -8,7 +8,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "email dev",
-    "export": "email export"
+    "export": "email export",
+    "build": "react-email build"
   },
   "keywords": [],
   "author": "",
