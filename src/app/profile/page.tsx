@@ -10,7 +10,7 @@ export default async function ProfilePage() {
   console.log(session);
 
   return (
-    <main className="mt-4">
+    <main className="mt-4 bg-background">
       <div className="container">
         <h1 className="text-3xl tracking-tight">Profile Page</h1>
 

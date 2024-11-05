@@ -22,10 +22,11 @@ export function Header() {
           layout="fill"
           objectFit="cover"
           priority
+          className=""
         />
         <div className="absolute inset-0 bg-blue-900/80" />
       </div>
-      <div className="container relative z-10 mx-auto px-4 py-16 md:py-24">
+      <div className="container relative z-30 mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
           <div>
             <h1 className="mb-4 text-4xl font-bold md:text-6xl">
@@ -49,20 +50,6 @@ export function Header() {
               >
                 Find Work as a Contractor
               </Button>
-            </div>
-          </div>
-          <div className="relative h-64 md:h-auto">
-            <div className="absolute inset-0 grid grid-cols-2 gap-4">
-              {images.map((img, index) => (
-                <Image
-                  key={index}
-                  src="https://plus.unsplash.com/premium_photo-1664301132849-f52af765df79?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt={img.alt}
-                  width={300}
-                  height={300}
-                  className={`h-full w-full rounded-lg object-cover ${index % 2 ? "mt-8" : ""}`}
-                />
-              ))}
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "../ui/button";
 import signoutUserAction from "../../actions/auth/signout-user-action";
+import { LogOutIcon } from "lucide-react";
 
 function SignoutButton() {
   const clickHandler = async () => {
@@ -11,7 +12,10 @@ function SignoutButton() {
 
   return (
     <Button variant="destructive" size="sm" onClick={() => clickHandler()}>
-      Sign Out
+      <div className="flex flex-row gap-x-1">
+        <LogOutIcon className="mr-2 h-4 w-4" />
+        <span>Sign out</span>
+      </div>
     </Button>
   );
 }
