@@ -4,3 +4,4 @@ export * from "./common";
 // tables
 export * from "./tables/auth";
 export * from "./tables/users";
+export * from "./tables/providerProfiles";
