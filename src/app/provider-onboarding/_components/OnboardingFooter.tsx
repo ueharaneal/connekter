@@ -5,8 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { useOnboardingStore } from "@/store/providerOnboardStore";
 
-export function OnboardingFooter() {
-  const NUM_OF_STEPS = 3;
+export function OnboardingFooter({ numOfSteps }: { numOfSteps: number }) {
   const step = useOnboardingStore((state) => state.step);
   const setNextStep = useOnboardingStore((state) => state.setNextStep);
   const setPrevStep = useOnboardingStore((state) => state.setPrevStep);
@@ -21,7 +20,7 @@ export function OnboardingFooter() {
         )}
         <p>{step}</p>
 
-        {step !== NUM_OF_STEPS ? (
+        {step !== numOfSteps ? (
           <Button size="lg" onClick={() => setNextStep(step)}>
             Next <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
