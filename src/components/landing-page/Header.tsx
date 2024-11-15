@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const images = [
   {
@@ -37,19 +38,23 @@ export function Header() {
               skilled professionals today!
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Button
-                size="lg"
-                className="bg-primary px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:bg-primary/90"
-              >
-                Post a Job Now
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white bg-transparent px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-white hover:text-primary"
-              >
-                Find Work as a Contractor
-              </Button>
+              <Link href="/provider-onboarding">
+                <Button
+                  size="lg"
+                  className="bg-primary px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:bg-primary/90"
+                >
+                  Post a Job Now
+                </Button>
+              </Link>
+              <Link href="/provider-onboarding">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white bg-transparent px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-white hover:text-primary"
+                >
+                  Find Work as a Contractor
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
