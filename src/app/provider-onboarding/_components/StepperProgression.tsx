@@ -6,7 +6,7 @@ function StepperProgression({ numOfSteps }: { numOfSteps: number }) {
   const step = useOnboardingStore((state) => state.step);
 
   return (
-    <div className="m-12">
+    <div className="mx-12">
       <Steps numOfSteps={numOfSteps} step={step} />
     </div>
   );
@@ -18,7 +18,7 @@ const Steps = ({ numOfSteps, step }: { numOfSteps: number; step: number }) => {
   const stepArray = Array.from(Array(numOfSteps).keys());
 
   return (
-    <div className="flex h-2/3 flex-1 flex-col items-center justify-between gap-3">
+    <div className="flex h-2/3 flex-1 flex-col items-center justify-start gap-3">
       {stepArray.map((num) => {
         const stepNum = num + 1;
         const isActive = stepNum <= step;
