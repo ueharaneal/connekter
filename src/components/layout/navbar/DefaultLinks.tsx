@@ -5,9 +5,9 @@ export default function DefaultLinks() {
   return (
     <div>
       <Link href="/about">
-        <Button variant="link">How it works</Button>
+        <Button variant="link">About</Button>
       </Link>
-      <Link href="/about">
+      <Link href="/contract">
         <Button variant="link">Contracts</Button>
       </Link>
     </div>
