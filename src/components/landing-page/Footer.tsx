@@ -44,7 +44,7 @@ export function Footer() {
           ))}
         </div>
         <div className="text-center">
-          <p>Contact us: support@connekter.com | (555) 123-4567</p>
+          <p>Contact us: support@connekter.com | Add number here</p>
         </div>
       </div>
     </footer>
