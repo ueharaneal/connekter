@@ -47,7 +47,7 @@ export default function StepZero() {
       <Card className="mx-auto w-full max-w-4xl">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">
-            Join Connekter as a Contractor
+            Join Carefinder as a Contractor
           </CardTitle>
           <CardDescription className="mt-2 text-xl">
             Unlock Your Potential, Showcase Your Skills, and Grow Your Career
@@ -55,7 +55,7 @@ export default function StepZero() {
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-center text-lg text-muted-foreground">
-            Connekter is the premier platform for skilled contractors to find
+            Carefinder is the premier platform for skilled contractors to find
             exciting projects, connect with clients, and take their careers to
             the next level.
           </p>

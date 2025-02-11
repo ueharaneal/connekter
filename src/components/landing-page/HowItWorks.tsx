@@ -73,7 +73,7 @@ export function HowItWorks() {
     <section className="bg-background py-16">
       <div className="container mx-auto px-4">
         <h2 className="mb-8 text-center text-3xl font-bold">
-          How Connekter Works
+          How Carefinder Works
         </h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>

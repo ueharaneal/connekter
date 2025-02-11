@@ -10,11 +10,11 @@ import { Card, CardContent } from "@/components/ui/card";
 const testimonials = [
   {
     name: "Sarah M.",
-    text: "Connekter helped me find the perfect contractor for my renovation. The bidding process was smooth, and I got great value!",
+    text: "Carefinder helped me find the perfect contractor for my renovation. The bidding process was smooth, and I got great value!",
   },
   {
     name: "John D.",
-    text: "As a contractor, Connekter has been a game-changer. It's so easy to find new projects and showcase my skills.",
+    text: "As a contractor, Carefinder has been a game-changer. It's so easy to find new projects and showcase my skills.",
   },
   {
     name: "Emily R.",

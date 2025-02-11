@@ -31,7 +31,7 @@ export function Header() {
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
           <div>
             <h1 className="mb-4 text-4xl font-bold md:text-6xl">
-              Find Your Perfect Contractor with Connekter
+              Find Your Perfect Contractor with Carefinder
             </h1>
             <p className="mb-8 text-xl md:text-2xl">
               Post jobs effortlessly, receive competitive bids, and connect with
