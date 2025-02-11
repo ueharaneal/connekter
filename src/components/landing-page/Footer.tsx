@@ -13,14 +13,14 @@ export function Footer() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button
               size="lg"
-              className="bg-primary px-8 py-4 font-bold text-primary-foreground hover:bg-primary/90"
+              className="bg-primary px-8 py-4 font-bold text-primary-foreground"
             >
               Post a Job Now
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="border-primary px-8 py-4 font-bold text-primary hover:bg-primary hover:text-primary-foreground"
+              className="border-primary px-8 py-4 font-bold text-primary"
             >
               Find Work as a Contractor
             </Button>

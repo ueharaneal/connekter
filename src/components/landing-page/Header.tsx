@@ -30,9 +30,7 @@ export function Header() {
       <div className="container relative z-30 mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
           <div>
-            <h1 className="mb-4 text-4xl font-bold md:text-6xl">
-              Find Your Perfect Contractor with Carefinder
-            </h1>
+            <h1 className="mb-4 text-4xl font-bold md:text-6xl"> Carefinder</h1>
             <p className="mb-8 text-xl md:text-2xl">
               Post jobs effortlessly, receive competitive bids, and connect with
               skilled professionals today!
@@ -41,7 +39,7 @@ export function Header() {
               <Link href="/provider-onboarding">
                 <Button
                   size="lg"
-                  className="bg-primary px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:bg-primary/90"
+                  className="bg-primary px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all hover:scale-105"
                 >
                   Post a Job Now
                 </Button>
@@ -50,7 +48,7 @@ export function Header() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white bg-transparent px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-white hover:text-primary"
+                  className="border-white bg-transparent px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105"
                 >
                   Find Work as a Contractor
                 </Button>
