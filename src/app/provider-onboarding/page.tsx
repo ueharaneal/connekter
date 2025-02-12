@@ -14,7 +14,7 @@ import Image from "next/image";
 const NUM_OF_STEPS = 3;
 
 function Page() {
-  useSession({ required: true });
+  // useSession({ required: true });
   const step = useOnboardingStore((state) => state.step);
   return (
     <div className="mx-10 flex h-screen flex-row justify-between gap-x-4">
