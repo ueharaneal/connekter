@@ -64,14 +64,14 @@ export default function Header() {
           </div>
 
           <div className="space-y-6">
-            <p className="text-lg">
+            <div className="text-lg">
               Meet agent Rumi, designed to assist families with
               <br />
               navigating washington state senior care.{" "}
               <Badge variant="outline" className="bg-orange-500/10 text-orange-500 border-orange-500/20">
                 Beta
               </Badge>
-            </p>
+            </div>
 
             <div className="relative max-w-md mx-auto">
               <Input
