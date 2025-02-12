@@ -5,12 +5,14 @@ import { ArrowLeft, ArrowRight, CheckCheckIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { useOnboardingStore } from "@/store/providerOnboardStore";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 export function OnboardingFooter({ numOfSteps }: { numOfSteps: number }) {
   const step = useOnboardingStore((state) => state.step);
   const setNextStep = useOnboardingStore((state) => state.setNextStep);
   const setPrevStep = useOnboardingStore((state) => state.setPrevStep);
   const [isHovered, setIsHovered] = useState(false);
+
+  const router = useRouter();
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 border-t-2 border-border bg-white">
@@ -43,7 +45,7 @@ export function OnboardingFooter({ numOfSteps }: { numOfSteps: number }) {
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
           >
-            <Button size="lg" className="">
+            <Button size="lg" className="" onClick={() => router.push("/provider-dashboard")}>
               Complete
               <CheckCheckIcon
                 className={`ml-2 h-4 w-4 transition-transform ${isHovered ? "translate-x-1 scale-110" : ""}`}
