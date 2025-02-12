@@ -1,50 +1,74 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShieldCheck, UserCheck, Lock } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
-const safetyFeatures = [
-  {
-    icon: ShieldCheck,
-    title: "Secure Payments",
-    description:
-      "Our escrow system ensures your money is protected until the job is completed to your satisfaction.",
-  },
-  {
-    icon: UserCheck,
-    title: "Verified Contractors",
-    description:
-      "All contractors undergo a thorough vetting process to ensure quality and reliability.",
-  },
-  {
-    icon: Lock,
-    title: "Data Protection",
-    description:
-      "Your personal and project information is encrypted and stored securely.",
-  },
-];
-
-export function Safety() {
+export function FaqSection() {
   return (
-    <section className="bg-white py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="mb-8 text-center text-3xl font-bold">
-          Safety Guaranteed
-        </h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {safetyFeatures.map((feature, index) => (
-            <Card key={index} className="text-center">
-              <CardHeader>
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 p-3">
-                  <feature.icon className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="mt-4">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+    <section className="w-full bg-black text-white py-16">
+      <div className="container max-w-4xl mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center mb-12">Frequently asked questions</h2>
+
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          <AccordionItem value="item-1" className="border-b-white/20">
+            <AccordionTrigger className="text-xl font-normal hover:no-underline hover:text-white/80">
+              How does it work?
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-400">
+              We use AI-powered technology to match seniors with the most compatible care providers based on their
+              specific needs, preferences, and location.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-2" className="border-b-white/20">
+            <AccordionTrigger className="text-xl font-normal hover:no-underline hover:text-white/80">
+              Explain how you make money?
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-400">
+              We operate on a transparent fee structure, charging care providers a flat rate for our matching services.
+              We never accept hidden commissions or referral fees.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-3" className="border-b-white/20">
+            <AccordionTrigger className="text-xl font-normal hover:no-underline hover:text-white/80">
+              How is Carefinder unbiased?
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-400">
+              Unlike traditional referral services, we don&apos;t accept commissions that could influence our
+              recommendations. Our AI-driven matching process is based solely on compatibility and quality of care.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-4" className="border-b-white/20">
+            <AccordionTrigger className="text-xl font-normal hover:no-underline hover:text-white/80">
+              Why is Carefinder better for the industry?
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-400">
+              We&apos;re modernizing senior care matching by eliminating bias, reducing costs, and using technology to create
+              more accurate matches between seniors and care providers.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-5" className="border-b-white/20">
+            <AccordionTrigger className="text-xl font-normal hover:no-underline hover:text-white/80">
+              What if I change my mind?
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-400">
+              We understand that circumstances can change. We offer flexible options and support throughout the process,
+              including assistance with modifying or canceling arrangements.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-6" className="border-b-white/20">
+            <AccordionTrigger className="text-xl font-normal hover:no-underline hover:text-white/80">
+              What if we want the senior moved?
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-400">
+              We can help coordinate transfers between care facilities and provide guidance throughout the transition
+              process to ensure a smooth relocation.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </section>
-  );
+  )
 }
+
