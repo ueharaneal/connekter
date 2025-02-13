@@ -8,18 +8,16 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { AnimatedMenu } from "./AnimatedMenu";
 
 function MobileNavbar() {
   return (
     <nav className="fixed top-0 z-20 flex w-full flex-row items-center justify-between border-t border-border bg-black px-8 py-3 lg:hidden">
       <Link href="/">
-        <Image src={Logo} alt="logo" className="size-9 object-contain" />
+        <Image src={Logo} alt="logo" className="size-11 object-contain" />
       </Link>
-      {/* {clientLinks.map((link, index) => (
-        <Link key={index} href={link.href}>
-          {link.label}
-        </Link> */}
-      <Sheet>
+      <AnimatedMenu />
+      {/* <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="lg:hidden">
             <MenuIcon className="h-6 w-6" />
@@ -39,7 +37,7 @@ function MobileNavbar() {
             ))}
           </div>
         </SheetContent>
-      </Sheet>
+      </Sheet> */}
     </nav>
   );
 }
