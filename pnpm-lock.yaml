@@ -108,11 +108,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       drizzle-orm:
-        specifier: ^0.34.1
-        version: 0.34.1(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(@types/react@18.3.11)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+        specifier: ^0.39.3
+        version: 0.39.3(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(pg@8.13.1)(postgres@3.4.5)
       drizzle-zod:
         specifier: ^0.7.0
-        version: 0.7.0(drizzle-orm@0.34.1(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(@types/react@18.3.11)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1))(zod@3.23.8)
+        version: 0.7.0(drizzle-orm@0.39.3(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(pg@8.13.1)(postgres@3.4.5))(zod@3.23.8)
       embla-carousel-react:
         specifier: ^8.3.1
         version: 8.3.1(react@18.3.1)
@@ -208,8 +208,8 @@ importers:
         specifier: ^18
         version: 18.3.1
       drizzle-kit:
-        specifier: ^0.25.0
-        version: 0.25.0
+        specifier: ^0.30.4
+        version: 0.30.4
       eslint:
         specifier: ^8
         version: 8.57.1
@@ -473,8 +473,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@drizzle-team/brocli@0.10.1':
-    resolution: {integrity: sha512-AHy0vjc+n/4w/8Mif+w86qpppHuF3AyXbcWW+R/W7GNA3F5/p2nuhlkCJaTXSLZheB4l1rtHzOfr9A7NwoR/Zg==}
+  '@drizzle-team/brocli@0.10.2':
+    resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -2436,18 +2436,19 @@ packages:
   domutils@3.1.0:
     resolution: {integrity: sha512-H78uMmQtI2AhgDJjWeQmHwJJ2bLPD3GMmO7Zja/ZZh84wkm+4ut+IUnUdRa8uCGX88DiVx1j6FRe1XfxEgjEZA==}
 
-  drizzle-kit@0.25.0:
-    resolution: {integrity: sha512-Rcf0nYCAKizwjWQCY+d3zytyuTbDb81NcaPor+8NebESlUz1+9W3uGl0+r9FhU4Qal5Zv9j/7neXCSCe7DHzjA==}
+  drizzle-kit@0.30.4:
+    resolution: {integrity: sha512-B2oJN5UkvwwNHscPWXDG5KqAixu7AUzZ3qbe++KU9SsQ+cZWR4DXEPYcvWplyFAno0dhRJECNEhNxiDmFaPGyQ==}
     hasBin: true
 
-  drizzle-orm@0.34.1:
-    resolution: {integrity: sha512-t+zCwyWWt8xTqtYV4doE/xYmT7hpv1L8pQ66zddEz+3VWyedBBtctjMAp22mAJPfyWurRQXUJ1nrTtqLq+DqNA==}
+  drizzle-orm@0.39.3:
+    resolution: {integrity: sha512-EZ8ZpYvDIvKU9C56JYLOmUskazhad+uXZCTCRN4OnRMsL+xAJ05dv1eCpAG5xzhsm1hqiuC5kAZUCS924u2DTw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
-      '@cloudflare/workers-types': '>=3'
-      '@electric-sql/pglite': '>=0.1.1'
+      '@cloudflare/workers-types': '>=4'
+      '@electric-sql/pglite': '>=0.2.0'
       '@libsql/client': '>=0.10.0'
-      '@neondatabase/serverless': '>=0.1'
+      '@libsql/client-wasm': '>=0.10.0'
+      '@neondatabase/serverless': '>=0.10.0'
       '@op-engineering/op-sqlite': '>=2'
       '@opentelemetry/api': ^1.4.1
       '@planetscale/database': '>=1'
@@ -2455,20 +2456,18 @@ packages:
       '@tidbcloud/serverless': '*'
       '@types/better-sqlite3': '*'
       '@types/pg': '*'
-      '@types/react': '>=18'
       '@types/sql.js': '*'
       '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
       bun-types: '*'
-      expo-sqlite: '>=13.2.0'
+      expo-sqlite: '>=14.0.0'
       knex: '*'
       kysely: '*'
       mysql2: '>=2'
       pg: '>=8'
       postgres: '>=3'
       prisma: '*'
-      react: '>=18'
       sql.js: '>=1'
       sqlite3: '>=5'
     peerDependenciesMeta:
@@ -2479,6 +2478,8 @@ packages:
       '@electric-sql/pglite':
         optional: true
       '@libsql/client':
+        optional: true
+      '@libsql/client-wasm':
         optional: true
       '@neondatabase/serverless':
         optional: true
@@ -2495,8 +2496,6 @@ packages:
       '@types/better-sqlite3':
         optional: true
       '@types/pg':
-        optional: true
-      '@types/react':
         optional: true
       '@types/sql.js':
         optional: true
@@ -2521,8 +2520,6 @@ packages:
       postgres:
         optional: true
       prisma:
-        optional: true
-      react:
         optional: true
       sql.js:
         optional: true
@@ -5040,7 +5037,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@drizzle-team/brocli@0.10.1': {}
+  '@drizzle-team/brocli@0.10.2': {}
 
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
@@ -7000,27 +6997,25 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
-  drizzle-kit@0.25.0:
+  drizzle-kit@0.30.4:
     dependencies:
-      '@drizzle-team/brocli': 0.10.1
+      '@drizzle-team/brocli': 0.10.2
       '@esbuild-kit/esm-loader': 2.6.5
       esbuild: 0.19.12
       esbuild-register: 3.6.0(esbuild@0.19.12)
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.34.1(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(@types/react@18.3.11)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1):
+  drizzle-orm@0.39.3(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(pg@8.13.1)(postgres@3.4.5):
     optionalDependencies:
       '@neondatabase/serverless': 0.10.1
       '@types/pg': 8.11.6
-      '@types/react': 18.3.11
       pg: 8.13.1
       postgres: 3.4.5
-      react: 18.3.1
 
-  drizzle-zod@0.7.0(drizzle-orm@0.34.1(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(@types/react@18.3.11)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.7.0(drizzle-orm@0.39.3(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(pg@8.13.1)(postgres@3.4.5))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.34.1(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(@types/react@18.3.11)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+      drizzle-orm: 0.39.3(@neondatabase/serverless@0.10.1)(@types/pg@8.11.6)(pg@8.13.1)(postgres@3.4.5)
       zod: 3.23.8
 
   eastasianwidth@0.2.0: {}

@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { users } from "./tables/users";
 import { sessions, accounts } from "./tables/auth";
-import { providerProfiles } from "./tables/providerProfiles";
+import { providers } from "./tables/providers";
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   accounts: many(accounts),
@@ -9,10 +9,10 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 }));
 
 export const providerProfilesRelations = relations(
-  providerProfiles,
+  providers,
   ({ one }) => ({
     user: one(users, {
-      fields: [providerProfiles.userId],
+      fields: [providers.userId],
       references: [users.id],
     }),
   }),
