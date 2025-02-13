@@ -13,11 +13,10 @@ import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { trpc } from "@/server/trpcServer";
+import { trpc } from "@/server/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const { data, isLoading } = trpc.provider.getProvider.useQuery();
-const { mutate: updateProvider } = trpc.provider.updateProvider.useMutation();
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -26,18 +25,52 @@ const formSchema = z.object({
 });
 
 export function EditProfileSheet() {
-  const { register, handleSubmit } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: data?.name,
-      email: data?.email,
-      phone: data?.phoneNumber,
+  const { data, isLoading } = trpc.provider.getProvider.useQuery();
+  const { mutate: updateProvider, isPending: isUpdating } =
+    trpc.provider.updateProvider.useMutation({
+      onSuccess: () => {
+        toast.success("Profile updated successfully");
+    },
+    onError: () => {
+      toast.error("Failed to update profile");
     },
   });
+  const { register, handleSubmit, reset } = useForm<z.infer<typeof formSchema>>(
+    {
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        name: "",
+        email: "",
+        phone: "",
+      },
+    },
+  );
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    updateProvider(data);
-  };
+  useEffect(() => {
+    if (data) {
+      reset({
+        name: data.name ?? "",
+        email: data.email ?? "",
+        phone: data.phoneNumber ?? "",
+      });
+    }
+  }, [data, reset]);
+
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    updateProvider({
+      ...data,
+      id: data.id ?? "",
+    });
+  }
+
+  if (isLoading) {
+    return <div className="text-white">Loading profile...</div>;
+  }
+
+  if (!data) {
+    return <div className="text-red-500">Failed to load profile.</div>;
+  }
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -101,6 +134,13 @@ export function EditProfileSheet() {
           <div className="absolute bottom-4 left-0 right-0 text-center text-sm text-zinc-400">
             Changes are saved automatically
           </div>
+          <Button
+            type="submit"
+            disabled={isUpdating}
+            className="w-full bg-blue-500 hover:bg-blue-600"
+          >
+            {isUpdating ? "Updating..." : "Save Changes"}
+          </Button>
         </form>
       </SheetContent>
     </Sheet>
