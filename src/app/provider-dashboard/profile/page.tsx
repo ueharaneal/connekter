@@ -156,7 +156,9 @@ export default function ProviderProfile() {
   };
 
   const saveLanguages = () => {
-    updateProvider({ id: data?.id, languages: selectedLanguages });
+    updateProvider({
+      languages: selectedLanguages as (typeof ALL_LANGUAGES)[number][],
+    });
   };
 
   const [sections, setSections] = useState<Section[]>([]);
@@ -207,7 +209,7 @@ export default function ProviderProfile() {
     if (!updatedSection) return;
 
     updateProvider(
-      { id: data?.id, [id]: updatedSection.content }, // Send updated field to backend
+      { [id]: updatedSection.content }, // Send updated field to backend
       {
         onSuccess: () => {
           setSections((prev) =>

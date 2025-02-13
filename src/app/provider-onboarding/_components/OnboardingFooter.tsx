@@ -6,12 +6,17 @@ import { motion } from "framer-motion";
 import { useOnboardingStore } from "@/store/providerOnboardStore";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { trpc } from "@/server/client";
 export function OnboardingFooter({ numOfSteps }: { numOfSteps: number }) {
   const step = useOnboardingStore((state) => state.step);
   const setNextStep = useOnboardingStore((state) => state.setNextStep);
   const setPrevStep = useOnboardingStore((state) => state.setPrevStep);
   const [isHovered, setIsHovered] = useState(false);
-
+  const { mutate: createProvider } = trpc.provider.createProvider.useMutation({
+    onSuccess: () => {
+      router.push("/provider-dashboard");
+    },
+  });
   const router = useRouter();
 
   return (
@@ -45,7 +50,13 @@ export function OnboardingFooter({ numOfSteps }: { numOfSteps: number }) {
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
           >
-            <Button size="lg" className="" onClick={() => router.push("/provider-dashboard")}>
+            <Button
+              size="lg"
+              className=""
+              onClick={async () => {
+                await createProvider();
+              }}
+            >
               Complete
               <CheckCheckIcon
                 className={`ml-2 h-4 w-4 transition-transform ${isHovered ? "translate-x-1 scale-110" : ""}`}

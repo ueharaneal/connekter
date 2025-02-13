@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const formSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
-  phone: z.string().min(1),
+  phoneNumber: z.string().min(1),
 });
 
 export function EditProfileSheet() {
@@ -30,36 +30,41 @@ export function EditProfileSheet() {
     trpc.provider.updateProvider.useMutation({
       onSuccess: () => {
         toast.success("Profile updated successfully");
-    },
-    onError: () => {
-      toast.error("Failed to update profile");
+      },
+      onError: () => {
+        toast.error("Failed to update profile");
+      },
+    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phoneNumber: "",
     },
   });
-  const { register, handleSubmit, reset } = useForm<z.infer<typeof formSchema>>(
-    {
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        name: "",
-        email: "",
-        phone: "",
-      },
-    },
-  );
+
+  console.log(errors);
 
   useEffect(() => {
     if (data) {
       reset({
         name: data.name ?? "",
         email: data.email ?? "",
-        phone: data.phoneNumber ?? "",
+        phoneNumber: data.phoneNumber ?? "",
       });
     }
   }, [data, reset]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log(data);
     updateProvider({
       ...data,
-      id: data.id ?? "",
     });
   }
 
@@ -70,7 +75,9 @@ export function EditProfileSheet() {
   if (!data) {
     return <div className="text-red-500">Failed to load profile.</div>;
   }
-  
+
+  console.log("hi");
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -125,7 +132,7 @@ export function EditProfileSheet() {
                 <Input
                   id="phone"
                   type="tel"
-                  {...register("phone")}
+                  {...register("phoneNumber")}
                   className="border-zinc-700 bg-zinc-800 text-white"
                 />
               </div>
@@ -138,6 +145,7 @@ export function EditProfileSheet() {
             type="submit"
             disabled={isUpdating}
             className="w-full bg-blue-500 hover:bg-blue-600"
+            onClick={() => handleSubmit(onSubmit)}
           >
             {isUpdating ? "Updating..." : "Save Changes"}
           </Button>
