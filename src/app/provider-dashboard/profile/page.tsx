@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { CheckCircle2, Download, Pencil } from "lucide-react"
+import { EditProfileSheet } from "./_components/editProfile"
 
 interface Section {
   id: string
@@ -26,13 +27,6 @@ export default function ProviderProfile() {
     {
       id: "credentials",
       title: "Credentials",
-      content:
-        "Attended Washinton State Universitnity and recevied a bachelors of health administration, Registered Nurse and went on to recevie my Masters in public relations.",
-      isEditing: false,
-    },
-    {
-      id: "about-provider",
-      title: "About the provider",
       content:
         "Attended Washinton State Universitnity and recevied a bachelors of health administration, Registered Nurse and went on to recevie my Masters in public relations.",
       isEditing: false,
@@ -66,9 +60,7 @@ export default function ProviderProfile() {
             </Badge>
           </div>
         </div>
-        <Button variant="outline" size="sm" className="bg-transparent border-zinc-700 text-white hover:bg-zinc-800">
-          Edit provider info
-        </Button>
+        <EditProfileSheet />
       </CardHeader>
 
       <CardContent className="space-y-8">
@@ -79,7 +71,7 @@ export default function ProviderProfile() {
             <p className="text-zinc-400 text-sm">
               Upload a short introduction to help families learn more about your services.
             </p>
-            <Button variant="outline" className="bg-transparent border-zinc-700 text-white hover:bg-zinc-800">
+            <Button variant="outline" className="bg-transparent border-pink-500 text-white hover:bg-pink-500/20">
               <Download className="w-4 h-4 mr-2" />
               Drop your video here
             </Button>

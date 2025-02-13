@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   Plus,
@@ -15,6 +18,8 @@ import {
 } from "lucide-react";
 
 export default function Page() {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-black p-4 text-white">
       {/* Header */}
@@ -69,42 +74,50 @@ export default function Page() {
             icon: <FileText className="h-5 w-5" />,
             title: "My AFH",
             subtitle: "Adult Family Home Details",
+            href: "/provider-dashboard/my-afh",
           },
           {
             icon: <Home className="h-5 w-5" />,
             title: "The Provider",
             subtitle: "Provider Information and Features",
+            href: "/provider-dashboard/profile",
           },
           {
             icon: <ListStart className="h-5 w-5" />,
             title: "The Home & Listing",
             subtitle: "Listing Details and Management",
+            href: "/provider-dashboard/the-home-and-listing",
           },
           {
             icon: <Video className="h-5 w-5" />,
             title: "FAQ",
             subtitle: "Frequently Asked Questions",
+            href: "/provider-dashboard/faq",
           },
           {
             icon: <MessageSquare className="h-5 w-5" />,
             title: "Testimonials",
             subtitle: "Customer Reviews and Feedback",
+            href: "/provider-dashboard/testimonials",
           },
           {
             icon: <HelpCircle className="h-5 w-5" />,
             title: "Admissions & Enrollment",
             subtitle: "Admissions and Enrollment",
+            href: "/provider-dashboard/admissions-and-enrollment",
           },
           {
             icon: <DollarSign className="h-5 w-5" />,
             title: "Cost of Care",
             subtitle: "Pricing and Payment Information",
+            href: "/provider-dashboard/cost-of-care",
           },
         ].map((item, index) => (
           <Button
             key={index}
             variant="ghost"
             className="h-auto w-full justify-between border border-zinc-800 bg-zinc-900/50 px-4 py-4 hover:bg-zinc-900"
+            onClick={() => router.push(item.href)}
           >
             <div className="flex items-center gap-4">
               <div className="text-zinc-400">{item.icon}</div>
