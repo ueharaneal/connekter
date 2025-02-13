@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/navbar/DesktopNavbar";
+import Navbar from "@/components/layout/navbar/Navbar";
 import "./globals.css";
 import { Providers } from "@/components/auth/Providers";
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCProvider } from "@/components/providers/TrpcProvider";
 import { HydrateClient } from "@/server/trpcServer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-
+import { Footer } from "@/components/landing-page";
 
 export const metadata: Metadata = {
   title: "Carefinder",
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`flex min-h-screen flex-col`}>
+      <body className={`relative flex min-h-screen flex-col`}>
         <Providers>
           <TRPCProvider>
             <HydrateClient>
@@ -31,9 +31,10 @@ export default function RootLayout({
                 disableTransitionOnChange
               >
                 <Navbar />
-                <div className="flex flex-grow flex-col bg-background">
+                <div className="my-10 flex flex-grow flex-col bg-background">
                   {children}
                 </div>
+                <Footer />
                 <Toaster
                   position="top-right"
                   toastOptions={{
