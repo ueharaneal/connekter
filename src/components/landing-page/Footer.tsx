@@ -35,7 +35,7 @@ function Column({
   links: { label: string; href: string }[];
 }) {
   return (
-    <div className="mx-8 flex flex-row items-center justify-between gap-2 text-end tracking-tight md:mx-2 md:flex-col md:text-center">
+    <div className="mx-8 flex flex-row items-center justify-between gap-2 text-end tracking-tight md:mx-2 md:flex-col md:justify-start md:text-center">
       <h2 className="mb-4 text-base font-bold text-foreground md:mb-0 md:text-lg">
         {title}
       </h2>
