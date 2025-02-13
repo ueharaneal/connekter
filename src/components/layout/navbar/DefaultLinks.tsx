@@ -5,7 +5,6 @@ export default function DefaultLinks() {
   const links = [
     { href: "/about", label: "About" },
     { href: "/find-a-provider", label: "Find a Provider" },
-    { href: "/contract", label: "Contracts" },
     { href: "/provider-onboarding", label: "Join as a Provider" },
   ];
 

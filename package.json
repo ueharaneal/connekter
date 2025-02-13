@@ -41,6 +41,7 @@
     "@trpc/react-query": "11.0.0-rc.608",
     "@trpc/server": "11.0.0-rc.608",
     "@typescript-eslint/parser": "^8.10.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "@vis.gl/react-google-maps": "^1.5.1",
     "argon2": "^0.41.1",
     "canvas-confetti": "^1.9.3",
