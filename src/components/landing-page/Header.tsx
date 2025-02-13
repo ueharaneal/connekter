@@ -19,10 +19,10 @@ export default function Header() {
   return (
     <main className="mx-auto max-w-7xl text-foreground mt-16">
       {/* Hero Section */}
-      <div className=" text-foreground px-6 py-12 border-zinc-600 border rounded-2xl max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_auto_1fr] gap-8 items-center h-full">
+      <div className=" text-foreground px-6 py-12 border-zinc-600 lg:border rounded-2xl max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-center h-full">
         {/* Left side images */}
-        <div className="hidden xl:flex flex-col gap-4 justify-center">
+        <div className="hidden lg:flex flex-col gap-4 justify-center">
           <Card className="w-40 h-40 overflow-hidden rounded-2xl border-0">
             <Image
               src={familyHome1}
@@ -88,7 +88,7 @@ export default function Header() {
         </div>
 
         {/* Right side images */}
-        <div className="hidden xl:flex flex-col gap-4 justify-center">
+        <div className="hidden lg:flex flex-col gap-4 justify-center">
           <Card className="w-40 h-40 overflow-hidden rounded-2xl border-0 ml-auto">
             <Image
               src={ladyLaptop}

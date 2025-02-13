@@ -1,7 +1,5 @@
-
 import {
   Header,
-  HowItWorks,
   Testimonials,
   FaqSection,
   Footer,
@@ -11,14 +9,10 @@ import Image from "next/image";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col gap-y-10 mx-4">
       <Header />
-
-      <main className="z-20 mt-[-20px] rounded-3xl border-t-2 border-border bg-background pt-20 shadow-lg">
-        <HowItWorks />
         <Testimonials />
         <FaqSection />
-      </main>
       <Footer />
     </div>
   );

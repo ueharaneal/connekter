@@ -7,7 +7,7 @@ import Image from "next/image";
 
 function DesktopNavbar() {
   return (
-    <nav className="sticky top-0 z-50 h-14 border-b bg-background">
+    <nav className="sticky top-0 z-50 h-14 border-b bg-background hidden lg:block">
       <div className="container mx-auto flex h-full items-center justify-between">
         <div className="flex flex-row gap-x-8">
           <h3 className="text-2xl font-semibold tracking-tight">

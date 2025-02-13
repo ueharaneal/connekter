@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/navbar/DesktopNavbar";
+import Navbar from "@/components/layout/navbar/Navbar";
 import "./globals.css";
 import { Providers } from "@/components/auth/Providers";
 import { Toaster } from "@/components/ui/sonner";
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`flex min-h-screen flex-col`}>
+      <body className={`flex min-h-screen flex-col relative`}>
         <Providers>
           <TRPCProvider>
             <HydrateClient>
