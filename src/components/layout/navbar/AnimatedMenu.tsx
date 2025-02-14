@@ -28,7 +28,7 @@ const LinksOverlay = () => {
 
 const LinksContainer = () => {
   return (
-    <motion.div className="space-y-4 p-12 pl-4 md:pl-20">
+    <motion.div className="space-y-6 p-12 pl-4 md:pl-20">
       {clientLinks.map((l, idx) => {
         return (
           <NavLink key={l.label} href={l.href} idx={idx}>
@@ -63,7 +63,7 @@ const NavLink = ({
       }}
       exit={{ opacity: 0, y: -8 }}
       href={href}
-      className="0 block text-5xl font-semibold text-primary-foreground transition-colors hover:text-primary md:text-7xl"
+      className="0 block text-3xl font-semibold text-primary-foreground transition-colors hover:text-primary md:text-5xl"
     >
       {children}
     </motion.a>
