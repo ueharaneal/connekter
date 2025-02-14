@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, Download, Pencil } from "lucide-react";
+import { CheckCircle2, Pencil } from "lucide-react";
 import { EditProfileSheet } from "./_components/editProfile";
 import { trpc } from "@/server/client";
 import { ALL_LANGUAGES } from "@/server/db/schema/tables/providers";
