@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
-import { SiGoogle, SiGoogleHex } from "@icons-pack/react-simple-icons";
+import { FcGoogle } from "react-icons/fc";
 import { oathSignInAction } from "@/actions/auth/oauth-signin-action";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -38,7 +38,7 @@ export function OAuthSignInButton({ signUp }: OAuthSigninButtonProps) {
         className="w-full"
         onClick={clickHandler.bind(null, "google")}
       >
-        <SiGoogle className="mr-2" color="#34A853" />
+        <FcGoogle className="mr-2" color="#34A853" />
         {text} with Google
       </Button>
       {errorMessage && (
@@ -59,7 +59,7 @@ export function OAuthSignInButtonSkeleton({
   return (
     <div className="w-full">
       <Button variant="secondary" className="w-full">
-        <SiGoogle className="mr-2" color="#34A853" />
+        <FcGoogle className="mr-2" color="#34A853" />
         {text} in with Google
       </Button>
     </div>
