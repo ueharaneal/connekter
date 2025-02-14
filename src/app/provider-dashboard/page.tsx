@@ -16,6 +16,7 @@ import {
   DollarSign,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -59,7 +60,7 @@ export default function Page() {
                   size="sm"
                   className="border-orange-500/20 bg-transparent text-orange-500 hover:bg-orange-500/10"
                 >
-                  View profile
+                  <Link href="/provider/1">View profile</Link>
                 </Button>
               </div>
             </div>
