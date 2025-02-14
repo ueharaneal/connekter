@@ -68,13 +68,8 @@ export default function ForgotPassword() {
 
   return (
     <Dialog onOpenChange={handleOpenChange} open={isOpen}>
-      <DialogTrigger asChild>
-        <div className="flex flex-row items-center gap-x-1 text-sm">
-          Forgot your password? Click
-          <Button variant="link" size="sm" className="px-0 text-sm">
-            Here
-          </Button>
-        </div>
+      <DialogTrigger className="flex flex-row items-center gap-x-1 text-xs">
+        Forgot your password?
       </DialogTrigger>
       <DialogContent>
         <div className="flex w-full max-w-md flex-col gap-y-4 border-none">

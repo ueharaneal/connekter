@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import {
   Form,
   FormItem,
@@ -22,6 +22,12 @@ import { Button } from "@/components/ui/button";
 import { signinUserAction } from "@/actions/auth/signin-user-action";
 import { toast } from "sonner";
 import ForgotPasswordForm from "./ForgotPasswordForm";
+import {
+  OAuthSignInButtonSkeleton,
+  OAuthSignInButton,
+} from "@/components/auth/OAuthSignInButtons";
+
+import { Separator } from "../ui/separator";
 
 function SignInForm() {
   const form = useForm<SignInInput>({
@@ -56,13 +62,25 @@ function SignInForm() {
   };
 
   return (
-    <Card className="felxs w-full flex-col items-center">
-      <CardHeader>Sign In</CardHeader>
-      <CardContent>
+    <Card className="flex w-full flex-col items-center py-8">
+      <CardHeader className="mb-4 text-center text-3xl font-semibold">
+        Log in to Carefinder
+      </CardHeader>
+      <CardContent className="relative mx-auto flex w-5/6 flex-col gap-y-8">
+        <Suspense fallback={<OAuthSignInButtonSkeleton signUp={false} />}>
+          <OAuthSignInButton signUp={false} />
+        </Suspense>
+        <div className="max-w-11/12 relative mx-1 flex flex-row items-center gap-x-4">
+          <div className="w-full border-b border-border" />
+          <p className="whitespace-nowrap text-nowrap text-xs font-semibold text-muted-foreground">
+            OR CONTINUE WITH EMAIL
+          </p>
+          <div className="w-full border-b border-border" />
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex w-full flex-col gap-y-3"
+            className="flex w-full flex-col gap-y-4"
           >
             <FormField
               control={form.control}
@@ -99,7 +117,7 @@ function SignInForm() {
             <Button
               type="submit"
               disabled={form.formState.isSubmitting}
-              className="w-full"
+              className="mt-2 w-full"
             >
               Sign In
             </Button>

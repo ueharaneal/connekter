@@ -12,7 +12,7 @@ export function OAuthSignInButton({ signUp }: OAuthSigninButtonProps) {
   const [errorMessage, setErrorMessage] = useState("");
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
-  const text = signUp ? "Sign Up" : "Sign In";
+  const text = signUp ? "Continue" : "Continue";
 
   useEffect(() => {
     if (!error) return;
@@ -34,7 +34,7 @@ export function OAuthSignInButton({ signUp }: OAuthSigninButtonProps) {
   return (
     <div className="w-full">
       <Button
-        variant="secondary"
+        variant="outline"
         className="w-full"
         onClick={clickHandler.bind(null, "google")}
       >

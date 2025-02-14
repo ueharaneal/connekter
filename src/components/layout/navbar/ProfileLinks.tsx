@@ -19,6 +19,7 @@ import type { Session } from "next-auth";
 export const ProfileLinks = () => {
   const session = useSession();
 
+  console.log(session.status);
   switch (session.status) {
     case "loading":
       return <CustomSessionLoader />;
@@ -27,6 +28,7 @@ export const ProfileLinks = () => {
     case "authenticated":
       return <SignedIn session={session.data} />;
     default:
+      console.log("why");
       return null;
   }
 };
@@ -64,9 +66,15 @@ export const SignedIn = ({ session }: { session: Session }) => {
 };
 
 export const SignedOut = () => {
+  console.log("hmmm");
   return (
-    <Button variant="default" size="lg" asChild>
-      <Link href="/auth/signin">Sign In</Link>
-    </Button>
+    <div className="flex flex-row gap-x-2">
+      <Button variant="outline" size="lg" asChild>
+        <Link href="/auth/signin">Sign In</Link>
+      </Button>
+      <Button variant="default" size="lg" asChild>
+        <Link href="/auth/signin">Sign up</Link>
+      </Button>
+    </div>
   );
 };
