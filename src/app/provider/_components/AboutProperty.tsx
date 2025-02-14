@@ -85,7 +85,7 @@ export default function AboutProperty() {
               home-like environment. Our facility features spacious private
               rooms, beautiful common areas, and landscaped grounds. We maintain
               a high staff-to-resident ratio to ensure quality care and
-              attention to each resident's needs.
+              attention to each resident&apos;s needs.
             </p>
           </div>
 
