@@ -15,6 +15,7 @@ import {
 
 import { User } from "lucide-react";
 import type { Session } from "next-auth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const ProfileLinks = () => {
   const session = useSession();
@@ -35,9 +36,11 @@ export const ProfileLinks = () => {
 
 export const CustomSessionLoader = () => {
   return (
-    <Button variant="ghost" size="sm">
-      <Spinner />
-    </Button>
+    <div className="flex flex-row items-center gap-x-3">
+      <Skeleton className="h-10 w-24 rounded-lg bg-muted" />
+
+      <Skeleton className="h-10 w-24 rounded-lg" />
+    </div>
   );
 };
 
@@ -69,7 +72,7 @@ export const SignedOut = () => {
   console.log("hmmm");
   return (
     <div className="flex flex-row gap-x-2">
-      <Button variant="outline" size="lg" asChild>
+      <Button variant="outline" size="lg" asChild className="">
         <Link href="/auth/signin">Sign In</Link>
       </Button>
       <Button variant="default" size="lg" asChild>

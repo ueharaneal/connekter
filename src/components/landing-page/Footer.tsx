@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer className="w-full bg-primary py-3 pb-5 text-sm">
       <div className="mx-auto">
-        <div className="flex flex-col justify-between gap-x-6 gap-y-3 md:flex-row">
+        <div className="flex flex-col justify-between gap-x-6 gap-y-3 md:flex-row lg:justify-around">
           <Column title="Support" links={supportLinks} />
           <Separator className="mx-auto w-11/12 bg-pink-600 md:hidden" />
           <Column title="Care Provider" links={careProviderLinks} />

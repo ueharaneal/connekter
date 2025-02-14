@@ -27,8 +27,6 @@ import {
   OAuthSignInButton,
 } from "@/components/auth/OAuthSignInButtons";
 
-import { Separator } from "../ui/separator";
-
 function SignInForm() {
   const form = useForm<SignInInput>({
     defaultValues: {
