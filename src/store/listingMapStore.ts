@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { Listing } from "@/server/db/schema";
 
 export type CitiesLatLong = {
   id: string;
@@ -14,20 +15,24 @@ type LocationBoundingBoxType = {
   southwestLng: number;
 };
 
-type ProvidersFilterState = {
+type CitiesFilterState = {
   locationBoundingBox: LocationBoundingBoxType;
   radius: number;
   open: boolean;
-  filter: CitiesLatLong | undefined;
-  setFilter: (filter: CitiesLatLong | undefined) => void;
+  citySearchLatLong: CitiesLatLong | undefined;
+  initialListings: Listing[];
+  adjustedListings: Listing[];
+  setAdjustedListings: (listings: Listing[]) => void;
+  setCitySearchLatLong: (citySearchLatLong: CitiesLatLong | undefined) => void;
   setRadius: (radius: number) => void;
+  setOpen: (open: boolean) => void;
   clearFilter: () => void;
   setLocationBoundingBox: (
     locationBoundingBox: LocationBoundingBoxType,
   ) => void;
 };
 
-export const useProvidersFilter = create<ProvidersFilterState>((set) => ({
+export const useListingsMap = create<CitiesFilterState>((set) => ({
   locationBoundingBox: {
     northeastLat: 0,
     northeastLng: 0,
@@ -36,18 +41,20 @@ export const useProvidersFilter = create<ProvidersFilterState>((set) => ({
   },
   radius: 50,
   open: false,
-  filter: undefined,
+  citySearchLatLong: undefined,
+  initialListings: [],
+  adjustedListings: [],
   clearFilter: () => {
     set((state) => ({
       ...state,
-      roomType: undefined,
       radius: 50,
-      guests: 0,
-      maxNightlyPrice: undefined,
     }));
   },
+  setAdjustedListings: (adjustedListings) => set(() => ({ adjustedListings })),
   setRadius: (radius) => set(() => ({ radius })),
-  setFilter: (filter) => set(() => ({ filter })),
+  setCitySearchLatLong: (citySearchLatLong) =>
+    set(() => ({ citySearchLatLong })),
+  setOpen: (open) => set(() => ({ open })),
   setLocationBoundingBox: (locationBoundingBox) =>
     set(() => ({ locationBoundingBox })),
 }));
