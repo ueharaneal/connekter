@@ -9,7 +9,7 @@ export default function CareProviderCard() {
       <Card className="w-full max-w-3xl text-foreground">
         <CardHeader className="flex flex-row justify-between space-y-1">
           <h2 className="text-2xl font-semibold">Meet the Care Provider</h2>
-          <Badge variant="primary" className="text-nowrap rounded-full text-xs">
+          <Badge variant="secondary" className="text-nowrap rounded-full text-xs">
             Verified Provider ✓
           </Badge>
         </CardHeader>
