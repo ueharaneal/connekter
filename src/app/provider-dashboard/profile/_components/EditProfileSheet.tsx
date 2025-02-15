@@ -49,8 +49,6 @@ export function EditProfileSheet() {
     },
   });
 
-  console.log(errors);
-
   useEffect(() => {
     if (data) {
       reset({
@@ -76,7 +74,6 @@ export function EditProfileSheet() {
     return <div className="text-red-500">Failed to load profile.</div>;
   }
 
-  console.log("hi");
 
   return (
     <Sheet>
