@@ -8,11 +8,10 @@ import type { Document } from "./DocumentSection"
 interface DocumentItemProps {
   document: Document
   index: number
-  onEdit: (document: Document) => void
   onDelete: (id: string) => void
 }
 
-export function DocumentItem({ document, index, onEdit, onDelete }: DocumentItemProps) {
+export function DocumentItem({ document, index, onDelete }: DocumentItemProps) {
   return (
     <Draggable draggableId={document.id} index={index}>
       {(provided) => (
@@ -29,9 +28,9 @@ export function DocumentItem({ document, index, onEdit, onDelete }: DocumentItem
               Upload
             </Button>
             <div className="flex gap-2">
-              <Button variant="ghost" size="icon" onClick={() => onEdit(document)}>
+              {/* <Button variant="ghost" size="icon" onClick={() => onEdit(document)}>
                 <Pencil className="h-4 w-4" />
-              </Button>
+              </Button> */}
               <Button variant="ghost" size="icon" onClick={() => onDelete(document.id)}>
                 <Trash2 className="h-4 w-4" />
               </Button>

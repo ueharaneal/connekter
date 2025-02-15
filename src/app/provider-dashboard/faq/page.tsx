@@ -3,7 +3,7 @@ import { DocumentSection } from "./_components/document/DocumentSection"
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-screen bg-background text-white p-6">
       <div className="max-w-4xl mx-auto">
         <FAQSection />
         <DocumentSection />

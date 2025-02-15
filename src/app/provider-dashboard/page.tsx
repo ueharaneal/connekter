@@ -5,7 +5,7 @@ import { Suspense } from "react";
 export default function Page() {
 
   return (
-    <div className="min-h-screen bg-black p-4 text-white">
+    <div className="min-h-screen bg-background p-4 text-white">
       {/* Header */}
       <Header />
 

@@ -50,10 +50,10 @@ export function DocumentSection() {
     handleClose()
   }
 
-  const handleEdit = (document: Document) => {
-    setEditingDocument(document)
-    setIsDialogOpen(true)
-  }
+  // const handleEdit = (document: Document) => {
+  //   setEditingDocument(document)
+  //   setIsDialogOpen(true)
+  // }
 
   const handleDelete = (id: string) => {
     setDocuments(documents.filter((doc) => doc.id !== id))
@@ -83,7 +83,7 @@ export function DocumentSection() {
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
               {documents.map((doc, index) => (
-                <DocumentItem key={doc.id} document={doc} index={index} onEdit={handleEdit} onDelete={handleDelete} />
+                <DocumentItem key={doc.id} document={doc} index={index} onDelete={handleDelete} />
               ))}
               {provided.placeholder}
             </div>

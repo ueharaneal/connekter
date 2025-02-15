@@ -51,7 +51,7 @@ export function AddEditFAQDialog({ open, onOpenChange, onSave, editingFaq }: Add
             placeholder="Enter answer"
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
-            className="bg-zinc-800 border-zinc-700"
+            className="bg-zinc-800 border-zinc-700 min-h-[150px]"
           />
           <Button onClick={handleSave} className="w-full bg-orange-500 hover:bg-orange-600 text-white">
             Save
