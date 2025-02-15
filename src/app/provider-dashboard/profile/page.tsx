@@ -1,7 +1,4 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import ScheduleInterview from "./_components/ScheduleInterview";
 import VerificationBadge from "./_components/VerificationBadge";
 import VideoUpload from "./_components/VideoUpload";
@@ -39,18 +36,7 @@ export default async function ProviderProfile() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-950">
-      <div className="p-4">
-        <Link href="/provider-dashboard" passHref>
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-zinc-800 hover:text-white"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-        </Link>
-      </div>
+    <div className="flex min-h-screen flex-col bg-background">
       <Card className="mx-auto max-w-3xl border-zinc-800 bg-zinc-900 text-white">
         <ProviderHeader name={provider?.name ?? ""} />
 
