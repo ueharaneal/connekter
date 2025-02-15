@@ -4,7 +4,7 @@ import { useListingsMap } from "@/store/listingMapStore";
 
 function ProviderList() {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-1">
       {" "}
       <ProviderCard />
       <ProviderCard />
