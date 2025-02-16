@@ -6,14 +6,17 @@ import {
   point,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
-
+import { providers } from "./providers";
 export const listings = pgTable(
-  "listing",
+  "listings",
   {
     id: text("id")
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID())
       .notNull(),
+    providerId: text("providerId")
+      .notNull()
+      .references(() => providers.userId),
     position: point("position").notNull(),
     address: text("address").notNull(),
     createdAt: timestamp("createdAt", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
