@@ -7,6 +7,7 @@ interface DBCredentials {
 export default defineConfig({
   schema: "./src/server/db/schema/*", //separate the schemas
   dialect: "postgresql",
+  extensionsFilters: ["postgis"],
   verbose: true,
   strict: true,
   dbCredentials: {

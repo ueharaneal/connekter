@@ -23,7 +23,7 @@ function SingleLocationMap({ lat, lng, icon }: MapPointerProps) {
     zoomControl: true,
   };
   return (
-    <div className="h-full w-full">
+    <div className="absolute inset-0 z-0 overflow-hidden rounded-xl border">
       {location && (
         <Map
           mapId="9c8e46d54d7a528b"
