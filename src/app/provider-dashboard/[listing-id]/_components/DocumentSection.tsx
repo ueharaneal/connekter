@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DragDropContext, Droppable, type DropResult } from "@hello-pangea/dnd"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -13,17 +13,15 @@ export interface Document {
   hasFile: boolean
 }
 
-const initialDocuments: Document[] = [
-  { id: "1", title: "Policies", hasFile: false },
-  { id: "2", title: "House Rules", hasFile: false },
-  { id: "3", title: "AFH Contract", hasFile: false },
-  { id: "4", title: "Disclosure of Services", hasFile: false },
-]
 
-export function DocumentSection() {
+export function DocumentSection({ initialDocuments, isDraggable }: { initialDocuments: Document[], isDraggable: boolean }) {
   const [documents, setDocuments] = useState<Document[]>(initialDocuments)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingDocument, setEditingDocument] = useState<Document | null>(null)
+
+  useEffect(() => {
+    setDocuments(initialDocuments)
+  }, [initialDocuments])
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
@@ -78,18 +76,26 @@ export function DocumentSection() {
         </Button>
       </div>
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="documents" type="document">
+      {isDraggable ? (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="documents" type="document">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
               {documents.map((doc, index) => (
-                <DocumentItem key={doc.id} document={doc} index={index} onDelete={handleDelete} />
+                <DocumentItem key={doc.id} document={doc} index={index} onDelete={handleDelete} isDraggable={isDraggable} />
               ))}
               {provided.placeholder}
             </div>
           )}
-        </Droppable>
-      </DragDropContext>
+          </Droppable>
+        </DragDropContext>
+      ) : (
+        <div className="space-y-4">
+          {documents.map((doc, index) => (
+            <DocumentItem key={doc.id} document={doc} index={index} onDelete={handleDelete} isDraggable={false} />
+          ))}
+        </div>
+      )}
 
       <AddEditDocumentDialog
         open={isDialogOpen}

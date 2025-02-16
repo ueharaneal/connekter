@@ -12,15 +12,8 @@ export default async function Page() {
   if (!session?.user || !session.user.id) {
     redirect("/");
   }
-
-  const provider = await db.query.providers.findFirst({
-    where: eq(providers.userId, session.user.id),
-  });
-  if (!provider) {
-    redirect("/provider-dashboard/profile");
-  }
   const providersListings = await db.query.listings.findMany({
-    where: eq(listings.providerId, provider.userId),
+    where: eq(listings.userId, session.user.id),
   });
   return (
     <div className="min-h-screen bg-background p-4 text-white">
@@ -29,7 +22,7 @@ export default async function Page() {
 
       {/* Main Card */}
       <Suspense fallback={<div>Loading...</div>}>
-        <ProviderCard />
+        <ProviderCard listings={providersListings} />
       </Suspense>
 
       {/* Navigation Menu */}

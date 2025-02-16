@@ -1,7 +1,7 @@
 import nextAuth from "@/auth";
 import { redirect } from "next/navigation";
 import db from "@/server/db";
-import { providers, listings } from "@/server/db/schema";
+import { listings } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export default async function Page() {
@@ -10,16 +10,8 @@ export default async function Page() {
     redirect("/");
   }
 
-  const provider = await db.query.providers.findFirst({
-    where: eq(providers.userId, session.user.id),
-  });
-
-  if (!provider) {
-    redirect("/");
-  }
-
   const providersListings = await db.query.listings.findFirst({
-    where: eq(listings.providerId, provider.userId),
+    where: eq(listings.userId, session.user.id),
   });
 
   // If the provider has listings, redirect them to the first one

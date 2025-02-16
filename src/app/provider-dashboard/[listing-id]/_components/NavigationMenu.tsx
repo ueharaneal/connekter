@@ -12,55 +12,63 @@ import {
   DollarSign,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-const menuItems = [
-  {
-    icon: <FileText className="h-5 w-5" />,
-    title: "My AFH",
-    subtitle: "Adult Family Home Details",
-    href: "/provider-dashboard/my-afh",
-  },
-  {
-    icon: <Home className="h-5 w-5" />,
-    title: "The Provider",
-    subtitle: "Provider Information and Features",
-    href: "/provider-dashboard/profile",
-  },
-  {
-    icon: <ListStart className="h-5 w-5" />,
-    title: "The Home & Listing",
-    subtitle: "Listing Details and Management",
-    href: "/provider-dashboard/the-home-and-listing",
-  },
-  {
-    icon: <Video className="h-5 w-5" />,
-    title: "FAQ",
-    subtitle: "Frequently Asked Questions",
-    href: "/provider-dashboard/faq",
-  },
-  {
-    icon: <MessageSquare className="h-5 w-5" />,
-    title: "Testimonials",
-    subtitle: "Customer Reviews and Feedback",
-    href: "/provider-dashboard/testimonials",
-  },
-  {
-    icon: <HelpCircle className="h-5 w-5" />,
-    title: "Admissions & Enrollment",
-    subtitle: "Admissions and Enrollment",
-    href: "/provider-dashboard/admissions-and-enrollment",
-  },
-  {
-    icon: <DollarSign className="h-5 w-5" />,
-    title: "Cost of Care",
-    subtitle: "Pricing and Payment Information",
-    href: "/provider-dashboard/cost-of-care",
-  },
-];
+import { useParams } from "next/navigation";
 
 export default function NavigationMenu() {
   const router = useRouter();
+  const params = useParams();
 
+  const currentListingId = params["listing-id"] as string;
+
+  // If currentListingId is not set, render a loading state
+  if (!currentListingId) {
+    return <div>Loading...</div>;
+  }
+
+  const menuItems = [
+    {
+      icon: <FileText className="h-5 w-5" />,
+      title: "My AFH",
+      subtitle: "Adult Family Home Details",
+      href: `/provider-dashboard/${currentListingId}/my-afh`,
+    },
+    {
+      icon: <Home className="h-5 w-5" />,
+      title: "The Provider",
+      subtitle: "Provider Information and Features",
+      href: `/provider-dashboard/${currentListingId}/profile`,
+    },
+    {
+      icon: <ListStart className="h-5 w-5" />,
+      title: "The Home & Listing",
+      subtitle: "Listing Details and Management",
+      href: `/provider-dashboard/${currentListingId}/the-home-and-listing`,
+    },
+    {
+      icon: <Video className="h-5 w-5" />,
+      title: "FAQ",
+      subtitle: "Frequently Asked Questions",
+      href: `/provider-dashboard/${currentListingId}/faq`,
+    },
+    {
+      icon: <MessageSquare className="h-5 w-5" />,
+      title: "Testimonials",
+      subtitle: "Customer Reviews and Feedback",
+      href: `/provider-dashboard/${currentListingId}/testimonials`,
+    },
+    {
+      icon: <HelpCircle className="h-5 w-5" />,
+      title: "Admissions & Enrollment",
+      subtitle: "Admissions and Enrollment",
+      href: `/provider-dashboard/${currentListingId}/admissions-and-enrollment`,
+    },
+    {
+      icon: <DollarSign className="h-5 w-5" />,
+      title: "Cost of Care",
+      subtitle: "Pricing and Payment Information",
+      href: `/provider-dashboard/${currentListingId}/cost-of-care`,
+    },
+  ];
   return (
     <div className="space-y-2">
       {menuItems.map((item, index) => (

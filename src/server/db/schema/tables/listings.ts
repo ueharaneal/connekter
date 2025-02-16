@@ -8,7 +8,6 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
-import { providers } from "./providers";
 export const listings = pgTable(
   "listings",
   {

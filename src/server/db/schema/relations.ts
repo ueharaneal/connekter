@@ -3,6 +3,7 @@ import { users } from "./tables/users";
 import { sessions, accounts } from "./tables/auth";
 import { providers } from "./tables/providers";
 import { listings } from "./tables/listings";
+import { listingFaqs } from "./tables/faqs";
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   accounts: many(accounts),
@@ -23,8 +24,18 @@ export const providerListingsRelations = relations(
   listings,
   ({ one }) => ({
     provider: one(providers, {
-      fields: [listings.providerId],
+      fields: [listings.userId],
       references: [providers.userId],
+    }),
+  }),
+);
+
+export const listingFaqsRelations = relations(
+  listingFaqs,
+  ({ one }) => ({
+    listing: one(listings, {
+      fields: [listingFaqs.listingId],
+      references: [listings.id],
     }),
   }),
 );
