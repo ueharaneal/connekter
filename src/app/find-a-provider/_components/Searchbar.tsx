@@ -9,9 +9,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { MapPin, Search, SlidersHorizontal } from "lucide-react";
+import { useListingsMap } from "@/store/listingMapStore";
 
 export default function SearchBar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { setLocationBoundingBox } = useListingsMap();
 
   return (
     <div className="mx-auto w-full max-w-5xl">

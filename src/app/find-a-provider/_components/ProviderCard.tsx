@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { CheckCircle, MessageCircle, Star } from "lucide-react";
+import Link from "next/link";
 
 interface ProviderCardProps {
   name?: string;
@@ -153,7 +154,7 @@ export default function ProviderCard({
           variant="outline"
           className="border-gray-800 text-white hover:bg-gray-800"
         >
-          View profile
+          <Link href="/provider/1">View profile</Link>
         </Button>
         <Button className="bg-pink-500 hover:bg-pink-600">
           <MessageCircle className="mr-2 h-4 w-4" />

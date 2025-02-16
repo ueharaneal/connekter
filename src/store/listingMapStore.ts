@@ -9,10 +9,10 @@ export type CitiesLatLong = {
 };
 
 type LocationBoundingBoxType = {
-  northeastLat: number;
-  northeastLng: number;
-  southwestLat: number;
-  southwestLng: number;
+  north: number;
+  south: number;
+  east: number;
+  west: number;
 };
 
 type CitiesFilterState = {
@@ -34,10 +34,10 @@ type CitiesFilterState = {
 
 export const useListingsMap = create<CitiesFilterState>((set) => ({
   locationBoundingBox: {
-    northeastLat: 0,
-    northeastLng: 0,
-    southwestLat: 0,
-    southwestLng: 0,
+    north: 0,
+    south: 0,
+    west: 0,
+    east: 0,
   },
   radius: 50,
   open: false,
