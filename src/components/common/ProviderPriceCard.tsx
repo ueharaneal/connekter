@@ -10,7 +10,13 @@ import {
 } from "@/components/ui/select";
 import { Calculator, Circle, Info } from "lucide-react";
 
-export default function ProvdierPriceCard() {
+type ProviderPriceCardType = "senior-view" | "cost-of-care";
+
+export default function ProvdierPriceCard({
+  type,
+}: {
+  type: ProviderPriceCardType;
+}) {
   return (
     <div className="flex items-center justify-center p-4">
       <Card className="w-full max-w-7xl">
@@ -124,17 +130,21 @@ export default function ProvdierPriceCard() {
                 </div>
               </div>
 
-              <Button className="w-full bg-pink-500 text-white hover:bg-pink-600">
-                Request quote
-              </Button>
+              {type === "senior-view" && (
+                <>
+                  <Button className="w-full bg-pink-500 text-white hover:bg-pink-600">
+                    Request quote
+                  </Button>
 
-              <div className="mx-auto flex items-start gap-2 text-xs text-muted-foreground">
-                <Info className="mt-0.5 size-3 flex-shrink-0" />
-                <p>
-                  Carefinder is a care matching, booking service, independent of
-                  all care options. We do not provide care.
-                </p>
-              </div>
+                  <div className="mx-auto flex items-start gap-2 text-xs text-muted-foreground">
+                    <Info className="mt-0.5 size-3 flex-shrink-0" />
+                    <p>
+                      Carefinder is a care matching, booking service,
+                      independent of all care options. We do not provide care.
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </CardContent>
