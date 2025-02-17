@@ -8,3 +8,4 @@ export * from "./tables/providers";
 export * from "./tables/listings";
 export * from "./tables/messages";
 export * from "./tables/rooms";
+export * from "./tables/faqs";
