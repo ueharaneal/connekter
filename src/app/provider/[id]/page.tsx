@@ -4,7 +4,7 @@ import CareProviderCard from "../_components/CareProviderCard";
 import FAQAccordion from "../_components/ProviderFaq";
 import PropertyGallery from "../_components/PropertyGallery";
 import AboutProperty from "../_components/AboutProperty";
-import ProvdierPriceCard from "../_components/ProviderPriceCard";
+import ProvdierPriceCard from "../../../components/common/ProviderPriceCard";
 import ConnectWithProvider from "../_components/ConnectWithProvider";
 
 function Page({ params }: { params: { id: string } }) {
@@ -24,7 +24,7 @@ function Page({ params }: { params: { id: string } }) {
         </div>
         <CareProviderCard />
       </div>
-      <ProvdierPriceCard />
+      <ProvdierPriceCard type="senior-view" />
       <ConnectWithProvider />
       <FAQAccordion />
     </div>
