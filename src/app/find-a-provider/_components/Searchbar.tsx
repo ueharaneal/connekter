@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,12 +6,61 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MapPin, Search, SlidersHorizontal } from "lucide-react";
+import { Check, MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { useListingsMap } from "@/store/listingMapStore";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import usePlaceAutocomplete from "use-places-autocomplete";
 
 export default function SearchBar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { setLocationBoundingBox } = useListingsMap();
+
+  const {
+    ready,
+    value: input,
+    setValue: setInput,
+    suggestions: { status: suggestionsLoading, data = [] }, // Provide default empty array
+    clearSuggestions,
+  } = usePlaceAutocomplete({
+    callbackName: "PlacesAutocomplete",
+    debounce: 300,
+    requestOptions: {
+      // Optional: Limit results to a specific country
+      // componentRestrictions: { country: "us" },
+    },
+  });
+
+  const handleLocationSelect = (location: string) => {
+    setInput(location);
+    setIsSearchOpen(false);
+    clearSuggestions();
+  };
+
+  // Only render the component when the Places API is ready
+  if (!ready) {
+    return (
+      <div className="mx-auto w-full max-w-5xl">
+        <div className="flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 p-1">
+          <Button
+            variant="ghost"
+            className="h-12 flex-1 justify-start rounded-full text-left font-normal text-muted-foreground hover:bg-zinc-900 hover:text-zinc-300"
+            disabled
+          >
+            <Search className="mr-2 h-4 w-4" />
+            Loading...
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -25,41 +72,72 @@ export default function SearchBar() {
               className="h-12 flex-1 justify-start rounded-full text-left font-normal text-muted-foreground hover:bg-zinc-900 hover:text-zinc-300"
             >
               <Search className="mr-2 h-4 w-4" />
-              Search locations...
+              {input || "Search locations..."}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full border-zinc-800 bg-zinc-900 p-0">
-            <div className="flex items-center border-b border-zinc-800 p-2">
-              <MapPin className="mr-2 h-4 w-4 text-zinc-400" />
-              <Input
-                type="text"
-                placeholder="Enter location..."
-                className="border-0 bg-transparent text-white placeholder:text-zinc-500 focus-visible:ring-0"
-              />
-            </div>
-            <div className="py-2">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-white hover:bg-zinc-800"
-              >
-                <MapPin className="mr-2 h-4 w-4" />
-                Current Location
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-white hover:bg-zinc-800"
-              >
-                <MapPin className="mr-2 h-4 w-4" />
-                Huntsville, AL
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-white hover:bg-zinc-800"
-              >
-                <MapPin className="mr-2 h-4 w-4" />
-                Madison, AL
-              </Button>
-            </div>
+          <PopoverContent className="w-[500px] border-zinc-800 bg-zinc-900 p-0">
+            <Command>
+              <div className="flex items-center border-b border-zinc-800 p-2">
+                <MapPin className="mr-2 h-4 w-4 text-zinc-400" />
+                <CommandInput
+                  value={input}
+                  onValueChange={(value) => {
+                    setInput(value);
+                    if (value === "") clearSuggestions();
+                  }}
+                  placeholder="Enter location..."
+                  className="border-0 bg-transparent text-white placeholder:text-zinc-500 focus-visible:ring-0"
+                />
+              </div>
+
+              <CommandList className="max-h-[300px] overflow-auto py-2">
+                {suggestionsLoading === "OK" && data.length > 0 && (
+                  <>
+                    {data.map((suggestion) => (
+                      <CommandItem
+                        key={suggestion.place_id}
+                        value={suggestion.description}
+                        onSelect={() =>
+                          handleLocationSelect(suggestion.description)
+                        }
+                        className="flex items-center px-2 py-3 text-white hover:bg-zinc-800"
+                      >
+                        <div className="flex flex-1 items-center">
+                          <div className="mr-2 rounded-md bg-zinc-800 p-2">
+                            <MapPin className="h-4 w-4" />
+                          </div>
+                          <p className="line-clamp-1 flex-1">
+                            {suggestion.description}
+                          </p>
+                        </div>
+                        <Check
+                          className={cn(
+                            "ml-2 h-4 w-4 flex-shrink-0",
+                            suggestion.description === input
+                              ? "opacity-100"
+                              : "opacity-0",
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </>
+                )}
+
+                {input === "" && (
+                  <CommandGroup>
+                    <p className="py-3 text-center text-sm text-zinc-400">
+                      Start typing to see suggestions
+                    </p>
+                  </CommandGroup>
+                )}
+
+                {input !== "" && (!data || data.length === 0) && (
+                  <CommandEmpty className="py-3 text-center text-sm text-zinc-400">
+                    No suggestions found
+                  </CommandEmpty>
+                )}
+              </CommandList>
+            </Command>
           </PopoverContent>
         </Popover>
         <Popover>
@@ -76,7 +154,6 @@ export default function SearchBar() {
           <PopoverContent className="w-80 border-zinc-800 bg-zinc-900">
             <div className="grid gap-4">
               <h3 className="text-lg font-medium text-white">Filters</h3>
-              {/* Filter options would go here */}
               <div className="text-sm text-zinc-400">
                 Filter options can be added here based on your requirements
               </div>
