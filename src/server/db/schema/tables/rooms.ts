@@ -6,8 +6,10 @@ import {
   jsonb,
   pgEnum,
   integer,
+  index,
 } from "drizzle-orm/pg-core";
 import { listings } from "./listings";
+import { z } from "zod";
 
 export const ROOM_TYPE = ["single", "double", "suite"] as const;
 
@@ -17,8 +19,14 @@ export const ROOM_SIZE = ["small", "medium", "large"] as const;
 
 export type RoomSize = (typeof ROOM_SIZE)[number];
 
+export const CARE_LEVELS = ["low", "medium", "heavy"] as const;
+
+export type CareLevel = (typeof CARE_LEVELS)[number];
+
 export const roomTypeEnum = pgEnum("roomType", ROOM_TYPE);
 export const roomSizeEnum = pgEnum("roomSize", ROOM_SIZE);
+export const careLevelEnum = pgEnum("careLevel", CARE_LEVELS);
+export const careLevelZodEnum = z.enum(["low", "medium", "heavy"]);
 
 export const rooms = pgTable(
   "room",
@@ -27,6 +35,7 @@ export const rooms = pgTable(
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID())
       .notNull(),
+    careLevelId: integer("careLevelId").references(() => careLevels.careLevelId),
     name: text("name").notNull(),
     isAvailable: boolean("isAvailable").notNull().default(true),
     listingId: text("listingId").references(() => listings.id),
@@ -38,6 +47,16 @@ export const rooms = pgTable(
     roomPrice: integer("roomPrice").notNull(),
     roomDescription: text("roomDescription").notNull(),
   },
+  (t) => ({
+    careLevelIdIdx: index("careLevelIdIdx").on(t.careLevelId),
+  })
 );
+
+export const careLevels = pgTable("careLevels", {
+  careLevelId: integer("careLevelId").primaryKey().generatedByDefaultAsIdentity(),
+  levelName: careLevelEnum("levelName").notNull(),
+  items: text("items").array(),
+  price: integer("price").notNull().default(0),
+});
 
 export type Room = typeof rooms.$inferSelect;

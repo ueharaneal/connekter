@@ -1,13 +1,19 @@
-"use client";
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CostCalculatorPage from "./_components/CostOfCare";
 import CareLevelsPage from "./_components/CareLevelsPage";
-
-export default function CostOfCarePage() {
+import db from "@/server/db";
+import { eq } from "drizzle-orm";
+import { careLevels } from "@/server/db/schema";
+import { useParams } from "next/navigation";
+export default async function Page({ params }: { params: { "listing-id": string } }) {
+  const currentListingId = params["listing-id"];
   const [currentPage, setCurrentPage] = useState(0);
+
+  const { data: careLevels } = await db.query.careLevels.findMany({
+    where: eq(careLevels.listingId, currentListingId),
+  })
 
   const nextPage = () => setCurrentPage((prev) => (prev === 1 ? 0 : 1));
   const prevPage = () => setCurrentPage((prev) => (prev === 0 ? 1 : 0));

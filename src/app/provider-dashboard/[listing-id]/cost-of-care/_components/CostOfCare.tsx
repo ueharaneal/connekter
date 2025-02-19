@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   SelectItem
 } from "@/components/ui/select";
@@ -10,20 +9,20 @@ import { Calculator, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LabeledNumericInput } from "./LabelledNumericInput";
 import { LabeledDropdownInput } from "./LabelledDropdownInput";
+import { useParams } from "next/navigation";
+import { trpc } from "@/server/client";
 const CARE_LEVEL_RATES = {
   low: 1,
   medium: 1.5,
   heavy: 2,
 };
 
-export default function CostOfCare(
-
-) {
-
+export default function CostOfCare() {
+  const params = useParams();
+  const currentListingId = params["listing-id"] as string;
 
   const [rentCost, setRentCost] = useState("");
   const [servicesCost, setServicesCost] = useState("");
-  // Instead of one careLevelCost, use an object for each level:
   const [careLevelCosts, setCareLevelCosts] = useState({
     low: "",
     medium: "",
@@ -34,6 +33,7 @@ export default function CostOfCare(
   const [total, setTotal] = useState(0);
   const [dailyTotal, setDailyTotal] = useState(0);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
+  const { mutate: saveCostOfCare } = trpc.provider.saveCostOfCare.useMutation();
 
   useEffect(() => {
     const numericRentCost = rentCost === "" ? 0 : Number(rentCost);
@@ -53,13 +53,35 @@ export default function CostOfCare(
     setTotal(dailyCost * 30); // Assuming 30 days per month
   }, [rentCost, servicesCost, careLevelCosts, careLevel]);
 
-  // Handler to update the cost for the current care level
   const handleCareLevelCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCareLevelCosts((prev) => ({
       ...prev,
       [careLevel]: value,
     }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = {
+      rentCost: Number(rentCost),
+      serviceCost: Number(servicesCost),
+      careLevelCosts,
+    };
+
+    await saveCostOfCare({
+      rentCost: Number(rentCost),
+      serviceCost: Number(servicesCost),
+      careLevelCosts,
+      listingId: currentListingId,
+      roomId: selectedRoom,
+    });
+
+    // Here you can send this form data to the backend, using either TRPC or server functions
+    console.log("Form data to be saved:", formData);
+
+    // Example: call an API function
+    // await saveData(formData);
   };
 
   return (
@@ -73,7 +95,7 @@ export default function CostOfCare(
             </div>
             <Button variant="outline">Add logo</Button>
           </div>
-          <div className="grid gap-6 md:grid-cols-[300px_1fr]">
+          <form onSubmit={handleSubmit} className="grid gap-6 md:grid-cols-[300px_1fr]">
             {/* Left Column */}
             <div className="space-y-4">
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
@@ -145,7 +167,6 @@ export default function CostOfCare(
                       onChange={(e) => setServicesCost(e.target.value)}
                     />
                   </div>
-                  <div className="flex w-full flex-col"></div>
                 </div>
 
                 {/* Care Level Cost Field */}
@@ -204,8 +225,15 @@ export default function CostOfCare(
                   <span className="text-xl font-semibold">${total}</span>
                 </div>
               </div>
+
+              {/* Save Data Button */}
+              <div className="flex justify-end pt-4">
+                <Button type="submit" variant="outline">
+                  Save Data
+                </Button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
