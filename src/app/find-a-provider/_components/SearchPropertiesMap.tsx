@@ -57,14 +57,8 @@ function SearchPropertiesMap({
   const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
-    console.log("map", map);
-    if (
-      citySearchLatLong?.lat &&
-      citySearchLatLong?.long
-      // &&
-      // apiIsLoaded &&
-      // map
-    ) {
+    console.log("hi");
+    if (citySearchLatLong?.lat && citySearchLatLong?.long) {
       // Added apiIsLoaded and map check
 
       setCenter({ lat: citySearchLatLong.lat, lng: citySearchLatLong.long });
@@ -105,33 +99,26 @@ function SearchPropertiesMap({
 
   return (
     <div className="h-full w-full">
-      {
-        !center ? (
-          <div className="flex h-full w-full items-center justify-center rounded-xl border shadow-md">
-            Search for a city...
-          </div>
-        ) : (
-          <div className="absolute inset-0 z-0 overflow-hidden rounded-xl border">
-            <Map
-              {...cameraProps}
-              zoom={12}
-              defaultZoom={12}
-              defaultCenter={center}
-              onCameraChanged={handleCameraChanged}
-              disableDefaultUI={true}
-              zoomControl={true}
-              fullscreenControl={false}
-            >
-              <PoiMarkers pois={markers} />
-            </Map>
-          </div>
-        )
-        // : (
-        //   <div className="flex h-full w-full items-center justify-center">
-        //     <Spinner />
-        //   </div>
-        // )
-      }
+      {!center ? (
+        <div className="flex h-full w-full items-center justify-center rounded-xl border shadow-md">
+          Search for a city...
+        </div>
+      ) : (
+        <div className="absolute inset-0 z-0 overflow-hidden rounded-xl border">
+          <Map
+            {...cameraProps}
+            zoom={13}
+            defaultZoom={13}
+            defaultCenter={center}
+            onCameraChanged={handleCameraChanged}
+            disableDefaultUI={true}
+            zoomControl={true}
+            fullscreenControl={false}
+          >
+            <PoiMarkers pois={markers} />
+          </Map>
+        </div>
+      )}
     </div>
   );
 }
