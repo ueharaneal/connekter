@@ -13,12 +13,11 @@ import { useListingsMap } from "@/store/listingMapStore";
 import { debounce } from "lodash";
 import { Listing } from "@/server/db/schema";
 import PoiMarkers from "./PoiMarkers";
-import { getLatLongString } from "@/lib/utils";
 
 export type Poi = {
   key: string;
-  location: google.maps.LatLngLiteral;
-  originalNightlyPrice: number;
+  name: string;
+  latLngLiteral: google.maps.LatLngLiteral;
   id: string;
   image: string;
 };
@@ -29,7 +28,7 @@ export type fetchNextPageOfAdjustedPropertiesType =
 function SearchPropertiesMap({
   currentListings,
 }: {
-  currentListings: Listing[];
+  currentListings: Listing[] | undefined;
 }) {
   const {
     adjustedListings,
@@ -56,32 +55,7 @@ function SearchPropertiesMap({
   const map = useMap("9c8e46d54d7a528b");
   const apiIsLoaded = useApiIsLoaded();
 
-  const { data: listingsQuery } = trpc.listings.getListingsByBoundary.useQuery(
-    {
-      boundaries: {
-        north: locationBoundingBox.north,
-        south: locationBoundingBox.south,
-        east: locationBoundingBox.east,
-        west: locationBoundingBox.west,
-      },
-      cursor: null,
-      latLngPoint: {
-        lat: citySearchLatLong?.lat ?? 0,
-        lng: citySearchLatLong?.long ?? 0,
-      },
-    },
-    {
-      enabled:
-        !!locationBoundingBox &&
-        !!citySearchLatLong?.lat &&
-        !!citySearchLatLong?.long,
-    },
-  );
-
-  useEffect(() => {
-    setAdjustedListings(listingsQuery);
-  });
-
+  //To move camera after search bar changes
   useEffect(() => {
     console.log("hi");
     if (citySearchLatLong?.lat && citySearchLatLong?.long) {
@@ -102,6 +76,19 @@ function SearchPropertiesMap({
     }
   }, [citySearchLatLong, apiIsLoaded, map]); // Added apiIsLoaded to dependencies
 
+  //popualate markers depending on current boundingbox
+  useEffect(() => {
+    if (!adjustedListings) return;
+    const listingsMarkers = adjustedListings.data.map((listing) => ({
+      ...listing,
+      latLngLiteral: { lat: listing.latLngPoint.y, lng: listing.latLngPoint.x }, // fix if backworkds
+      key: listing.name,
+      image: listing.imageUrls[0],
+    }));
+    setMarkers(listingsMarkers);
+  }, [adjustedListings]);
+
+  //camera change
   const handleCameraChanged = debounce((ev: MapCameraChangedEvent) => {
     const newCenter = {
       lat: ev.detail.center.lat,
@@ -118,11 +105,6 @@ function SearchPropertiesMap({
     });
   }, 700);
 
-  // Determine isFilterUndefined based on currentListings length, adjust condition as needed
-  useEffect(() => {
-    setIsFilterUndefined(currentListings.length === 0); // Example condition
-  }, [currentListings]);
-
   return (
     <div className="h-full w-full">
       {!center ? (
@@ -133,8 +115,8 @@ function SearchPropertiesMap({
         <div className="absolute inset-0 z-0 overflow-hidden rounded-xl border">
           <Map
             {...cameraProps}
-            zoom={13}
             defaultZoom={13}
+            maxZoom={17}
             defaultCenter={center}
             onCameraChanged={handleCameraChanged}
             disableDefaultUI={true}

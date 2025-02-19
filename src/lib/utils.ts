@@ -16,3 +16,5 @@ export function formatCurrency(cents: number, { round = false } = {}) {
 export function getLatLongString(lat: number, long: number): string {
   return `${lat},${long}`;
 }
+
+export function convertGeometryPointToLatLng(latLngPoint: string) {}

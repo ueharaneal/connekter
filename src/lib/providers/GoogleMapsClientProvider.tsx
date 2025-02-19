@@ -13,7 +13,7 @@ const GoogleMapsClientProvider: React.FC<GoogleMapsClientProviderProps> = ({
     <>
       <APIProvider
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY as string}
-        libraries={["places"]}
+        libraries={["places", "marker"]}
         onLoad={() => console.log("Maps API has loaded. (Client Component)")}
       >
         {children}

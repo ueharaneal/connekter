@@ -4,8 +4,10 @@ import { formatCurrency } from "@/lib/utils";
 import { type Poi } from "./SearchPropertiesMap";
 import { useCallback, useState } from "react";
 import Image from "next/image";
+import { HouseIcon } from "lucide-react";
 
 const PoiMarkers = (props: { pois: Poi[] | [] }) => {
+  console.log(props.pois);
   const [_selectedMarker, setSelectedMarker] = useState<Poi | null>(null);
   const [infoWindowShownIndex, setInfoWindowShownIndex] = useState<
     number | null
@@ -35,20 +37,20 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
         <div key={index}>
           <AdvancedMarker
             title={poi.key}
-            position={poi.location}
+            position={poi.latLngLiteral}
             onClick={() => handleMarkerClick(poi, index)}
             clickable={true}
           >
-            <div className="flex flex-col items-center justify-center">
-              <div className="bg-primaryGreen z-40 rounded-xl p-2 text-white">
-                {formatCurrency(poi.originalNightlyPrice).trim()}
-                /night
-              </div>
+            <div className="flex flex-col items-center justify-center rounded-full bg-primary p-2">
+              {/* <div className="z-40 w-full rounded-xl p-2 text-center text-black">
+                {poi.name || "Default Text"}
+              </div> */}
+              <HouseIcon className="size-6 text-zinc-800" />
             </div>
           </AdvancedMarker>
           {infoWindowShownIndex === index && (
             <InfoWindow
-              position={poi.location}
+              position={poi.latLngLiteral}
               onCloseClick={handleClose}
               pixelOffset={[0, -25]}
             >
@@ -67,7 +69,7 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
                   {poi.key}
                   <span className="text-center text-sm font-semibold">
                     {" "}
-                    {formatCurrency(poi.originalNightlyPrice)}
+                    {poi.name}
                     /night{" "}
                   </span>
                 </div>
