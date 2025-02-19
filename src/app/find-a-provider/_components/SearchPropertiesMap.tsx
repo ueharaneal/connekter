@@ -18,7 +18,7 @@ export type Poi = {
   key: string;
   name: string;
   latLngLiteral: google.maps.LatLngLiteral;
-  id: string;
+  id: number;
   image: string;
 };
 

@@ -39,7 +39,7 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
       {props.pois.map((poi: Poi, index) => (
         <div key={index}>
           <AdvancedMarker
-            title={poi.key}
+            title={poi.name}
             position={poi.latLngLiteral}
             onClick={() => handleMarkerClick(poi, index)}
             clickable={true}
