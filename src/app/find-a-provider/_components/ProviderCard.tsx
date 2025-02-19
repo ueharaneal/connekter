@@ -37,7 +37,7 @@ export default function ProviderCard({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <Card className="max-w-md overflow-hidden bg-black text-white">
+    <Card className="max-w-lg overflow-hidden bg-black text-white">
       <div className="relative h-48">
         <div className="absolute inset-0">
           <Image

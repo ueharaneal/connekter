@@ -12,3 +12,7 @@ export function formatCurrency(cents: number, { round = false } = {}) {
     currency: "USD",
   });
 }
+
+export function getLatLongString(lat: number, long: number): string {
+  return `${lat},${long}`;
+}

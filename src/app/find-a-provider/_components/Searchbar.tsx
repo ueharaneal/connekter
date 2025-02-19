@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, MapPin, Search, SlidersHorizontal } from "lucide-react";
-import { useListingsMap } from "@/store/listingMapStore";
+import {
+  CitiesLatLong,
+  LocationBoundingBoxType,
+  useListingsMap,
+} from "@/store/listingMapStore";
 import {
   Command,
   CommandEmpty,
@@ -18,10 +21,17 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import usePlaceAutocomplete from "use-places-autocomplete";
+import { trpc } from "@/server/client";
+import type { RouterOutputs } from "@/server/client";
+import { toast } from "sonner";
+
+export type Coordinates = RouterOutputs["utils"]["getCoordinates"];
 
 export default function SearchBar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { setLocationBoundingBox } = useListingsMap();
+  const { setLocationBoundingBox, setCitySearchLatLong } = useListingsMap();
+
+  const utils = trpc.useUtils();
 
   const {
     ready,
@@ -38,10 +48,46 @@ export default function SearchBar() {
     },
   });
 
-  const handleLocationSelect = (location: string) => {
+  const handleLocationSelect = async (location: string) => {
     setInput(location);
     setIsSearchOpen(false);
     clearSuggestions();
+    const coordinates = await utils.utils.getCoordinates.fetch({ location });
+    updateLocationStore(coordinates, location);
+  };
+
+  const updateLocationStore = (coordinates: Coordinates, location: string) => {
+    if (coordinates) {
+      //update the cityLatLng
+      if (coordinates.location) {
+        const cityLatLong: CitiesLatLong = {
+          label: location,
+          lat: coordinates.location.lat,
+          long: coordinates.location.lng,
+        };
+        let locationBoundingBox: LocationBoundingBoxType;
+        if (coordinates.bounds) {
+          setCitySearchLatLong(cityLatLong);
+          //update the boundingbox
+          locationBoundingBox = {
+            north: coordinates.bounds.northeast.lat,
+            south: coordinates.bounds.southwest.lng,
+            east: coordinates.bounds.northeast.lat,
+            west: coordinates.bounds.southwest.lat,
+          };
+        } else {
+          locationBoundingBox = {
+            north: 0,
+            south: 0,
+            east: 0,
+            west: 0,
+          };
+        }
+        setLocationBoundingBox(locationBoundingBox);
+      }
+    } else {
+      toast.error("Error fetching coordinates");
+    }
   };
 
   // Only render the component when the Places API is ready
@@ -75,9 +121,9 @@ export default function SearchBar() {
               {input || "Search locations..."}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[500px] border-zinc-800 bg-zinc-900 p-0">
+          <PopoverContent className="w-[calc(var(--radix-popover-trigger-width)_-_20px)] border-zinc-800 bg-zinc-900 p-0">
             <Command>
-              <div className="flex items-center border-b border-zinc-800 p-2">
+              <div className="flex w-full items-center p-2">
                 <MapPin className="mr-2 h-4 w-4 text-zinc-400" />
                 <CommandInput
                   value={input}
@@ -86,7 +132,7 @@ export default function SearchBar() {
                     if (value === "") clearSuggestions();
                   }}
                   placeholder="Enter location..."
-                  className="border-0 bg-transparent text-white placeholder:text-zinc-500 focus-visible:ring-0"
+                  className="w-[1000px] bg-transparent text-white placeholder:text-zinc-500 focus-visible:ring-0"
                 />
               </div>
 

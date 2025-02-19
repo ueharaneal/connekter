@@ -12,6 +12,8 @@ import { useListingsMap } from "@/store/listingMapStore";
 import { debounce } from "lodash";
 import { Listing } from "@/server/db/schema";
 import PoiMarkers from "./PoiMarkers";
+import { getLatLongString } from "@/lib/utils";
+
 export type Poi = {
   key: string;
   location: google.maps.LatLngLiteral;
@@ -33,6 +35,7 @@ function SearchPropertiesMap({
     setAdjustedListings,
     locationBoundingBox,
     setLocationBoundingBox, // Get the setter from zustand
+    citySearchLatLong,
   } = useListingsMap();
 
   const [isFilterUndefined, setIsFilterUndefined] = useState(true);
@@ -52,50 +55,44 @@ function SearchPropertiesMap({
   const map = useMap("9c8e46d54d7a528b");
   const apiIsLoaded = useApiIsLoaded();
 
-  // Assuming filters is defined somewhere in your component and is causing typescript error,
-  // if filters is not used in this component, you can remove it.
-  // If it is used, make sure filters is properly defined and passed down or fetched.
-  // For now, I'm commenting out the filters related code to make the code runnable.
-  const filters = useMemo(() => ({ filter: null }), []); // Example, adjust based on your actual filters
-
-  const location = useMemo(() => {
-    if (filters.filter) {
-      // return {
-      //   lat: filters.filter.lat,
-      //   lng: filters.filter.long,
-      // };
-      return null; // Assuming filters are not used for initial center for now
+  useEffect(() => {
+    if (
+      citySearchLatLong?.lat &&
+      citySearchLatLong?.long &&
+      apiIsLoaded &&
+      map
+    ) {
+      // Added apiIsLoaded and map check
+      setCenter({ lat: citySearchLatLong.lat, lng: citySearchLatLong.long });
+      if (map) {
+        // Redundant check, but for clarity
+        map.panTo({ lat: citySearchLatLong.lat, lng: citySearchLatLong.long });
+        console.log("panning to location");
+      } else {
+        console.log("map not ready (still inside if, should not happen now)"); // Should not reach here
+      }
+    } else if (!apiIsLoaded) {
+      console.log("API not yet loaded"); // Log if API is not loaded
+    } else if (!map) {
+      console.log("Map instance still undefined"); // Log if map is undefined after API loaded (less likely now)
     }
-    return null;
-  }, [filters]);
-
-  // useEffect(() => {
-  //   if (location?.lat && location.lng) {
-  //     setCenter(location);
-  //     if (map) {
-  //       map.panTo(location);
-  //       console.log("panning to location");
-  //     } else {
-  //       console.log("map not ready");
-  //     }
-  //   }
-  // }, [location, map]);
+  }, [citySearchLatLong, apiIsLoaded, map]); // Added apiIsLoaded to dependencies
 
   // Assuming propertiesCoordinates is defined somewhere and passed as props or calculated
   // For now, using currentListings to create markers as a placeholder
-  const propertiesCoordinates = useMemo(() => {
-    return currentListings.map((listing) => ({
-      key: listing.id,
-      id: listing.id,
-      location: { lat: listing.latitude, lng: listing.longitude }, // Assuming latitude and longitude are in listing
-      originalNightlyPrice: listing.nightlyPrice,
-      image: listing.images[0] || "", // Assuming images is an array of strings
-    }));
-  }, [currentListings]);
+  // const propertiesCoordinates = useMemo(() => {
+  //   return currentListings.map((listing) => ({
+  //     key: listing.id,
+  //     id: listing.id,
+  //     location: { lat: listing.latitude, lng: listing.longitude }, // Assuming latitude and longitude are in listing
+  //     originalNightlyPrice: listing.nightlyPrice,
+  //     image: listing.images[0] || "", // Assuming images is an array of strings
+  //   }));
+  // }, [currentListings]);
 
-  useEffect(() => {
-    setMarkers(propertiesCoordinates as Poi[]);
-  }, [propertiesCoordinates]);
+  // useEffect(() => {
+  //   setMarkers(propertiesCoordinates as Poi[]);
+  // }, [propertiesCoordinates]);
 
   const handleCameraChanged = debounce((ev: MapCameraChangedEvent) => {
     const newCenter = {

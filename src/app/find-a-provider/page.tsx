@@ -21,13 +21,13 @@ function ProvidersPage() {
       apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY as string}
       onLoad={() => console.log("Maps API has loaded.")}
     >
-      <div className="mx-20 mt-12 flex w-full flex-col gap-y-4 p-4">
+      <div className="mt-12 flex w-full flex-col items-center gap-y-4 p-4">
         <SearchBar />
-        <div className="flex flex-col gap-4 p-4 lg:flex-row">
-          <div className="hidden w-full overflow-y-auto md:flex md:flex-col lg:max-h-[calc(100vh-120px)] lg:w-1/2">
+        <div className="flex w-full flex-col gap-4 lg:flex-row">
+          <div className="hidden w-full overflow-y-auto md:flex md:flex-col lg:max-h-[calc(100vh-120px)]">
             <ProviderList currentListings={currentListings} />
           </div>
-          <div className="relative h-[400px] rounded-lg shadow-md lg:h-[calc(100vh-150px)] lg:w-2/5">
+          <div className="relative h-[400px] rounded-lg shadow-md lg:h-[calc(100vh-150px)] lg:w-4/5">
             {" "}
             <SearchPropertiesMap currentListings={currentListings} />
           </div>

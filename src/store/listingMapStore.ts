@@ -2,13 +2,12 @@ import { create } from "zustand";
 import type { Listing } from "@/server/db/schema";
 
 export type CitiesLatLong = {
-  id: string;
   label: string;
   long: number;
   lat: number;
 };
 
-type LocationBoundingBoxType = {
+export type LocationBoundingBoxType = {
   north: number;
   south: number;
   east: number;
