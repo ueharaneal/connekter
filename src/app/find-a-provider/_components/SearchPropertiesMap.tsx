@@ -1,3 +1,4 @@
+"use client";
 import {
   Map,
   type MapCameraChangedEvent,
@@ -56,13 +57,16 @@ function SearchPropertiesMap({
   const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
+    console.log("map", map);
     if (
       citySearchLatLong?.lat &&
-      citySearchLatLong?.long &&
-      apiIsLoaded &&
-      map
+      citySearchLatLong?.long
+      // &&
+      // apiIsLoaded &&
+      // map
     ) {
       // Added apiIsLoaded and map check
+
       setCenter({ lat: citySearchLatLong.lat, lng: citySearchLatLong.long });
       if (map) {
         // Redundant check, but for clarity
@@ -77,22 +81,6 @@ function SearchPropertiesMap({
       console.log("Map instance still undefined"); // Log if map is undefined after API loaded (less likely now)
     }
   }, [citySearchLatLong, apiIsLoaded, map]); // Added apiIsLoaded to dependencies
-
-  // Assuming propertiesCoordinates is defined somewhere and passed as props or calculated
-  // For now, using currentListings to create markers as a placeholder
-  // const propertiesCoordinates = useMemo(() => {
-  //   return currentListings.map((listing) => ({
-  //     key: listing.id,
-  //     id: listing.id,
-  //     location: { lat: listing.latitude, lng: listing.longitude }, // Assuming latitude and longitude are in listing
-  //     originalNightlyPrice: listing.nightlyPrice,
-  //     image: listing.images[0] || "", // Assuming images is an array of strings
-  //   }));
-  // }, [currentListings]);
-
-  // useEffect(() => {
-  //   setMarkers(propertiesCoordinates as Poi[]);
-  // }, [propertiesCoordinates]);
 
   const handleCameraChanged = debounce((ev: MapCameraChangedEvent) => {
     const newCenter = {
@@ -117,29 +105,33 @@ function SearchPropertiesMap({
 
   return (
     <div className="h-full w-full">
-      {isFilterUndefined ? (
-        <div className="flex h-full w-full items-center justify-center rounded-xl border shadow-md">
-          Search for a city...
-        </div>
-      ) : apiIsLoaded ? (
-        center && (
-          <Map
-            {...cameraProps}
-            defaultZoom={6}
-            defaultCenter={center}
-            onCameraChanged={handleCameraChanged}
-            disableDefaultUI={true}
-            zoomControl={true}
-            fullscreenControl={false}
-          >
-            <PoiMarkers pois={markers} />
-          </Map>
+      {
+        !center ? (
+          <div className="flex h-full w-full items-center justify-center rounded-xl border shadow-md">
+            Search for a city...
+          </div>
+        ) : (
+          <div className="absolute inset-0 z-0 overflow-hidden rounded-xl border">
+            <Map
+              {...cameraProps}
+              zoom={12}
+              defaultZoom={12}
+              defaultCenter={center}
+              onCameraChanged={handleCameraChanged}
+              disableDefaultUI={true}
+              zoomControl={true}
+              fullscreenControl={false}
+            >
+              <PoiMarkers pois={markers} />
+            </Map>
+          </div>
         )
-      ) : (
-        <div className="flex h-full w-full items-center justify-center">
-          <Spinner />
-        </div>
-      )}
+        // : (
+        //   <div className="flex h-full w-full items-center justify-center">
+        //     <Spinner />
+        //   </div>
+        // )
+      }
     </div>
   );
 }

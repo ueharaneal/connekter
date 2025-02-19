@@ -11,7 +11,7 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
     number | null
   >(null);
   const map = useMap("9c8e46d54d7a528b");
-  const router = useRouter();
+  //const router = useRouter();
 
   const handleMarkerClick = useCallback(
     (poi: Poi, index: number) => {
@@ -54,7 +54,7 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
             >
               <div className="flex items-center justify-center overscroll-x-none rounded-xl">
                 <div
-                  onClick={() => void router.push(`/property/${poi.id}`)}
+                  //onClick={() => void router.push(`/property/${poi.id}`)}
                   className="ml-2 mr-1 flex max-w-72 cursor-pointer flex-col items-center justify-center gap-y-1 text-left text-sm font-medium"
                 >
                   <Image
