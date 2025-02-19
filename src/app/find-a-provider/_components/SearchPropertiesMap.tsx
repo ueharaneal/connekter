@@ -24,7 +24,7 @@ export type Poi = {
 };
 
 export type fetchNextPageOfAdjustedPropertiesType =
-  RouterOutputs["listings"]["getByBoundaryInfiniteScroll"];
+  RouterOutputs["listings"]["getListingsByBoundary"];
 
 function SearchPropertiesMap({
   currentListings,
@@ -55,6 +55,32 @@ function SearchPropertiesMap({
 
   const map = useMap("9c8e46d54d7a528b");
   const apiIsLoaded = useApiIsLoaded();
+
+  const { data: listingsQuery } = trpc.listings.getListingsByBoundary.useQuery(
+    {
+      boundaries: {
+        north: locationBoundingBox.north,
+        south: locationBoundingBox.south,
+        east: locationBoundingBox.east,
+        west: locationBoundingBox.west,
+      },
+      cursor: null,
+      latLngPoint: {
+        lat: citySearchLatLong?.lat ?? 0,
+        lng: citySearchLatLong?.long ?? 0,
+      },
+    },
+    {
+      enabled:
+        !!locationBoundingBox &&
+        !!citySearchLatLong?.lat &&
+        !!citySearchLatLong?.long,
+    },
+  );
+
+  useEffect(() => {
+    setAdjustedListings(listingsQuery);
+  });
 
   useEffect(() => {
     console.log("hi");

@@ -16,7 +16,7 @@ export const listingsRouter = createTRPCRouter({
       return { name: "sir", race: "thing " };
     }),
 
-  getByBoundaryInfiniteScroll: publicProcedure
+  getListingsByBoundary: publicProcedure
     .input(
       z.object({
         boundaries: z
@@ -28,7 +28,6 @@ export const listingsRouter = createTRPCRouter({
           })
           .nullable(),
         cursor: z.number().nullish(),
-        city: z.string().optional(),
         latLngPoint: z
           .object({
             lat: z.number(),
@@ -43,7 +42,7 @@ export const listingsRouter = createTRPCRouter({
 
       const lat = input.latLngPoint?.lat ?? 0;
       const lng = input.latLngPoint?.lng ?? 0;
-      const radius = input.radius ?? 0; //just tried to fix a type error
+      const radius = input.radius ?? 100; //just tried to fix a type error
 
       const data = await db
         .select({
@@ -73,10 +72,9 @@ export const listingsRouter = createTRPCRouter({
         // .limit(12)
         .limit(100)
         .orderBy(asc(sql`id`), asc(sql`distance`));
-
+      console.log(data);
       return {
         data,
-        nextCursor: data.length ? data[data.length - 1]?.id : null,
       };
     }),
 });

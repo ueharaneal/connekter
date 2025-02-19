@@ -1,5 +1,9 @@
 import { create } from "zustand";
 import type { Listing } from "@/server/db/schema";
+import type { RouterOutputs } from "@/server/client";
+
+export type AdjustedListings =
+  RouterOutputs["listings"]["getListingsByBoundary"];
 
 export type CitiesLatLong = {
   label: string;
@@ -20,8 +24,8 @@ type CitiesFilterState = {
   open: boolean;
   citySearchLatLong: CitiesLatLong | undefined;
   initialListings: Listing[];
-  adjustedListings: Listing[];
-  setAdjustedListings: (listings: Listing[]) => void;
+  adjustedListings: AdjustedListings | undefined;
+  setAdjustedListings: (listings: AdjustedListings | undefined) => void;
   setCitySearchLatLong: (citySearchLatLong: CitiesLatLong | undefined) => void;
   setRadius: (radius: number) => void;
   setOpen: (open: boolean) => void;
@@ -42,7 +46,7 @@ export const useListingsMap = create<CitiesFilterState>((set) => ({
   open: false,
   citySearchLatLong: undefined,
   initialListings: [],
-  adjustedListings: [],
+  adjustedListings: undefined,
   clearFilter: () => {
     set((state) => ({
       ...state,
