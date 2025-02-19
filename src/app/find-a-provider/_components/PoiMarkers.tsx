@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { useMap, AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
 import { formatCurrency } from "@/lib/utils";
 import { type Poi } from "./SearchPropertiesMap";
@@ -7,6 +9,7 @@ import Image from "next/image";
 import { HouseIcon } from "lucide-react";
 
 const PoiMarkers = (props: { pois: Poi[] | [] }) => {
+  const router = useRouter();
   console.log(props.pois);
   const [_selectedMarker, setSelectedMarker] = useState<Poi | null>(null);
   const [infoWindowShownIndex, setInfoWindowShownIndex] = useState<
@@ -42,9 +45,6 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
             clickable={true}
           >
             <div className="flex flex-col items-center justify-center rounded-full bg-primary p-2">
-              {/* <div className="z-40 w-full rounded-xl p-2 text-center text-black">
-                {poi.name || "Default Text"}
-              </div> */}
               <HouseIcon className="size-6 text-zinc-800" />
             </div>
           </AdvancedMarker>
@@ -53,12 +53,18 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
               position={poi.latLngLiteral}
               onCloseClick={handleClose}
               pixelOffset={[0, -25]}
+              headerDisabled={true}
+              className=""
             >
               <div className="flex items-center justify-center overscroll-x-none rounded-xl">
                 <div
-                  //onClick={() => void router.push(`/property/${poi.id}`)}
-                  className="ml-2 mr-1 flex max-w-72 cursor-pointer flex-col items-center justify-center gap-y-1 text-left text-sm font-medium"
+                  onClick={() => router.push(`/provider/${poi.id}`)}
+                  className="flex max-w-64 cursor-pointer flex-col items-center justify-center gap-y-1 text-left text-sm font-medium"
                 >
+                  <span className="text-center text-base font-semibold text-black">
+                    {" "}
+                    {poi.name}
+                  </span>
                   <Image
                     src={poi.image}
                     className="w-full rounded-lg border object-fill shadow-md"
@@ -67,11 +73,6 @@ const PoiMarkers = (props: { pois: Poi[] | [] }) => {
                     alt=""
                   />
                   {poi.key}
-                  <span className="text-center text-sm font-semibold">
-                    {" "}
-                    {poi.name}
-                    /night{" "}
-                  </span>
                 </div>
               </div>
             </InfoWindow>
