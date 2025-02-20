@@ -3,7 +3,7 @@ import type { Listing } from "@/server/db/schema";
 import type { RouterOutputs } from "@/server/client";
 
 export type AdjustedListings =
-  RouterOutputs["listings"]["getListingsByBoundary"];
+  RouterOutputs["listings"]["getListingsByBoundary"]["data"];
 
 export type CitiesLatLong = {
   label: string;

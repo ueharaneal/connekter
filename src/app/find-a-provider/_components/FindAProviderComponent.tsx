@@ -13,7 +13,6 @@ import { trpc } from "@/server/client";
 
 function ProvidersPage() {
   const {
-    initialListings,
     adjustedListings,
     setAdjustedListings,
     locationBoundingBox,
@@ -21,7 +20,6 @@ function ProvidersPage() {
   } = useListingsMap();
 
   console.log(
-    initialListings,
     adjustedListings,
     setAdjustedListings,
     locationBoundingBox,
@@ -45,22 +43,20 @@ function ProvidersPage() {
   );
 
   useEffect(() => {
-    setAdjustedListings(listingsQuery);
+    if (listingsQuery?.data) setAdjustedListings(listingsQuery.data);
     console.log(adjustedListings);
   }, [listingsQuery, setAdjustedListings]);
 
-  const currentListings = adjustedListings ? initialListings : adjustedListings;
-  console.log(currentListings);
   return (
     <div className="mt-12 flex w-full flex-col items-center gap-y-4 p-4">
       <SearchBar />
       <div className="flex w-full flex-col gap-4 lg:flex-row">
         <div className="hidden w-full overflow-y-auto md:flex md:flex-col lg:max-h-[calc(100vh-120px)]">
-          <ProviderList currentListings={currentListings} />
+          <ProviderList currentListings={adjustedListings} />
         </div>
         <div className="relative h-[400px] rounded-lg shadow-md lg:h-[calc(100vh-150px)] lg:w-4/5">
           {" "}
-          <SearchPropertiesMap currentListings={currentListings} />
+          <SearchPropertiesMap currentListings={adjustedListings} />
         </div>
       </div>
     </div>

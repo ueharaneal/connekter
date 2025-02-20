@@ -16,6 +16,16 @@ export const listingsRouter = createTRPCRouter({
       return { name: "sir", race: "thing " };
     }),
 
+  getListingById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      const listing = await db.query.listings.findFirst({
+        where: eq(listings.id, input.id),
+      });
+
+      return listing;
+    }),
+
   getListingsByBoundary: publicProcedure
     .input(
       z.object({
@@ -30,7 +40,6 @@ export const listingsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { cursor, boundaries } = input;
-      console.log(input);
       try {
         // Start with base query
         const baseQuery = db
@@ -63,9 +72,6 @@ export const listingsRouter = createTRPCRouter({
         }
 
         const query = baseQuery.where(and(...conditions));
-
-        // For debugging, log the actual SQL query
-        console.log("Generated SQL:", query.toSQL());
 
         const data = await query.limit(100).orderBy(asc(listings.id));
         console.log(data);
