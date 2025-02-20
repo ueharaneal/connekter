@@ -2,7 +2,7 @@ import KeepTrackPage from "./_components/KeepTrackPage";
 import db from "@/server/db";
 import { eq } from "drizzle-orm";
 import { rooms } from "@/server/db/schema/tables/rooms";
-import { careLevels, CareLevelT, listings } from "@/server/db/schema";
+import { careLevels, CareLevelT, listings, Listing } from "@/server/db/schema";
 export default async function Page({ params }: { params: { "listing-id": string } }) {
   const currentListingId = params["listing-id"];
 
@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { "listing-id": string 
 
   return (
     <>
-      <KeepTrackPage listingRooms={listingRooms} listingCareLevels={listingCareLevels} listing={listing} />
+      <KeepTrackPage listingRooms={listingRooms} listingCareLevels={listingCareLevels} listing={listing as Listing} />
     </>
   );
 }
