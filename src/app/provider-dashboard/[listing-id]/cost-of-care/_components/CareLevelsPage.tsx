@@ -4,19 +4,13 @@ import { useState } from "react"
 import Image from "next/image"
 import { X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import db from "@/server/db"
-import { eq } from "drizzle-orm"
-import { careLevels } from "@/server/db/schema"
-import { useParams } from "next/navigation";
-
-export default function CareLevelsPage() {
+import { useParams } from "next/navigation"
+import { CareLevelT } from "@/server/db/schema"
+export default function CareLevelsPage({listingCareLevels}: {listingCareLevels: CareLevelT[]}) {
   const [careLevel, setCareLevel] = useState("low")
   const params = useParams();
   const currentListingId = params["listing-id"] as string;
 
-  const { data: careItems } = await db.query.careLevels.findMany({
-    where: eq(careLevels.listingId, currentListingId),
-  })
   // State for each care level with their respective sections and items
   const [careData, setCareData] = useState({
     low: [

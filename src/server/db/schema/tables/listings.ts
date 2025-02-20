@@ -7,6 +7,7 @@ import {
   index,
   varchar,
   serial,
+  integer,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 export const listings = pgTable(

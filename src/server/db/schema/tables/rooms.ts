@@ -7,6 +7,7 @@ import {
   pgEnum,
   integer,
   index,
+  serial,
 } from "drizzle-orm/pg-core";
 import { listings } from "./listings";
 import { z } from "zod";
@@ -44,7 +45,6 @@ export const rooms = pgTable(
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID())
       .notNull(),
-    careLevelId: integer("careLevelId").references(() => careLevels.careLevelId),
     name: text("name").notNull(),
     isAvailable: boolean("isAvailable").notNull().default(true),
     listingId: text("listingId").references(() => listings.id),
@@ -58,16 +58,20 @@ export const rooms = pgTable(
     roomProperties: roomPropertiesEnum("roomProperties").array().notNull().default([]),
     availableTo: availableToEnum("availableTo").notNull().default("Private Pay"),
   },
-  (t) => ({
-    careLevelIdIdx: index("careLevelIdIdx").on(t.careLevelId),
-  })
 );
 
 export const careLevels = pgTable("careLevels", {
-  careLevelId: integer("careLevelId").primaryKey().generatedByDefaultAsIdentity(),
-  levelName: careLevelEnum("levelName").notNull(),
+  id: serial("id").primaryKey().notNull(),
+  roomId: text("roomId")
+    .notNull()
+    .references(() => rooms.id, { onDelete: "cascade" }), // Each careLevel belongs to a room
+  levelName: careLevelEnum("levelName").notNull(), // low, medium, or heavy
   items: text("items").array(),
   price: integer("price").notNull().default(0),
-});
+},
+(t) => ({
+  roomIdIdx: index("roomIdIdx").on(t.roomId), // Index for faster queries
+}));
 
 export type Room = typeof rooms.$inferSelect;
+export type CareLevelT = typeof careLevels.$inferSelect;

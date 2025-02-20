@@ -2,86 +2,155 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  SelectItem
-} from "@/components/ui/select";
-import { Calculator, Circle } from "lucide-react";
+import { SelectItem } from "@/components/ui/select";
+import { Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LabeledNumericInput } from "./LabelledNumericInput";
 import { LabeledDropdownInput } from "./LabelledDropdownInput";
 import { useParams } from "next/navigation";
 import { trpc } from "@/server/client";
+import { Room } from "@/server/db/schema/tables/rooms";
+import { CareLevelT } from "@/server/db/schema";
+import { toast } from "sonner";
 const CARE_LEVEL_RATES = {
   low: 1,
   medium: 1.5,
   heavy: 2,
 };
 
-export default function CostOfCare() {
+type Props = {
+  listingRooms: Room[];
+  listingCareLevels: CareLevelT[];
+};
+
+export default function CostOfCare({
+  listingRooms,
+  listingCareLevels,
+}: {
+  listingRooms: Room[];
+  listingCareLevels: CareLevelT[];
+}) {
   const params = useParams();
   const currentListingId = params["listing-id"] as string;
-
-  const [rentCost, setRentCost] = useState("");
-  const [servicesCost, setServicesCost] = useState("");
-  const [careLevelCosts, setCareLevelCosts] = useState({
-    low: "",
-    medium: "",
-    heavy: "",
+  const [roomCosts, setRoomCosts] = useState<Record<string, string>>(() => {
+    return listingRooms.reduce(
+      (acc, room) => {
+        acc[room.id] = ""; // Initialize empty rent cost for each room
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
   });
-  const [selectedRoom, setSelectedRoom] = useState("1");
-  const [careLevel, setCareLevel] = useState("low");
+  const [servicesCost, setServicesCost] = useState("");
+  const [careLevel, setCareLevel] = useState<"low" | "medium" | "heavy">("low");
+  const [selectedRoom, setSelectedRoom] = useState(listingRooms[0]?.id);
   const [total, setTotal] = useState(0);
   const [dailyTotal, setDailyTotal] = useState(0);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
+
+  // Map care levels to their respective ID and price
+  const [careLevelCosts, setCareLevelCosts] = useState<
+    Record<string, { id?: number; price: number; levelName: string }>
+  >(() => {
+    if (!listingCareLevels || listingCareLevels.length === 0) {
+      // Initialize with empty values if no care levels
+      return {
+        low: { price: 0, levelName: "low" },
+        medium: { price: 0, levelName: "medium" },
+        heavy: { price: 0, levelName: "heavy" },
+      };
+    }
+
+    // Filter out undefined or duplicate levels
+    return listingCareLevels.reduce(
+      (acc, level) => {
+        if (level && level.levelName) {
+          // Ensure valid data
+          acc[level.levelName] = {
+            id: level.id,
+            price: level.price,
+            levelName: level.levelName,
+          };
+        }
+        return acc;
+      },
+      {} as Record<string, { id?: number; price: number; levelName: string }>,
+    );
+  });
   const { mutate: saveCostOfCare } = trpc.provider.saveCostOfCare.useMutation();
 
   useEffect(() => {
-    const numericRentCost = rentCost === "" ? 0 : Number(rentCost);
+    const numericRentCost =
+      roomCosts[selectedRoom] === "" ? 0 : Number(roomCosts[selectedRoom]);
     const numericServicesCost = servicesCost === "" ? 0 : Number(servicesCost);
-    const currentCareCost =
-      careLevelCosts[careLevel as keyof typeof careLevelCosts] === ""
-        ? 0
-        : Number(careLevelCosts[careLevel as keyof typeof careLevelCosts]);
+    const currentCareCost = careLevelCosts[careLevel]?.price || 0;
 
     const dailyCost =
       numericRentCost +
       numericServicesCost +
-      currentCareCost * CARE_LEVEL_RATES[careLevel as keyof typeof CARE_LEVEL_RATES];
+      currentCareCost * CARE_LEVEL_RATES[careLevel];
 
     setDailyTotal(dailyCost);
     setMonthlyTotal(dailyCost * 30);
-    setTotal(dailyCost * 30); // Assuming 30 days per month
-  }, [rentCost, servicesCost, careLevelCosts, careLevel]);
+    setTotal(dailyCost * 30);
+  }, [roomCosts, servicesCost, careLevelCosts, careLevel]);
 
-  const handleCareLevelCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleCareLevelChange = (newLevel: "low" | "medium" | "heavy") => {
+    setCareLevel(newLevel);
+  };
+
+  const handleCareLevelCostChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = Number(e.target.value) || 0;
     setCareLevelCosts((prev) => ({
       ...prev,
-      [careLevel]: value,
+      [careLevel]: {
+        id: prev[careLevel]?.id || undefined,
+        price: value,
+        levelName: careLevel,
+      },
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = {
-      rentCost: Number(rentCost),
-      serviceCost: Number(servicesCost),
-      careLevelCosts,
-    };
 
-    await saveCostOfCare({
-      rentCost: Number(rentCost),
-      serviceCost: Number(servicesCost),
-      careLevelCosts,
-      listingId: currentListingId,
-      roomId: selectedRoom,
-    });
+    const careLevelData = Object.values(careLevelCosts).map(
+      ({ id, price, levelName }) => ({
+        careLevelId: id,
+        price,
+        levelName,
+      }),
+    );
 
-    // Here you can send this form data to the backend, using either TRPC or server functions
-    console.log("Form data to be saved:", formData);
+    try {
+      console.log("Form data to be saved:", {
+        rentCosts: Object.entries(roomCosts).map(([roomId, roomPrice]) => ({
+          roomId,
+          roomPrice: Number(roomPrice),
+        })),
+        serviceCost: Number(servicesCost),
+        careLevelData,
+      });
 
-    // Example: call an API function
-    // await saveData(formData);
+      await saveCostOfCare({
+        rentCosts: Object.entries(roomCosts).map(([roomId, roomPrice]) => ({
+          roomId,
+          roomPrice: Number(roomPrice),
+        })),
+        serviceCost: Number(servicesCost),
+        careLevelData,
+        listingId: currentListingId,
+        roomId: selectedRoom,
+      });
+
+      toast.success("Cost of care saved successfully!");
+
+      console.log("Cost of care saved successfully!");
+    } catch (error) {
+      console.error("Error saving cost of care:", error);
+    }
   };
 
   return (
@@ -95,8 +164,10 @@ export default function CostOfCare() {
             </div>
             <Button variant="outline">Add logo</Button>
           </div>
-          <form onSubmit={handleSubmit} className="grid gap-6 md:grid-cols-[300px_1fr]">
-            {/* Left Column */}
+          <form
+            onSubmit={handleSubmit}
+            className="grid gap-6 md:grid-cols-[300px_1fr]"
+          >
             <div className="space-y-4">
               <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
@@ -106,116 +177,70 @@ export default function CostOfCare() {
                   className="object-cover"
                 />
               </div>
-
-              <div className="flex gap-4">
-                <div className="flex items-center gap-2">
-                  <Circle className="h-3 w-3 fill-pink-500 text-pink-500" />
-                  <span className="text-sm text-zinc-400">Private room</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Circle className="h-3 w-3 fill-pink-500 text-pink-500" />
-                  <span className="text-sm text-zinc-400">
-                    Private bathroom
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <div className="text-sm text-zinc-400">
-                  Est move in schedule
-                </div>
-                <div className="font-semibold">Fri, Mar 1, 1:30PM</div>
-              </div>
             </div>
 
-            {/* Right Column */}
             <div className="space-y-6">
               <div className="space-y-4">
-                {/* Rent Cost Field */}
-                <div className="flex items-center justify-between gap-6">
-                  <div className="flex w-full flex-col">
-                    <LabeledNumericInput
-                      label="Cost for rent"
-                      id="rentCost"
-                      value={rentCost}
-                      placeholder="Enter rent cost"
-                      onChange={(e) => setRentCost(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex w-full flex-col">
-                    <LabeledDropdownInput
-                      label="Room type"
-                      id="roomType"
-                      value={selectedRoom}
-                      onValueChange={setSelectedRoom}
-                    >
-                      <SelectItem value="1">Room: #1</SelectItem>
-                      <SelectItem value="2">Room: #2</SelectItem>
-                      <SelectItem value="3">Room: #3</SelectItem>
-                    </LabeledDropdownInput>
-                  </div>
-                </div>
+                <LabeledNumericInput
+                  label="Cost for rent"
+                  id="rentCost"
+                  value={roomCosts[selectedRoom]}
+                  placeholder="Enter rent cost"
+                  onChange={(e) =>
+                    setRoomCosts((prev) => ({
+                      ...prev,
+                      [selectedRoom]: e.target.value,
+                    }))
+                  }
+                />
 
-                {/* Services Cost Field */}
-                <div className="flex justify-between gap-6">
-                  <div className="flex w-full flex-col">
-                    <LabeledNumericInput
-                      label="Cost for services"
-                      id="servicesCost"
-                      value={servicesCost}
-                      placeholder="Enter services cost"
-                      onChange={(e) => setServicesCost(e.target.value)}
-                    />
-                  </div>
-                </div>
+                <LabeledDropdownInput
+                  label="Room type"
+                  id="roomType"
+                  value={selectedRoom}
+                  onValueChange={setSelectedRoom}
+                >
+                  {listingRooms?.map((room: Room) => (
+                    <SelectItem key={room.id} value={room.id}>
+                      Room: {room.name}
+                    </SelectItem>
+                  ))}
+                </LabeledDropdownInput>
 
-                {/* Care Level Cost Field */}
-                <div className="flex items-center justify-between gap-6">
-                  <div className="flex w-full flex-col">
-                    <LabeledNumericInput
-                      label="Care level rate"
-                      id="careLevelCost"
-                      value={careLevelCosts[careLevel as keyof typeof careLevelCosts]}
-                      placeholder="Enter care level cost"
-                      onChange={handleCareLevelCostChange}
-                    />
-                  </div>
-                  <div className="flex w-full flex-col">
-                    <LabeledDropdownInput
-                      label="Care level"
-                      id="careLevel"
-                      value={careLevel}
-                      onValueChange={setCareLevel}
-                    >
-                      <SelectItem value="low">Care Level: Low</SelectItem>
-                      <SelectItem value="medium">
-                        Care Level: Medium
-                      </SelectItem>
-                      <SelectItem value="heavy">Care Level: Heavy</SelectItem>
-                    </LabeledDropdownInput>
-                  </div>
-                </div>
+                <LabeledNumericInput
+                  label="Cost for services"
+                  id="servicesCost"
+                  value={servicesCost}
+                  placeholder="Enter services cost"
+                  onChange={(e) => setServicesCost(e.target.value)}
+                />
 
-                {/* Totals Section */}
+                <LabeledNumericInput
+                  label="Care level rate"
+                  id="careLevelCost"
+                  value={careLevelCosts[careLevel]?.price || ""}
+                  placeholder="Enter care level cost"
+                  onChange={handleCareLevelCostChange}
+                />
+
+                <LabeledDropdownInput
+                  label="Care level"
+                  id="careLevel"
+                  value={careLevel}
+                  onValueChange={(value) => handleCareLevelChange(value as "low" | "medium" | "heavy")}
+                >
+                  <SelectItem value="low">Care Level: Low</SelectItem>
+                  <SelectItem value="medium">Care Level: Medium</SelectItem>
+                  <SelectItem value="heavy">Care Level: Heavy</SelectItem>
+                </LabeledDropdownInput>
+
                 <div className="space-y-3 pt-4">
                   <div className="flex justify-between">
                     <span>${dailyTotal}/day x 30 nights</span>
                     <span>${monthlyTotal}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Carefinder Service fee</span>
-                    <span>$0</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Assessment fee</span>
-                    <span>$0</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>
-                      Remaining balance
-                      <br />
-                      of first months rent
-                    </span>
+                    <span>Remaining balance</span>
                     <span>${total}</span>
                   </div>
                 </div>
@@ -226,7 +251,6 @@ export default function CostOfCare() {
                 </div>
               </div>
 
-              {/* Save Data Button */}
               <div className="flex justify-end pt-4">
                 <Button type="submit" variant="outline">
                   Save Data

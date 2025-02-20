@@ -2,7 +2,7 @@ import { protectedProcedure, createTRPCRouter } from "../trpc";
 import { z } from "zod";
 import db from "@/server/db";
 import { providers, providerUpdateSchema, users, listings, rooms, careLevelZodEnum, careLevels, CareLevel } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const providerRouter = createTRPCRouter({
   createProvider: protectedProcedure
@@ -57,14 +57,21 @@ export const providerRouter = createTRPCRouter({
 
   saveCostOfCare: protectedProcedure
     .input(z.object({
-      rentCost: z.number(),
+      rentCosts: z.array(z.object({
+        roomId: z.string(),
+        roomPrice: z.number(),
+      })),
       serviceCost: z.number(),
-      careLevelCosts: z.record(careLevelZodEnum, z.string()),
+      careLevelData: z.array(z.object({
+        careLevelId: z.number().optional(),
+        price: z.number(),
+        levelName: z.string(),
+      })),
       roomId: z.string(),
       listingId: z.string(),
     }))
     .mutation(async ({ input, ctx }) => {
-      const { rentCost, serviceCost, careLevelCosts, roomId, listingId } = input;
+      const { rentCosts, serviceCost, careLevelData, listingId } = input;
       const { id: userId } = ctx.user;
 
       if (!userId) {
@@ -73,39 +80,31 @@ export const providerRouter = createTRPCRouter({
 
       await db.update(listings).set({
         serviceCost,
-      }).where(eq(listings.id, listingId));
+      }).where(eq(listings.id, Number(listingId)));
 
-      await db.update(rooms).set({
-        roomPrice: rentCost,
-      }).where(eq(rooms.id, roomId));
+      for (const { roomId, roomPrice } of rentCosts) {
+        await db.update(rooms).set({
+          roomPrice: roomPrice,
+        }).where(eq(rooms.id, roomId));
 
-      const room = await db.query.rooms.findFirst({
-        where: eq(rooms.id, roomId),
-      });
+        const careLevelsForRoom = await db.query.careLevels.findMany({
+          where: eq(careLevels.roomId, roomId),
+        });
 
-      if (!room) {
-        throw new Error("Room not found");
-      }
-
-      const careLevel = room.careLevelId;
-
-      if (!careLevel) {
-        for (const [key, value] of Object.entries(careLevelCosts)) {
-          const newCareLevel = await db.insert(careLevels).values({
-            price: Number(value),
-            levelName: key as CareLevel,
-          }).returning({ careLevelId: careLevels.careLevelId });
-
-          await db.update(rooms).set({
-            careLevelId: newCareLevel[0].careLevelId,
-          }).where(eq(rooms.id, roomId));
-        }
-      } else {
-        for (const [key, value] of Object.entries(careLevelCosts)) {
-          await db.update(careLevels).set({
-            price: Number(value),
-            levelName: key as CareLevel,
-          }).where(eq(careLevels.careLevelId, careLevel));
+        if (!careLevelsForRoom) {
+          for (const { price, levelName } of careLevelData) {
+            await db.insert(careLevels).values({
+              price: Number(price),
+              levelName: levelName as CareLevel,
+              roomId,
+            });
+          }
+        } else {
+          for (const { price, levelName } of careLevelData) {
+            await db.update(careLevels).set({
+              price: Number(price),
+            }).where(and(eq(careLevels.levelName, levelName as CareLevel), eq(careLevels.roomId, roomId)));
+          }
         }
       }
     }),
