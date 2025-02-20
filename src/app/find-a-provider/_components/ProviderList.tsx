@@ -11,9 +11,10 @@ function ProviderList({
   console.log(currentListings);
   return (
     <div className="grid grid-cols-2 gap-1">
-      {" "}
-      <ProviderCard />
-      <ProviderCard />
+      {currentListings &&
+        currentListings.map((listing) => (
+          <ProviderCard key={listing.id} listing={listing} />
+        ))}
     </div>
   );
 }

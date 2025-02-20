@@ -16,6 +16,16 @@ export const listingsRouter = createTRPCRouter({
       return { name: "sir", race: "thing " };
     }),
 
+  getListingById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      const listing = await db.query.listings.findFirst({
+        where: eq(listings.id, input.id),
+      });
+
+      return listing;
+    }),
+
   getListingsByBoundary: publicProcedure
     .input(
       z.object({
