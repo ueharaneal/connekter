@@ -1,8 +1,8 @@
 import { protectedProcedure, createTRPCRouter } from "../trpc";
 import { z } from "zod";
 import db from "@/server/db";
-import { providers, providerUpdateSchema, users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { providers, providerUpdateSchema, users, listings, rooms, careLevelZodEnum, careLevels, CareLevel } from "@/server/db/schema";
+import { and, eq } from "drizzle-orm";
 
 export const providerRouter = createTRPCRouter({
   createProvider: protectedProcedure
@@ -53,5 +53,59 @@ export const providerRouter = createTRPCRouter({
         .update(providers)
         .set(input)
         .where(eq(providers.userId, ctx.user.id));
+    }),
+
+  saveCostOfCare: protectedProcedure
+    .input(z.object({
+      rentCosts: z.array(z.object({
+        roomId: z.string(),
+        roomPrice: z.number(),
+      })),
+      serviceCost: z.number(),
+      careLevelData: z.array(z.object({
+        careLevelId: z.number().optional(),
+        price: z.number(),
+        levelName: z.string(),
+      })),
+      roomId: z.string(),
+      listingId: z.string(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const { rentCosts, serviceCost, careLevelData, listingId } = input;
+      const { id: userId } = ctx.user;
+
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
+
+      await db.update(listings).set({
+        serviceCost,
+      }).where(eq(listings.id, Number(listingId)));
+
+      for (const { roomId, roomPrice } of rentCosts) {
+        await db.update(rooms).set({
+          roomPrice: roomPrice,
+        }).where(eq(rooms.id, roomId));
+
+        const careLevelsForRoom = await db.query.careLevels.findMany({
+          where: eq(careLevels.roomId, roomId),
+        });
+
+        if (!careLevelsForRoom) {
+          for (const { price, levelName } of careLevelData) {
+            await db.insert(careLevels).values({
+              price: Number(price),
+              levelName: levelName as CareLevel,
+              roomId,
+            });
+          }
+        } else {
+          for (const { price, levelName } of careLevelData) {
+            await db.update(careLevels).set({
+              price: Number(price),
+            }).where(and(eq(careLevels.levelName, levelName as CareLevel), eq(careLevels.roomId, roomId)));
+          }
+        }
+      }
     }),
 });

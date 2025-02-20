@@ -1,10 +1,71 @@
+"use client"
+
+import { useState } from "react"
 import Image from "next/image"
 import { X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useParams } from "next/navigation"
+import { CareLevelT, Listing } from "@/server/db/schema"
+export default function CareLevelsPage({listingCareLevels, listing}: {listingCareLevels: CareLevelT[], listing: Listing}) {
+  const [careLevel, setCareLevel] = useState("low")
+  const params = useParams();
+  const currentListingId = params["listing-id"] as string;
 
-export default function CareLevelsPage() {
-  const [careLevel, setCareLevel] = useState("low");
+  // State for each care level with their respective sections and items
+  const [careData, setCareData] = useState({
+    low: [
+      {
+        title: "Included in care:",
+        items: [
+          "Medication management (specify frequency and type)",
+          "Assistance with bathing (specify frequency)",
+          "Dressing assistance",
+          "Meal preparation (specify if all meals or some)",
+          "24-hour on-site staff",
+          "Emergency call system",
+        ],
+      },
+      {
+        title: "Included in service",
+        items: [
+          "Breakfast, Lunch and Dinner",
+          "Tea, coffee, juice and snacks any time",
+          "Housekeeping and Flat Linens Laundry",
+          "Personal Laundry",
+          "Social and recreational activities",
+        ],
+      },
+    ],
+    medium: [
+      {
+        title: "Included in care:",
+        items: ["Medication management", "Bathing assistance", "Personal hygiene"],
+      },
+    ],
+    heavy: [
+      {
+        title: "Included in care:",
+        items: ["24/7 nurse assistance", "Constant supervision", "IV management"],
+      },
+    ],
+  })
+
+  // Handle adding a new item to a care level
+  const handleAddItem = (level: string, sectionIndex: number, newItem: string) => {
+    if (newItem.trim()) {
+      const updatedCareData = { ...careData }
+      updatedCareData[level][sectionIndex].items.push(newItem)
+      setCareData(updatedCareData)
+    }
+  }
+
+  // Handle removing an item from a care level
+  const handleRemoveItem = (level: string, sectionIndex: number, itemIndex: number) => {
+    const updatedCareData = { ...careData }
+    updatedCareData[level][sectionIndex].items.splice(itemIndex, 1)
+    setCareData(updatedCareData)
+  }
+
   return (
     <div className="w-full max-w-7xl text-white p-6">
       <div className="grid gap-6 md:grid-cols-[300px_1fr]">
@@ -44,42 +105,17 @@ export default function CareLevelsPage() {
           </div>
 
           <div className="space-y-6">
-            <Section
-              title="Included in care:"
-              items={[
-                "Medication management (specify frequency and type)",
-                "Assistance with bathing (specify frequency)",
-                "Dressing assistance",
-                "Meal preparation (specify if all meals or some)",
-                "24-hour on-site staff",
-                "Emergency call system",
-              ]}
-            />
-
-            <Section
-              title="Included in service"
-              items={[
-                "Breakfast, Lunch and Dinner",
-                "Tea, coffee, juice and snacks any time",
-                "Housekeeping and Flat Linens Laundry",
-                "Personal Laundry",
-                "Social and recreational activities",
-              ]}
-            />
-
-            <Section title="Included in Rent:" items={["Private room", "Private bathroom"]} />
-
-            <Section
-              title="Not included:"
-              items={[
-                "Transportation",
-                "Special subscriptions -phone, streaming, news etc.",
-                "Incontinence supplies",
-                "Transportation",
-                "Clothing, socks, razors, denture tablets, tissues",
-                "Personalized equipment",
-              ]}
-            />
+            {careData[careLevel].map((section, sectionIndex) => (
+              <Section
+                key={section.title}
+                sectionIndex={sectionIndex}
+                title={section.title}
+                items={section.items}
+                level={careLevel}
+                onAddItem={handleAddItem}
+                onRemoveItem={handleRemoveItem}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -90,28 +126,57 @@ export default function CareLevelsPage() {
 interface SectionProps {
   title: string
   items: string[]
+  sectionIndex: number
+  level: string
+  onAddItem: (level: string, sectionIndex: number, newItem: string) => void
+  onRemoveItem: (level: string, sectionIndex: number, itemIndex: number) => void
 }
 
-function Section({ title, items }: SectionProps) {
+function Section({ title, items, sectionIndex, level, onAddItem, onRemoveItem }: SectionProps) {
+  const [newItem, setNewItem] = useState("")
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onAddItem(level, sectionIndex, newItem)
+    setNewItem("") // Clear the input field after adding
+  }
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-pink-500">{title}</h3>
-        <Button variant="ghost" size="sm" className="text-zinc-400">
-          <Plus className="h-4 w-4 mr-1" /> Add item
-        </Button>
       </div>
       <ul className="space-y-2">
-        {items.map((item, index) => (
-          <li key={index} className="flex items-center justify-between text-zinc-300">
-            <span>{item}</span>
-            <Button variant="ghost" size="sm" className="text-zinc-400">
-              <X className="h-4 w-4" />
-            </Button>
-          </li>
-        ))}
+        {items.length === 0 ? (
+          <li className="text-zinc-400">No items available</li>
+        ) : (
+          items.map((item, itemIndex) => (
+            <li key={itemIndex} className="flex items-center justify-between text-zinc-300">
+              <span>{item}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-zinc-400"
+                onClick={() => onRemoveItem(level, sectionIndex, itemIndex)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </li>
+          ))
+        )}
       </ul>
+      <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-2">
+        <input
+          type="text"
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+          placeholder="New item"
+          className="px-4 py-2 bg-zinc-800 rounded-lg"
+        />
+        <Button variant="ghost" size="sm" className="text-zinc-400" type="submit">
+          <Plus className="h-4 w-4 mr-1" /> Add item
+        </Button>
+      </form>
     </div>
   )
 }
-

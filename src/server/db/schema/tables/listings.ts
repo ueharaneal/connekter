@@ -7,6 +7,7 @@ import {
   index,
   varchar,
   serial,
+  integer,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 export const listings = pgTable(
@@ -24,6 +25,9 @@ export const listings = pgTable(
       .defaultNow(),
     userId: text("userId").references(() => users.id),
     isActive: boolean("isActive").notNull().default(true),
+    serviceCost: integer("serviceCost").notNull().default(0),
+    serviceItems: text("serviceItems").array(),
+    itemsNotIncluded: text("itemsNotIncluded").array(),
     latLngPoint: geometry("lat_lng_point", {
       type: "point",
       mode: "xy",
