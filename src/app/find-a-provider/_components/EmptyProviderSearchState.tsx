@@ -23,7 +23,7 @@ export default function EmptyProviderSearchState() {
       <div className="space-y-2">
         <h3 className="text-xl font-semibold">No homes found in this area</h3>
         <p className="text-sm text-gray-400">
-          We couldn't find any available homes matching your criteria. Try
+          We couldn&apos;t find any available homes matching your criteria. Try
           adjusting your search radius or filters.
         </p>
       </div>
