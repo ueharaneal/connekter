@@ -5,9 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import CostCalculatorPage from "./CostOfCare";
 import CareLevelsPage from "./CareLevelsPage";
 import { Room } from "@/server/db/schema/tables/rooms";
-import { CareLevelT } from "@/server/db/schema";
+import { CareLevelT, Listing } from "@/server/db/schema";
 
-export default function KeepTrackPage({listingRooms, listingCareLevels}: {listingRooms: Room[], listingCareLevels: CareLevelT[]}) {
+export default function KeepTrackPage({listingRooms, listingCareLevels, listing}: {listingRooms: Room[], listingCareLevels: CareLevelT[], listing: Listing}) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const nextPage = () => setCurrentPage((prev) => (prev === 1 ? 0 : 1));
@@ -38,7 +38,7 @@ export default function KeepTrackPage({listingRooms, listingCareLevels}: {listin
           )}
 
           <div className="pb-4">
-            {currentPage === 0 ? <CostCalculatorPage listingRooms={listingRooms} listingCareLevels={listingCareLevels} /> : <CareLevelsPage listingCareLevels={listingCareLevels} />}
+            {currentPage === 0 ? <CostCalculatorPage listingRooms={listingRooms} listingCareLevels={listingCareLevels} listing={listing} /> : <CareLevelsPage listingCareLevels={listingCareLevels} listing={listing} />}
           </div>
           {/* Page Dots */}
           <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2 pt-4">

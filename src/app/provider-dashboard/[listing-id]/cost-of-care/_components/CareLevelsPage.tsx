@@ -5,8 +5,8 @@ import Image from "next/image"
 import { X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useParams } from "next/navigation"
-import { CareLevelT } from "@/server/db/schema"
-export default function CareLevelsPage({listingCareLevels}: {listingCareLevels: CareLevelT[]}) {
+import { CareLevelT, Listing } from "@/server/db/schema"
+export default function CareLevelsPage({listingCareLevels, listing}: {listingCareLevels: CareLevelT[], listing: Listing}) {
   const [careLevel, setCareLevel] = useState("low")
   const params = useParams();
   const currentListingId = params["listing-id"] as string;

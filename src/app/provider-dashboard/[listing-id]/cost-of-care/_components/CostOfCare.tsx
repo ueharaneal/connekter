@@ -10,7 +10,7 @@ import { LabeledDropdownInput } from "./LabelledDropdownInput";
 import { useParams } from "next/navigation";
 import { trpc } from "@/server/client";
 import { Room } from "@/server/db/schema/tables/rooms";
-import { CareLevelT } from "@/server/db/schema";
+import { CareLevelT, Listing } from "@/server/db/schema";
 import { toast } from "sonner";
 const CARE_LEVEL_RATES = {
   low: 1,
@@ -26,22 +26,21 @@ type Props = {
 export default function CostOfCare({
   listingRooms,
   listingCareLevels,
+  listing,
 }: {
   listingRooms: Room[];
   listingCareLevels: CareLevelT[];
+  listing: Listing;
 }) {
   const params = useParams();
   const currentListingId = params["listing-id"] as string;
   const [roomCosts, setRoomCosts] = useState<Record<string, string>>(() => {
-    return listingRooms.reduce(
-      (acc, room) => {
-        acc[room.id] = ""; // Initialize empty rent cost for each room
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
+    return listingRooms.reduce((acc, room) => {
+      acc[room.id] = room.roomPrice ? room.roomPrice.toString() : ""; // Initialize with roomPrice if available
+      return acc;
+    }, {} as Record<string, string>);
   });
-  const [servicesCost, setServicesCost] = useState("");
+  const [servicesCost, setServicesCost] = useState(listing.serviceCost.toString());
   const [careLevel, setCareLevel] = useState<"low" | "medium" | "heavy">("low");
   const [selectedRoom, setSelectedRoom] = useState(listingRooms[0]?.id);
   const [total, setTotal] = useState(0);
