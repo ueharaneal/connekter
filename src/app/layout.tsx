@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import Navbar from "@/components/layout/navbar/Navbar";
 import "./globals.css";
@@ -7,6 +8,8 @@ import { TRPCProvider } from "@/components/providers/TrpcProvider";
 import { HydrateClient } from "@/server/trpcServer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Footer } from "@/components/landing-page";
+import Script from "next/script";
+import GoogleMapsClientProvider from "@/lib/providers/GoogleMapsClientProvider";
 
 export const metadata: Metadata = {
   title: "Carefinder",
@@ -30,10 +33,17 @@ export default function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               >
-                <Navbar />
-                <div className="my-10 flex flex-grow flex-col bg-background">
-                  {children}
-                </div>
+                <Script
+                  src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY}&libraries=places&callback=Function.prototype`}
+                  strategy="beforeInteractive"
+                />{" "}
+                <GoogleMapsClientProvider>
+                  {/* Use the client wrapper here */}
+                  <Navbar />
+                  <div className="my-10 flex flex-grow flex-col bg-background">
+                    {children}
+                  </div>
+                </GoogleMapsClientProvider>
                 <Footer />
                 <Toaster
                   position="top-right"
@@ -47,6 +57,7 @@ export default function RootLayout({
                     },
                   }}
                 />
+                {/* Closing the client wrapper */}
               </ThemeProvider>
             </HydrateClient>
           </TRPCProvider>

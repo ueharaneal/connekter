@@ -16,67 +16,67 @@ export const listingsRouter = createTRPCRouter({
       return { name: "sir", race: "thing " };
     }),
 
-  getByBoundaryInfiniteScroll: publicProcedure
+  getListingsByBoundary: publicProcedure
     .input(
       z.object({
-        boundaries: z
-          .object({
-            north: z.number(),
-            south: z.number(),
-            east: z.number(),
-            west: z.number(),
-          })
-          .nullable(),
+        boundaries: z.object({
+          north: z.number(),
+          south: z.number(),
+          east: z.number(),
+          west: z.number(),
+        }),
         cursor: z.number().nullish(),
-        city: z.string().optional(),
-        latLngPoint: z
-          .object({
-            lat: z.number(),
-            lng: z.number(),
-          })
-          .optional(),
-        radius: z.number().optional(),
       }),
     )
     .query(async ({ input }) => {
       const { cursor, boundaries } = input;
+      console.log(input);
+      try {
+        // Start with base query
+        const baseQuery = db
+          .select({
+            id: listings.id,
+            imageUrls: listings.imageUrls,
+            name: listings.name,
+            latLngPoint: listings.latLngPoint,
+          })
+          .from(listings);
 
-      const lat = input.latLngPoint?.lat ?? 0;
-      const lng = input.latLngPoint?.lng ?? 0;
-      const radius = input.radius ?? 0; //just tried to fix a type error
+        // Build conditions array
+        const conditions = [];
 
-      const data = await db
-        .select({
-          id: listings.id,
-          imageUrls: listings.imageUrls,
-          name: listings.name,
-          latLngPoint: listings.latLngPoint,
-        })
-        .from(listings)
-        .where(
-          and(
-            boundaries
-              ? sql`
-                ST_Y(${listings.latLngPoint}) BETWEEN ${boundaries.south} AND ${boundaries.north}
-                AND ST_X(${listings.latLngPoint}) BETWEEN ${boundaries.west} AND ${boundaries.east}
-              `
-              : sql`TRUE`,
-            input.latLngPoint?.lat && input.latLngPoint.lng && !boundaries
-              ? sql`6371 * ACOS(
-              SIN(${(lat * Math.PI) / 180}) * SIN(radians(ST_Y(${listings.latLngPoint}))) +
-              COS(${(lat * Math.PI) / 180}) * COS(radians(ST_Y(${listings.latLngPoint}))) *
-              COS(radians(ST_X(${listings.latLngPoint})) - ${(lng * Math.PI) / 180})
-            ) <= ${radius}`
-              : sql`TRUE`,
-          ),
-        )
-        // .limit(12)
-        .limit(100)
-        .orderBy(asc(sql`id`), asc(sql`distance`));
+        // Add boundary condition using ST_Contains
+        conditions.push(sql`
+          ST_Contains(
+            ST_MakeEnvelope(
+              ${boundaries.west}, ${boundaries.south},
+              ${boundaries.east}, ${boundaries.north},
+              4326
+            ),
+            ${listings.latLngPoint}
+          )
+        `);
 
-      return {
-        data,
-        nextCursor: data.length ? data[data.length - 1]?.id : null,
-      };
+        // Add cursor condition if it exists
+        if (cursor) {
+          conditions.push(sql`${listings.id} > ${cursor}`);
+        }
+
+        const query = baseQuery.where(and(...conditions));
+
+        // For debugging, log the actual SQL query
+        console.log("Generated SQL:", query.toSQL());
+
+        const data = await query.limit(100).orderBy(asc(listings.id));
+        console.log(data);
+        return {
+          data,
+          nextCursor:
+            data.length === 100 ? data[data.length - 1].id : undefined,
+        };
+      } catch (error) {
+        console.error("Database query error:", error);
+        throw new Error("Failed to fetch listings");
+      }
     }),
 });

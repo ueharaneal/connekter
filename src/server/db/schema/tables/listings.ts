@@ -6,15 +6,13 @@ import {
   geometry,
   index,
   varchar,
+  serial,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 export const listings = pgTable(
   "listings",
   {
-    id: text("id")
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID())
-      .notNull(),
+    id: serial("id").primaryKey().notNull(),
     name: text("name").notNull(),
     imageUrls: varchar("image_urls").array().notNull(),
     address: text("address").notNull(),
