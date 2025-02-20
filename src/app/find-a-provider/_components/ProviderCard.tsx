@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { CheckCircle, MessageCircle, Star } from "lucide-react";
 import Link from "next/link";
+import SeeAllImages from "@/components/common/images/SeeAllImages";
 
 interface ProviderCardProps {
   name?: string;
@@ -35,6 +36,53 @@ export default function ProviderCard({
   bio = "Experienced caregiver with a passion for helping others. Specialized in elderly care and companionship.",
 }: ProviderCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const property = {
+    imageUrls: [
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/dff6780d-98a5-4a1d-8861-819ed68c028b",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/42f28a18-d5ed-4462-aff5-d8d0994b6442",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/80faae4b-3523-4d49-ae4f-c01c4bdd066f",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/31067cc4-9a64-4995-9444-249d297a307e",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/f5db4194-cae7-4285-abb8-013b78ce569e",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/dccbf772-d8e6-464d-bc99-1dca71309f1a",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/896daf76-4626-4915-b401-c35a0041c3c6",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/dca9b32a-0285-48c1-a6d5-b34cd0be9a2a",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/33cf07ed-f6a7-4d7e-9596-fb1bc6a30bf2",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/73e6d5c7-09bb-400f-8d28-fb74792f99d0",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/32be5928-69da-47e1-8986-c4fc46213cad",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/b559bce7-e1d8-4a17-90f8-8eedbb9aade8",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/e1c96960-aa88-48a6-a428-4f398948d9e7",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/5c5d0b8d-ef79-4072-b590-5bf6fb89398b",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/c7aad5ed-24ac-4c3c-adbd-d8e53e3f895b",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/941764b9-37c8-4934-9461-59471dcda310",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/048f50e6-0fdc-453a-9cba-48d533c3012a",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/439fd6a8-42bf-472d-87ac-0b4bf7b7f162",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/d435eaca-30bc-4382-a957-0da9d4e0f0f0",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/77d17c07-3f4b-4bfd-95e0-8dea7a51e5b6",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/46221adc-9362-4d0c-a954-663ab10ce56e",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/fe65ae00-64ce-4abd-9227-3d97dd24bc55",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/60d5ae0d-4a52-4197-a0c3-b1e743ea6d22",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/3f6660e2-e131-4306-95dd-27081dfdd361",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/0d6e68a0-6bf2-4633-b95d-d8741147be36",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/591d76b6-69c4-4ef5-8a31-5f18a1a33ab4",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/c0801ce1-beaf-4c4a-9afb-9f79e5e9b88c",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/b826165e-da38-40fc-80b2-9480968f3ed7",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/706913cc-072c-496e-9cce-fa7545529106",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/b97bb239-7bde-43aa-8592-945e732581aa",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/1148dd22-aad3-466d-bf77-1e492d1d218e",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/d57b198c-0722-4b7e-9255-15be01d732b5",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/a7b3b436-4d8d-4ba8-8276-ca896d3a81e3",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/8e7b639f-1f60-464b-af34-cd7f360f0b1e",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/aaffac33-b9a2-4037-b087-0182bed51a0c",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/c7418ae2-fae8-4ce3-9255-b7a7faafc751",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/044170d7-0aa2-4759-b129-ce388775dfaf",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/fc703ace-99f9-46dd-82d0-8a42e4cef5b6",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/a291092d-10b4-49f6-b20b-9d87236e154c",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/d704fed5-e460-440e-8597-453e59d38882",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/91883c13-b576-4848-88aa-8151313bae4b",
+      "https://img.trackhs.com/1280x800/https://track-pm.s3.amazonaws.com/cbislandvacations/image/255f4a71-37a5-4231-b1bf-e7cc16ad413c",
+    ],
+  };
 
   return (
     <Card className="max-w-lg overflow-hidden bg-black text-white">
@@ -117,15 +165,8 @@ export default function ProviderCard({
             </div>
           </div>
         </div>
-        <div className="absolute bottom-4 right-4">
-          <Button
-            size="sm"
-            variant="ghost"
-            className="hover:bf hover:bg px-2 py-0 text-xs hover:bg-white hover:bg-opacity-10"
-          >
-            {" "}
-            View images
-          </Button>
+        <div className="absolute bottom-2 right-4">
+          <SeeAllImages imageUrls={property.imageUrls} />
         </div>
       </div>
 

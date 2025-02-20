@@ -1,12 +1,12 @@
 import React from "react";
 import ProviderCard from "./ProviderCard";
-import { useListingsMap } from "@/store/listingMapStore";
+import { AdjustedListings, useListingsMap } from "@/store/listingMapStore";
 import type { Listing } from "@/server/db/schema";
 
 function ProviderList({
   currentListings,
 }: {
-  currentListings: Listing[] | undefined;
+  currentListings: AdjustedListings | undefined;
 }) {
   console.log(currentListings);
   return (

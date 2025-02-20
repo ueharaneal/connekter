@@ -9,7 +9,7 @@ import {
 import Spinner from "@/components/ui/Spinner";
 import { useEffect, useMemo, useState } from "react";
 import { trpc, type RouterOutputs } from "@/server/client";
-import { useListingsMap } from "@/store/listingMapStore";
+import { useListingsMap, AdjustedListings } from "@/store/listingMapStore";
 import { debounce } from "lodash";
 import { Listing } from "@/server/db/schema";
 import PoiMarkers from "./PoiMarkers";
@@ -22,13 +22,10 @@ export type Poi = {
   image: string;
 };
 
-export type fetchNextPageOfAdjustedPropertiesType =
-  RouterOutputs["listings"]["getListingsByBoundary"];
-
 function SearchPropertiesMap({
   currentListings,
 }: {
-  currentListings: Listing[] | undefined;
+  currentListings: AdjustedListings | undefined;
 }) {
   const {
     adjustedListings,
@@ -79,7 +76,7 @@ function SearchPropertiesMap({
   //popualate markers depending on current boundingbox
   useEffect(() => {
     if (!adjustedListings) return;
-    const listingsMarkers = adjustedListings.data.map((listing) => ({
+    const listingsMarkers = adjustedListings.map((listing) => ({
       ...listing,
       latLngLiteral: { lat: listing.latLngPoint.y, lng: listing.latLngPoint.x }, // fix if backworkds
       key: listing.name,
