@@ -14,7 +14,7 @@ export const listings = pgTable(
   "listings",
   {
     id: serial("id").primaryKey().notNull(),
-    name: text("name").notNull(),
+    name: text("name").notNull().notNull(),
     imageUrls: varchar("image_urls").array().notNull(),
     address: text("address").notNull(),
     createdAt: timestamp("createdAt", { withTimezone: true, mode: "string" })
@@ -23,7 +23,9 @@ export const listings = pgTable(
     updatedAt: timestamp("updatedAt", { withTimezone: true, mode: "string" })
       .notNull()
       .defaultNow(),
-    userId: text("userId").references(() => users.id),
+    userId: text("userId")
+      .references(() => users.id)
+      .notNull(),
     isActive: boolean("isActive").notNull().default(true),
     serviceCost: integer("serviceCost").notNull().default(0),
     serviceItems: text("serviceItems").array(),
