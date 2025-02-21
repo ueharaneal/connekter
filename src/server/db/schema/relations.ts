@@ -10,32 +10,23 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   sessions: many(sessions),
 }));
 
-export const providerProfilesRelations = relations(
-  providers,
-  ({ one }) => ({
-    user: one(users, {
-      fields: [providers.userId],
-      references: [users.id],
-    }),
+export const providerProfilesRelations = relations(providers, ({ one }) => ({
+  user: one(users, {
+    fields: [providers.userId],
+    references: [users.id],
   }),
-);
+}));
 
-export const providerListingsRelations = relations(
-  listings,
-  ({ one }) => ({
-    provider: one(providers, {
-      fields: [listings.userId],
-      references: [providers.userId],
-    }),
+export const providerListingsRelations = relations(listings, ({ one }) => ({
+  provider: one(providers, {
+    fields: [listings.userId],
+    references: [providers.userId],
   }),
-);
+}));
 
-export const listingFaqsRelations = relations(
-  listingFaqs,
-  ({ one }) => ({
-    listing: one(listings, {
-      fields: [listingFaqs.listingId],
-      references: [listings.id],
-    }),
+export const listingFaqsRelations = relations(listingFaqs, ({ one }) => ({
+  listing: one(listings, {
+    fields: [listingFaqs.listingId],
+    references: [listings.id],
   }),
-);
+}));

@@ -1,28 +1,33 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Link from "next/link"
-import { Listing } from "@/server/db/schema"
-import { useCallback, useEffect } from "react"
-import useEmblaCarousel from "embla-carousel-react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useRouter } from "next/navigation"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
+import { Listing } from "@/server/db/schema";
+import { useCallback, useEffect } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PropertyCard({ listings }: { listings: Listing[] }) {
-  const router = useRouter()
+  const router = useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "center",
     loop: true,
   });
 
-  const updateUrl = useCallback((index: number) => {
-    const currentListingId = listings[index]?.id;
-    if (currentListingId) {
-      router.push(`/provider-dashboard/${currentListingId}`, { scroll: false });
-    }
-  }, [listings, router]);
+  const updateUrl = useCallback(
+    (index: number) => {
+      const currentListingId = listings[index]?.id;
+      if (currentListingId) {
+        router.push(`/provider-dashboard/${currentListingId}`, {
+          scroll: false,
+        });
+      }
+    },
+    [listings, router],
+  );
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) {
@@ -40,8 +45,10 @@ export default function PropertyCard({ listings }: { listings: Listing[] }) {
     if (emblaApi) {
       // Initialize the carousel to the correct listing based on URL
       const currentPath = window.location.pathname;
-      const currentId = currentPath.split('/').pop();
-      const initialIndex = listings.findIndex(listing => listing.id.toString() === currentId);
+      const currentId = currentPath.split("/").pop();
+      const initialIndex = listings.findIndex(
+        (listing) => listing.id.toString() === currentId,
+      );
       if (initialIndex !== -1) {
         emblaApi.scrollTo(initialIndex, true);
       }
@@ -52,26 +59,26 @@ export default function PropertyCard({ listings }: { listings: Listing[] }) {
         updateUrl(currentIndex);
       };
 
-      emblaApi.on('settle', onSettle);
+      emblaApi.on("settle", onSettle);
 
       return () => {
-        emblaApi.off('settle', onSettle);
+        emblaApi.off("settle", onSettle);
       };
     }
   }, [emblaApi, listings, updateUrl]);
 
   return (
-    <div className="relative max-w-4xl mx-auto">
+    <div className="relative mx-auto max-w-4xl">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {listings.map((listing) => (
-            <div key={listing.id} className="flex-[0_0_100%] min-w-0 ">
-              <Card className="mb-6 overflow-hidden border-zinc-800 bg-zinc-900/50 relative px-5">
+            <div key={listing.id} className="min-w-0 flex-[0_0_100%]">
+              <Card className="relative mb-6 overflow-hidden border-zinc-800 bg-zinc-900/50 px-5">
                 <div className="relative p-8">
                   <div className="flex items-start gap-4">
                     <div className="relative h-[150px] w-[200px] overflow-hidden rounded-lg">
                       <Image
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-12%20at%2012.30.21%20AM-jr6e3R4YIl6tzItrs5ccOwfwIvq5xj.png"
+                        src={listing.imageUrls[0]}
                         alt="Above Woodinville Property"
                         fill
                         className="object-cover"
@@ -80,15 +87,21 @@ export default function PropertyCard({ listings }: { listings: Listing[] }) {
                     <div className="flex-1">
                       <div className="flex items-start justify-between">
                         <div>
-                          <h2 className="mb-2 text-xl font-semibold">{listing.name}</h2>
-                          <p className="text-sm text-zinc-400">{listings.length} active listings</p>
+                          <h2 className="mb-2 text-xl font-semibold">
+                            {listing.name}
+                          </h2>
+                          <p className="text-sm text-zinc-400">
+                            {listings.length} active listings
+                          </p>
                         </div>
                         <Button
                           variant="outline"
                           size="sm"
                           className="border-orange-500/20 bg-transparent text-orange-500 hover:bg-orange-500/10"
                         >
-                          <Link href={`/provider/${listing.id}`}>View profile</Link>
+                          <Link href={`/provider/${listing.id}`}>
+                            View profile
+                          </Link>
                         </Button>
                       </div>
                     </div>
@@ -116,6 +129,5 @@ export default function PropertyCard({ listings }: { listings: Listing[] }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
