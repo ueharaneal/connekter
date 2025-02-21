@@ -1,5 +1,6 @@
-// import db from "@/server/db";
-// import { listings } from "@/server/db/schema";
+import db from "@/server/db";
+import { listings } from "@/server/db/schema";
+import { eq, isNull } from "drizzle-orm";
 
 // import { createLatLngGISPoint } from "@/server/server-utils";
 

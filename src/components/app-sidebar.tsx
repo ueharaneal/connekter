@@ -5,6 +5,8 @@ import {
   Package,
   Users,
   Settings,
+  UserRoundPlus,
+  CalendarFold,
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,12 +24,12 @@ import {
 } from "@/components/ui/tooltip";
 
 const menuItems = [
-  { icon: LayoutGrid, label: "Dashboard", href: "/" },
-  { icon: Mail, label: "Mail", href: "/mail" },
+  { icon: LayoutGrid, label: "Dashboard", href: "/admin" },
+  { icon: UserRoundPlus, label: "Providers", href: "/admin/providers" },
   { icon: MessageSquare, label: "Messages", href: "/messages" },
-  { icon: Package, label: "Products", href: "/products" },
-  { icon: Users, label: "Users", href: "/users" },
-  { icon: Settings, label: "Settings", href: "/settings" },
+  { icon: CalendarFold, label: "Calendar", href: "/admin/calendar" },
+  { icon: Users, label: "Users", href: "/admin/users" },
+  { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
 export function AppSidebar() {

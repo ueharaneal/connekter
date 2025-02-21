@@ -35,7 +35,7 @@ const recentSales = [
 
 function Overview() {
   return (
-    <div className="flex h-full flex-col">
+    <div className="mx-auto flex h-full flex-col bg-background">
       <header className="flex items-center justify-between border-b border-slate-800 p-4">
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-semibold">Dashboard / Overview</h1>
@@ -49,15 +49,11 @@ function Overview() {
             />
           </div>
           <Bell className="h-5 w-5 text-slate-400" />
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
         </div>
       </header>
 
       <main className="flex-1 space-y-6 overflow-auto p-6">
-        <h2 className="text-2xl font-bold">Hi, Welcome back 👋</h2>
+        <h2 className="text-2xl font-bold">Hi, Welcome back Micah 👋</h2>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="border-slate-800 bg-slate-900 p-6">
