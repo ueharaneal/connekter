@@ -40,7 +40,7 @@ export default function RootLayout({
                 <GoogleMapsClientProvider>
                   {/* Use the client wrapper here */}
                   <Navbar />
-                  <div className="my-10 flex flex-grow flex-col bg-background">
+                  <div className="mt-10 flex flex-grow flex-col bg-background">
                     {children}
                   </div>
                 </GoogleMapsClientProvider>

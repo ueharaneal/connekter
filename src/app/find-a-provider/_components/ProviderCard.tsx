@@ -16,6 +16,7 @@ import { CheckCircle, MessageCircle, Star } from "lucide-react";
 import Link from "next/link";
 import SeeAllImages from "@/components/common/images/SeeAllImages";
 import { trpc } from "@/server/client";
+import { useRouter } from "next/navigation";
 
 interface ProviderCardProps {
   listingId: number;
@@ -39,11 +40,15 @@ export default function ProviderCard({
   bio = "Experienced caregiver with a passion for helping others. Specialized in elderly care and companionship.",
 }: ProviderCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const router = useRouter();
 
-  const { data: listing } = trpc.listings.getListingById.useQuery({
-    id: listingId,
-  });
-  console.log(listing);
+  const { data: listing, error } = trpc.listings.getListingById.useQuery(
+    {
+      id: typeof listingId === "number" ? listingId : parseInt(listingId),
+    },
+    { enabled: !!listingId },
+  );
+  console.log(error);
 
   return (
     <Card className="max-w-lg overflow-hidden bg-black text-white">
@@ -111,7 +116,12 @@ export default function ProviderCard({
                     </div>
                   </div>
                   <p className="text-gray-300">{bio}</p>
-                  <Button className="w-full bg-pink-500 hover:bg-pink-600">
+                  <Button
+                    className="w-full bg-pink-500 hover:bg-pink-600"
+                    onClick={() => {
+                      router.push(`/messages/${listing?.userId}`);
+                    }}
+                  >
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Message
                   </Button>

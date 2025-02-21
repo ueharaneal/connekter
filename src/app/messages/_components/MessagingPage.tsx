@@ -59,7 +59,7 @@ export default function MessagingPage() {
   };
 
   return (
-    <ResizablePanel className="flex flex-col bg-[#1c1c1c]">
+    <ResizablePanel className="flex min-h-[94vh] flex-col bg-[#1c1c1c]">
       {/* Chat header */}
       <div className="flex items-center border-b border-white/10 p-4">
         <Avatar className="h-10 w-10">

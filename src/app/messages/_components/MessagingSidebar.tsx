@@ -49,13 +49,13 @@ function MessagingSidebar() {
   };
   return (
     <ResizablePanel
-      defaultSize={22}
+      defaultSize={21}
       minSize={8}
-      maxSize={22}
+      maxSize={21}
       onResize={onResize}
       className={cn(
-        "relative flex h-screen flex-col gap-y-4 bg-[#1c1c1c] transition-all duration-300",
-        isCollapsed ? "min-w-[4rem] max-w-[4rem]" : "min-w-[300px]",
+        "relative flex flex-col gap-y-4 bg-[#1c1c1c] transition-all duration-300",
+        isCollapsed ? "min-w-[4rem] max-w-[4rem]" : "min-w-[100px]",
       )}
     >
       {!isCollapsed && (
