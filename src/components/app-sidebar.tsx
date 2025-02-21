@@ -27,7 +27,7 @@ const menuItems = [
   { icon: LayoutGrid, label: "Dashboard", href: "/admin" },
   { icon: UserRoundPlus, label: "Providers", href: "/admin/providers" },
   { icon: MessageSquare, label: "Messages", href: "/messages" },
-  { icon: CalendarFold, label: "appoinments", href: "/admin/appoinments" },
+  { icon: CalendarFold, label: "Calendar", href: "/admin/calendar" },
   { icon: Users, label: "Users", href: "/admin/users" },
   { icon: Settings, label: "Settings", href: "admin/settings" },
 ];
