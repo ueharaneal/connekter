@@ -8,9 +8,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="flex flex-row justify-start">
       <AppSidebar />
-      <main className="mt-6">{children}</main>
+      <main className="-ml-32 mt-6 w-full">{children}</main>
     </SidebarProvider>
   );
 }
