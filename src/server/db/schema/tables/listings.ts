@@ -28,6 +28,9 @@ export const listings = pgTable(
     serviceCost: integer("serviceCost").notNull().default(0),
     serviceItems: text("serviceItems").array(),
     itemsNotIncluded: text("itemsNotIncluded").array(),
+    lowCareLevelItems: text("lowCareLevelItems").array(),
+    mediumCareLevelItems: text("mediumCareLevelItems").array(),
+    heavyCareLevelItems: text("heavyCareLevelItems").array(),
     latLngPoint: geometry("lat_lng_point", {
       type: "point",
       mode: "xy",

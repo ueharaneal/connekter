@@ -66,7 +66,6 @@ export const careLevels = pgTable("careLevels", {
     .notNull()
     .references(() => rooms.id, { onDelete: "cascade" }), // Each careLevel belongs to a room
   levelName: careLevelEnum("levelName").notNull(), // low, medium, or heavy
-  items: text("items").array(),
   price: integer("price").notNull().default(0),
 },
 (t) => ({

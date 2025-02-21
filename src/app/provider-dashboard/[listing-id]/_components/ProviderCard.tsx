@@ -5,23 +5,60 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { Listing } from "@/server/db/schema"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function PropertyCard({ listings }: { listings: Listing[] }) {
+  const router = useRouter()
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "center",
     loop: true,
   });
 
+  const updateUrl = useCallback((index: number) => {
+    const currentListingId = listings[index]?.id;
+    if (currentListingId) {
+      router.push(`/provider-dashboard/${currentListingId}`, { scroll: false });
+    }
+  }, [listings, router]);
+
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev()
-  }, [emblaApi])
+    if (emblaApi) {
+      emblaApi.scrollPrev();
+    }
+  }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext()
-  }, [emblaApi])
+    if (emblaApi) {
+      emblaApi.scrollNext();
+    }
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (emblaApi) {
+      // Initialize the carousel to the correct listing based on URL
+      const currentPath = window.location.pathname;
+      const currentId = currentPath.split('/').pop();
+      const initialIndex = listings.findIndex(listing => listing.id.toString() === currentId);
+      if (initialIndex !== -1) {
+        emblaApi.scrollTo(initialIndex, true);
+      }
+
+      // Add event listener for when the slide transition settles
+      const onSettle = () => {
+        const currentIndex = emblaApi.selectedScrollSnap();
+        updateUrl(currentIndex);
+      };
+
+      emblaApi.on('settle', onSettle);
+
+      return () => {
+        emblaApi.off('settle', onSettle);
+      };
+    }
+  }, [emblaApi, listings, updateUrl]);
 
   return (
     <div className="relative max-w-4xl mx-auto">
@@ -51,7 +88,7 @@ export default function PropertyCard({ listings }: { listings: Listing[] }) {
                           size="sm"
                           className="border-orange-500/20 bg-transparent text-orange-500 hover:bg-orange-500/10"
                         >
-                          <Link href="/provider/1">View profile</Link>
+                          <Link href={`/provider/${listing.id}`}>View profile</Link>
                         </Button>
                       </div>
                     </div>
