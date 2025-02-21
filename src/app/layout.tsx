@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Footer } from "@/components/landing-page";
 import Script from "next/script";
 import GoogleMapsClientProvider from "@/lib/providers/GoogleMapsClientProvider";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "Carefinder",
@@ -38,6 +39,8 @@ export default function RootLayout({
                   strategy="beforeInteractive"
                 />{" "}
                 <GoogleMapsClientProvider>
+                  <NextTopLoader color="#FF47A3" />
+
                   {/* Use the client wrapper here */}
                   <Navbar />
                   <div className="mt-10 flex flex-grow flex-col bg-background">

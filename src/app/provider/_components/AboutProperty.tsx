@@ -7,23 +7,20 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Listing } from "@/server/db/schema";
 import { Building2, MapPin, Users, Bath, Bed, Clock } from "lucide-react";
 
-export default function AboutProperty() {
+export default function AboutProperty({ listing }: { listing: Listing }) {
   return (
     <div className="flex w-full items-center justify-center p-4">
       <Card className="w-full max-w-4xl border-zinc-800 bg-zinc-900 text-white">
         <CardHeader className="space-y-4">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-2xl font-semibold">
-                Above Woodsville Care Home
-              </h2>
+              <h2 className="text-2xl font-semibold">{listing.name}</h2>
               <div className="mt-1 flex items-center text-zinc-400">
                 <MapPin className="mr-1 h-4 w-4" />
-                <span className="text-sm">
-                  123 Care Street, Woodsville, CA 90210
-                </span>
+                <span className="text-sm">{listing.address}</span>
               </div>
             </div>
             <Badge className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20">

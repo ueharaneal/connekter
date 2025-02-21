@@ -4,8 +4,18 @@ import * as React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Circle } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+interface PropertyGalleryProps {
+  imageUrls: string[];
+}
 
 const filters = [
   "All photos",
@@ -16,7 +26,7 @@ const filters = [
   "Patio",
 ];
 
-export default function PropertyGallery() {
+export default function PropertyGallery({ imageUrls }: PropertyGalleryProps) {
   const [activeFilter, setActiveFilter] = React.useState("All photos");
 
   return (
@@ -29,7 +39,7 @@ export default function PropertyGallery() {
               key={filter}
               variant={activeFilter === filter ? "default" : "ghost"}
               className={cn(
-                "rounded-full px-3 text-xs text-white",
+                "rounded-full px-3 text-xs",
                 activeFilter === filter && "hover:bg-primary",
               )}
               onClick={() => setActiveFilter(filter)}
@@ -39,44 +49,43 @@ export default function PropertyGallery() {
           ))}
         </div>
 
-        {/* Photo Grid */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {/* First Image - Always Visible */}
-          <div className="relative block aspect-[4/3] overflow-hidden rounded-xl md:block">
-            {" "}
-            {/* Visible on all sizes */}
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-14%20at%2012.26.51%E2%80%AFAM-QkIivaSab7tcjNb3ay7bp0NPg0Z3rr.png"
-              alt="Modern house exterior at night"
-              fill
-              className="object-cover"
-            />
+        {/* Carousel */}
+        <Carousel className="w-full">
+          <CarouselContent>
+            {imageUrls.map((url, index) => (
+              <CarouselItem key={index} className="md:basis-1/3">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div className="relative aspect-[4/3] cursor-pointer overflow-hidden rounded-xl">
+                      <Image
+                        src={url || "/placeholder.svg"}
+                        alt={`Property image ${index + 1}`}
+                        fill
+                        className="object-cover transition-transform hover:scale-105"
+                      />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl" autoFocus={false}>
+                    <div className="relative aspect-[4/3] w-full">
+                      <Image
+                        src={url || "/placeholder.svg"}
+                        alt={`Property image ${index + 1}`}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="absolute left-1 top-1/2 flex items-center justify-center">
+            <CarouselPrevious className="relative left-0 translate-x-0 hover:translate-x-0 hover:bg-black" />
           </div>
-
-          {/* Second Image - Hidden on md and smaller, visible on lg and larger */}
-          <div className="relative hidden aspect-[4/3] overflow-hidden rounded-xl md:block">
-            {" "}
-            {/* Hidden on md and smaller, block on md and larger */}
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-14%20at%2012.26.51%E2%80%AFAM-QkIivaSab7tcjNb3ay7bp0NPg0Z3rr.png"
-              alt="Modern kitchen with white cabinets"
-              fill
-              className="object-cover"
-            />
+          <div className="absolute right-1 top-1/2 flex items-center justify-center">
+            <CarouselNext className="relative right-0 translate-x-0 hover:translate-x-0 hover:bg-black" />
           </div>
-
-          {/* Third Image - Hidden on md and smaller, visible on lg and larger */}
-          <div className="group relative hidden aspect-[4/3] overflow-hidden rounded-xl md:block">
-            {" "}
-            {/* Hidden on md and smaller, block on md and larger */}
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-14%20at%2012.26.51%E2%80%AFAM-QkIivaSab7tcjNb3ay7bp0NPg0Z3rr.png"
-              alt="Available bedroom"
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
+        </Carousel>
       </div>
     </div>
   );

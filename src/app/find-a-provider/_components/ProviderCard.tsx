@@ -169,7 +169,9 @@ export default function ProviderCard({
           variant="outline"
           className="border-gray-800 text-white hover:bg-gray-800"
         >
-          <Link href="/provider/1">View profile</Link>
+          {listing && (
+            <Link href={`/provider/${listing.id}`}>View profile</Link>
+          )}
         </Button>
         <Button className="bg-pink-500 hover:bg-pink-600">
           <MessageCircle className="mr-2 h-4 w-4" />
