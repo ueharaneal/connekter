@@ -29,7 +29,7 @@ const menuItems = [
   { icon: MessageSquare, label: "Messages", href: "/messages" },
   { icon: CalendarFold, label: "Calendar", href: "/admin/calendar" },
   { icon: Users, label: "Users", href: "/admin/users" },
-  { icon: Settings, label: "Settings", href: "admin/settings" },
+  { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
 export function AppSidebar() {
