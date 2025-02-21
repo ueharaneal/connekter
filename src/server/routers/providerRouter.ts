@@ -55,6 +55,40 @@ export const providerRouter = createTRPCRouter({
         .where(eq(providers.userId, ctx.user.id));
     }),
 
+  saveCareLevels: protectedProcedure
+    .input(
+      z.object({
+        listingId: z.string(),
+        careLevels: z.record(
+          z.string(),
+          z.array(
+            z.object({
+              title: z.string(),
+              items: z.array(z.string()),
+            })
+          )
+        ),
+        serviceItems: z.array(z.string()),
+        notIncludedItems: z.array(z.string()),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { careLevels, serviceItems, notIncludedItems, listingId } = input;
+
+      try{
+        await db.update(listings).set({
+          lowCareLevelItems: careLevels.low.map((item) => item.items).flat(),
+          mediumCareLevelItems: careLevels.medium.map((item) => item.items).flat(),
+          heavyCareLevelItems: careLevels.heavy.map((item) => item.items).flat(),
+          serviceItems: serviceItems,
+          itemsNotIncluded: notIncludedItems,
+        }).where(eq(listings.id, Number(listingId)));
+      } catch (error) {
+        console.error(error);
+      }
+    }),
+
+
   saveCostOfCare: protectedProcedure
     .input(z.object({
       rentCosts: z.array(z.object({
