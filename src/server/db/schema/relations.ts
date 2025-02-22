@@ -19,7 +19,7 @@ export const providerProfilesRelations = relations(providers, ({ one }) => ({
 
 export const providerListingsRelations = relations(listings, ({ one }) => ({
   provider: one(providers, {
-    fields: [listings.userId],
+    fields: [listings.providerId],
     references: [providers.userId],
   }),
 }));
