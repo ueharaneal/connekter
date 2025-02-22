@@ -66,28 +66,12 @@ export default function SearchBar() {
           lat: coordinates.location.lat,
           long: coordinates.location.lng,
         };
-        let locationBoundingBox: LocationBoundingBoxType;
         if (coordinates.bounds) {
           setCitySearchLatLong(cityLatLong);
-          //update the boundingbox
-          locationBoundingBox = {
-            north: coordinates.bounds.northeast.lat,
-            south: coordinates.bounds.southwest.lng,
-            east: coordinates.bounds.northeast.lat,
-            west: coordinates.bounds.southwest.lat,
-          };
-        } else {
-          locationBoundingBox = {
-            north: 0,
-            south: 0,
-            east: 0,
-            west: 0,
-          };
         }
-        setLocationBoundingBox(locationBoundingBox);
+      } else {
+        toast.error("Error fetching coordinates");
       }
-    } else {
-      toast.error("Error fetching coordinates");
     }
   };
 

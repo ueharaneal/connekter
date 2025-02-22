@@ -40,7 +40,7 @@ export const listingsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { cursor, boundaries } = input;
-
+      console.log(input);
       try {
         // Start with base query
         const baseQuery = db
