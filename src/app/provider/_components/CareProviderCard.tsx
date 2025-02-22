@@ -9,6 +9,7 @@ export default function CareProviderCard({
 }: {
   listing: ListingWProvider;
 }) {
+  console.log(listing.provider.credentials);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-3xl text-foreground">
@@ -53,23 +54,28 @@ export default function CareProviderCard({
             <div>
               <h3 className="mb-2 text-lg font-medium">Credentials</h3>
               <p className="text-sm text-zinc-400">
-                Attended Washington State University and received a Bachelors of
-                Health Administration. Registered Nurse and went on to receive
-                my Masters in public relations.
+                {listing.provider.credentials
+                  ? listing.provider.credentials
+                  : "No Credentials"}
               </p>
             </div>
 
-            <div>
-              <h3 className="mb-2 text-lg font-medium">Languages</h3>
-              <div className="flex gap-2">
-                <Badge
-                  variant="outline"
-                  className="border-zinc-700 text-xs text-zinc-400"
-                >
-                  English
-                </Badge>
+            {listing.provider.languages && (
+              <div>
+                <h3 className="mb-2 text-lg font-medium">Languages</h3>
+                <div className="flex gap-2">
+                  {listing.provider.languages.map((language, index) => (
+                    <Badge
+                      key={index}
+                      variant="outline"
+                      className="border-zinc-700 text-xs text-zinc-400"
+                    >
+                      {language}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -28,6 +28,7 @@ export const listings = pgTable(
       .references(() => providers.userId)
       .notNull(),
     isActive: boolean("is_active").notNull().default(true),
+    about: text("about"),
     serviceCost: integer("service_cost").notNull().default(0),
     serviceItems: text("service_items").array(),
     itemsNotIncluded: text("items_not_included").array(),
