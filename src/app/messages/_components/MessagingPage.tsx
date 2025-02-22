@@ -29,7 +29,7 @@ const contacts = [
   },
   {
     id: 3,
-    name: "Kaitlynee BAWDYY",
+    name: "Kaitlynee",
     avatar: "/avatar3.png",
     lastMessage: "I'm supposed to see my grandma idk what time though",
     time: "6:33 AM",
