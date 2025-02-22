@@ -2,9 +2,14 @@ import { pgTable, varchar, text, pgEnum, boolean } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-export const ALL_LANGUAGES = ["English", "French", "Spanish"] as const;
-export const languagesEnum = pgEnum("languages", ALL_LANGUAGES);
+export const ALL_LANGUAGES = [
+  "English",
+  "French",
+  "Spanish",
+  "Chinese",
+] as const;
 
+export const languagesEnum = pgEnum("languages", ALL_LANGUAGES);
 
 export const providers = pgTable("providers", {
   userId: varchar("user_id")
@@ -20,7 +25,9 @@ export const providers = pgTable("providers", {
   verified: boolean("verified").default(false),
 });
 export type Provider = typeof providers.$inferSelect;
-export const providerInsertSchema = createInsertSchema(providers).omit({ userId: true });
+export const providerInsertSchema = createInsertSchema(providers).omit({
+  userId: true,
+});
 export const providerSelectSchema = createSelectSchema(providers);
 export const providerUpdateSchema = providerSelectSchema
   .partial()

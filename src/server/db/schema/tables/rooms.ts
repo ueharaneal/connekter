@@ -43,6 +43,7 @@ export const careLevelEnum = pgEnum("care_level", CARE_LEVELS);
 export const careLevelZodEnum = z.enum(["low", "medium", "heavy"]);
 export const roomPropertiesEnum = pgEnum("room_properties", ROOM_PROPERTIES);
 export const availableToEnum = pgEnum("available_to", AVAILABLE_TO);
+
 export const rooms = pgTable("room", {
   id: text("id")
     .primaryKey()
