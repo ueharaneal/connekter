@@ -6,6 +6,9 @@ export async function getListingById(id: number) {
   try {
     const listing = await db.query.listings.findFirst({
       where: eq(listings.id, id),
+      with: {
+        provider: true,
+      },
     });
 
     if (listing) {

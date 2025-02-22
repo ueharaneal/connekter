@@ -28,7 +28,7 @@ async function Page({ params }: { params: { id: number } }) {
               <PropertyGallery imageUrls={listing.imageUrls} />
               <AboutProperty listing={listing} />
             </div>
-            <CareProviderCard />
+            <CareProviderCard listing={listing} />
           </div>
           <ProvdierPriceCard type="senior-view" />
           <ConnectWithProvider />

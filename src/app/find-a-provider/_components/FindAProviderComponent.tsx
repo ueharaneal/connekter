@@ -26,7 +26,11 @@ function ProvidersPage() {
     citySearchLatLong,
   );
 
-  const { data: listingsQuery } = trpc.listings.getListingsByBoundary.useQuery(
+  const {
+    data: listingsQuery,
+    isLoading,
+    isFetching,
+  } = trpc.listings.getListingsByBoundary.useQuery(
     {
       boundaries: {
         north: locationBoundingBox.north,
@@ -39,12 +43,12 @@ function ProvidersPage() {
     {
       enabled: !!locationBoundingBox,
       refetchOnWindowFocus: false,
+      staleTime: 30000,
     },
   );
 
   useEffect(() => {
-    if (listingsQuery?.data) setAdjustedListings(listingsQuery.data);
-    console.log(adjustedListings);
+    setAdjustedListings(listingsQuery?.data);
   }, [listingsQuery, setAdjustedListings]);
 
   return (
@@ -52,7 +56,10 @@ function ProvidersPage() {
       <SearchBar />
       <div className="flex w-full flex-col gap-4 lg:flex-row">
         <div className="hidden w-full overflow-y-auto md:flex md:flex-col lg:max-h-[calc(100vh-120px)]">
-          <ProviderList currentListings={adjustedListings} />
+          <ProviderList
+            currentListings={adjustedListings}
+            isLoading={isLoading || isFetching}
+          />
         </div>
         <div className="relative h-[400px] rounded-lg shadow-md lg:h-[calc(100vh-150px)] lg:w-4/5">
           {" "}
