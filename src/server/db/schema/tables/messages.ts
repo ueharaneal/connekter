@@ -20,7 +20,7 @@ export const conversations = pgTable("conversations", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
-  listingId: text("listingId").references(() => listings.id),
+  listingId: integer("listing_id").references(() => listings.id),
 });
 
 export const messages = pgTable(
@@ -30,19 +30,16 @@ export const messages = pgTable(
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID())
       .notNull(),
-    conversationId: text("conversationId")
+    conversationId: text("conversation_id")
       .notNull()
       .references(() => conversations.id, { onDelete: "cascade" }),
-    userId: text("userId").references(() => users.id, {
+    userId: text("user_id").references(() => users.id, {
       onDelete: "set null",
     }),
     message: varchar("message", { length: 1500 }).notNull(),
     read: boolean("read").default(false),
     isEdit: boolean("is_edit").default(false),
-    createdAt: timestamp(
-      "created_at",
-      { withTimezone: true, mode: "string" },
-    )
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
       .notNull()
       .defaultNow(),
   },

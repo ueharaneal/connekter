@@ -10,6 +10,7 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
+import { providers } from "./providers";
 export const listings = pgTable(
   "listings",
   {
@@ -17,19 +18,19 @@ export const listings = pgTable(
     name: text("name").notNull().notNull(),
     imageUrls: varchar("image_urls").array().notNull(),
     address: text("address").notNull(),
-    createdAt: timestamp("createdAt", { withTimezone: true, mode: "string" })
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
       .notNull()
       .defaultNow(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true, mode: "string" })
+    updatedAt: timestamp("update_at", { withTimezone: true, mode: "string" })
       .notNull()
       .defaultNow(),
-    userId: text("userId")
-      .references(() => users.id)
+    providerId: text("provider_id")
+      .references(() => providers.userId)
       .notNull(),
-    isActive: boolean("isActive").notNull().default(true),
-    serviceCost: integer("serviceCost").notNull().default(0),
-    serviceItems: text("serviceItems").array(),
-    itemsNotIncluded: text("itemsNotIncluded").array(),
+    isActive: boolean("is_active").notNull().default(true),
+    serviceCost: integer("service_cost").notNull().default(0),
+    serviceItems: text("service_items").array(),
+    itemsNotIncluded: text("items_not_included").array(),
     lowCareLevelItems: text("lowCareLevelItems").array(),
     mediumCareLevelItems: text("mediumCareLevelItems").array(),
     heavyCareLevelItems: text("heavyCareLevelItems").array(),

@@ -6,7 +6,7 @@ import PropertyGallery from "../_components/PropertyGallery";
 import AboutProperty from "../_components/AboutProperty";
 import ProvdierPriceCard from "../../../components/common/ProviderPriceCard";
 import ConnectWithProvider from "../_components/ConnectWithProvider";
-import { getListingById } from "@/actions/listings";
+import { getListingById } from "@/actions/listings-actions";
 import ListingSkeleton from "../_components/ListingSkeleton";
 
 async function Page({ params }: { params: { id: number } }) {
