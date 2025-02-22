@@ -11,7 +11,7 @@ export const ALL_LANGUAGES = [
 
 export const languagesEnum = pgEnum("languages", ALL_LANGUAGES);
 
-export const providers = pgTable("providers", {
+export const providerProfiles = pgTable("provider_profiles", {
   userId: varchar("user_id")
     .primaryKey()
     .references(() => users.id),
@@ -24,12 +24,12 @@ export const providers = pgTable("providers", {
   image: text("image"),
   verified: boolean("verified").default(false),
 });
-export type Provider = typeof providers.$inferSelect;
+export type Provider = typeof providerProfiles.$inferSelect;
 
-export const providerInsertSchema = createInsertSchema(providers).omit({
+export const providerInsertSchema = createInsertSchema(providerProfiles).omit({
   userId: true,
 });
-export const providerSelectSchema = createSelectSchema(providers);
+export const providerSelectSchema = createSelectSchema(providerProfiles);
 export const providerUpdateSchema = providerSelectSchema
   .partial()
   .required({ userId: true });

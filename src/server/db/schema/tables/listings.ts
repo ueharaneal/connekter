@@ -10,7 +10,7 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
-import { providers } from "./providers";
+import { providerProfiles } from "./providers";
 export const listings = pgTable(
   "listings",
   {
@@ -25,7 +25,7 @@ export const listings = pgTable(
       .notNull()
       .defaultNow(),
     providerId: text("provider_id")
-      .references(() => providers.userId)
+      .references(() => providerProfiles.userId)
       .notNull(),
     isActive: boolean("is_active").notNull().default(true),
     about: text("about"),

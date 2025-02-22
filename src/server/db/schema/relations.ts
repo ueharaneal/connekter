@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { users } from "./tables/users";
 import { sessions, accounts } from "./tables/auth";
-import { providers } from "./tables/providers";
+import { providerProfiles } from "./tables/providers";
 import { listings } from "./tables/listings";
 import { listingFaqs } from "./tables/faqs";
 
@@ -10,17 +10,20 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   sessions: many(sessions),
 }));
 
-export const providerProfilesRelations = relations(providers, ({ one }) => ({
-  user: one(users, {
-    fields: [providers.userId],
-    references: [users.id],
+export const providerProfilesRelations = relations(
+  providerProfiles,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [providerProfiles.userId],
+      references: [users.id],
+    }),
   }),
-}));
+);
 
 export const providerListingsRelations = relations(listings, ({ one }) => ({
-  provider: one(providers, {
+  provider: one(providerProfiles, {
     fields: [listings.providerId],
-    references: [providers.userId],
+    references: [providerProfiles.userId],
   }),
 }));
 

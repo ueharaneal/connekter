@@ -7,17 +7,17 @@ import LanguageSection from "./_components/LanguageSection";
 import db from "@/server/db";
 import EditableSections from "./_components/EditableSections";
 import { eq } from "drizzle-orm";
-import { providers } from "@/server/db/schema/tables/providers";
+import { providerProfiles } from "@/server/db/schema/tables/providers";
 import nextAuth from "@/auth";
 
 export default async function ProviderProfile() {
   const session = await nextAuth.auth();
   if (!session?.user || !session.user.id) throw new Error("Not authenticated");
-  const provider = await db.query.providers.findFirst({
+  const provider = await db.query.providerProfiles.findFirst({
     with: {
       user: true,
     },
-    where: eq(providers.userId, session.user.id),
+    where: eq(providerProfiles.userId, session.user.id),
   });
 
   const sections = [
