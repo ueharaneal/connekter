@@ -4,11 +4,26 @@ import { sessions, accounts } from "./tables/auth";
 import { providerProfiles } from "./tables/providers";
 import { listings } from "./tables/listings";
 import { listingFaqs } from "./tables/faqs";
+import { adminTeam, adminTeamMembers } from "./tables/adminTeam";
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
 }));
+
+export const adminTeamRelations = relations(adminTeam, ({ many }) => ({
+  members: many(adminTeamMembers),
+}));
+
+export const adminTeamMembersRelations = relations(
+  adminTeamMembers,
+  ({ one }) => ({
+    adminTeam: one(adminTeam, {
+      fields: [adminTeamMembers.adminTeamId],
+      references: [adminTeam.id],
+    }),
+  }),
+);
 
 export const providerProfilesRelations = relations(
   providerProfiles,
