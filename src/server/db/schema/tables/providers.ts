@@ -1,4 +1,11 @@
-import { pgTable, varchar, text, pgEnum, boolean } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  varchar,
+  text,
+  pgEnum,
+  boolean,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
@@ -23,6 +30,9 @@ export const providerProfiles = pgTable("provider_profiles", {
   phoneNumber: varchar("phone_number", { length: 20 }),
   image: text("image"),
   verified: boolean("verified").default(false),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
 export type Provider = typeof providerProfiles.$inferSelect;
 
