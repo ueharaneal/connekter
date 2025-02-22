@@ -25,6 +25,7 @@ export const providers = pgTable("providers", {
   verified: boolean("verified").default(false),
 });
 export type Provider = typeof providers.$inferSelect;
+
 export const providerInsertSchema = createInsertSchema(providers).omit({
   userId: true,
 });

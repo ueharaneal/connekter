@@ -7,10 +7,14 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Listing } from "@/server/db/schema";
+import { ListingWProvider } from "@/types/listing-types";
 import { Building2, MapPin, Users, Bath, Bed, Clock } from "lucide-react";
 
-export default function AboutProperty({ listing }: { listing: Listing }) {
+export default function AboutProperty({
+  listing,
+}: {
+  listing: ListingWProvider;
+}) {
   return (
     <div className="flex w-full items-center justify-center p-4">
       <Card className="w-full max-w-4xl border-zinc-800 bg-zinc-900 text-white">

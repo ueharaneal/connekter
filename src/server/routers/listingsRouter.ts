@@ -40,6 +40,7 @@ export const listingsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { cursor, boundaries } = input;
+
       try {
         // Start with base query
         const baseQuery = db
@@ -74,6 +75,8 @@ export const listingsRouter = createTRPCRouter({
         const query = baseQuery.where(and(...conditions));
 
         const data = await query.limit(100).orderBy(asc(listings.id));
+        if (data.length < 1) console.log("fuck");
+
         console.log(data);
         return {
           data,
