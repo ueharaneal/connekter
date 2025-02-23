@@ -262,17 +262,25 @@ export const useMessage = create<MessageState>((set, get) => {
             console.log("Realtime payload received:", payload);
             const newMessage = payload.new as MessageType;
             const conversationId = newMessage.conversationId;
-
-            if (get().conversations[conversationId]) {
-              const chatMessage: ChatMessageType = {
-                ...newMessage,
-                userId: newMessage.userId!,
-              };
-              get().addMessageToConversation(conversationId, chatMessage);
+            const isRelevantConversation =
+              get().currentUserConversationIds.includes(conversationId);
+            if (isRelevantConversation) {
+              if (get().conversations[conversationId]) {
+                const chatMessage: ChatMessageType = {
+                  ...newMessage,
+                  userId: newMessage.userId!,
+                };
+                get().addMessageToConversation(conversationId, chatMessage);
+              } else {
+                console.log(
+                  `New message received for conversation ${conversationId}, but conversation is not in Zustand state.`,
+                );
+              }
             } else {
               console.log(
-                `New message received for conversation ${conversationId}, but conversation is not in Zustand state.`,
+                `Realtime message for conversation ${conversationId} is not relevant to current user.`,
               );
+              // Message is for a conversation the user is not currently tracking, ignore it.
             }
           },
         )
