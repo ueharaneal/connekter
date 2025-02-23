@@ -1,7 +1,7 @@
 import { publicProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import db from "@/server/db";
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { messages, MessageType } from "../db/schema/tables/messages";
 import {
   conversationParticipants,
@@ -10,8 +10,34 @@ import {
 import { LIMIT_MESSAGE } from "@/lib/constants";
 import { TRPCError } from "@trpc/server";
 import supabase from "../db/supabase-client";
+import { createOrFindConversationBetweenUsers } from "../server-utils/messages-utils";
 
 export const messagesRouter = createTRPCRouter({
+  createOrFindConversation: protectedProcedure
+    .input(
+      z.object({
+        participantUserIds: z.string().array().min(1),
+        name: z.string().optional(),
+        listingId: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { participantUserIds, name, listingId } = input;
+      const currentUserId = ctx.user.id;
+      console.log(input);
+      if (!currentUserId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Not authenticated",
+        });
+      }
+
+      return await createOrFindConversationBetweenUsers({
+        ...input,
+        currentUserId,
+      });
+    }),
+
   getUserConversations: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -150,3 +176,78 @@ export const messagesRouter = createTRPCRouter({
       }
     }),
 });
+
+type CreateOrFindConversationParams = {
+  participantUserIds: string[];
+  currentUserId: string;
+  name?: string;
+  listingId?: number;
+};
+
+export async function createOrFindConversation({
+  participantUserIds,
+  currentUserId,
+  name,
+  listingId,
+}: CreateOrFindConversationParams) {
+  // Add current user as a participant if not included
+  if (!participantUserIds.includes(currentUserId)) {
+    participantUserIds.push(currentUserId);
+  }
+
+  // Sort participants for consistent comparison
+  const allParticipants = [...participantUserIds].sort();
+
+  // Find existing conversations
+  const existingConversations = await db
+    .select({
+      conversationId: conversationParticipants.conversationId,
+      participantCount: sql`count(*)`.as("participantCount"),
+    })
+    .from(conversationParticipants)
+    .where(inArray(conversationParticipants.userId, allParticipants))
+    .groupBy(conversationParticipants.conversationId)
+    .having(({ participantCount }) =>
+      eq(participantCount, allParticipants.length),
+    );
+
+  // Check for exact participant matches
+  for (const conv of existingConversations) {
+    const participants = await db
+      .select()
+      .from(conversationParticipants)
+      .where(eq(conversationParticipants.conversationId, conv.conversationId));
+
+    if (participants.length === allParticipants.length) {
+      const participantIds = participants.map((p) => p.userId).sort();
+      if (JSON.stringify(participantIds) === JSON.stringify(allParticipants)) {
+        return await db.query.conversations.findFirst({
+          where: eq(conversations.id, conv.conversationId),
+        });
+      }
+    }
+  }
+
+  // Create new conversation if no match found
+  const conversationValues = {
+    ...(listingId && { listingId }),
+    ...(name && { name }),
+  };
+
+  const newConversation = await db
+    .insert(conversations)
+    .values(conversationValues)
+    .returning()
+    .then((res) => res[0]!);
+
+  // Add participants
+  const participantPromises = participantUserIds.map((participant) =>
+    db.insert(conversationParticipants).values({
+      conversationId: newConversation.id,
+      userId: participant,
+    }),
+  );
+  await Promise.all(participantPromises);
+
+  return newConversation;
+}

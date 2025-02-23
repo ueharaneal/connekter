@@ -17,6 +17,8 @@ import Link from "next/link";
 import SeeAllImages from "@/components/common/images/SeeAllImages";
 import { trpc } from "@/server/client";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 interface ProviderCardProps {
   listingId: number;
@@ -38,6 +40,7 @@ export default function ProviderCard({
 }: ProviderCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
+  const currentUser = useSession().data?.user;
 
   const { data: listing, error } = trpc.listings.getListingById.useQuery(
     {
@@ -45,8 +48,29 @@ export default function ProviderCard({
     },
     { enabled: !!listingId },
   );
+
+  const { mutateAsync: createOrFindConversation } =
+    trpc.messages.createOrFindConversation.useMutation();
+
   console.log(error);
 
+  const handleMessageClick = async () => {
+    console.log("clicked");
+    if (!currentUser || !listing) {
+      toast.error("Must be signed in");
+      return;
+    } else {
+      const newConversation = await createOrFindConversation({
+        participantUserIds: [currentUser.id!, listing.providerId],
+      });
+      console.log(newConversation);
+      if (newConversation) {
+        router.push(`/messages/${newConversation.id}`);
+      } else {
+        toast.error("Message Error");
+      }
+    }
+  };
   return (
     <Card className="max-w-lg overflow-hidden bg-black text-white">
       {listing && (
@@ -117,15 +141,19 @@ export default function ProviderCard({
                         </div>
                       </div>
                       <p className="text-gray-300">{bio}</p>
-                      <Button
-                        className="w-full bg-pink-500 hover:bg-pink-600"
-                        onClick={() => {
-                          router.push(`/messages/${listing?.userId}`);
-                        }}
-                      >
-                        <MessageCircle className="mr-2 h-4 w-4" />
-                        Message
-                      </Button>
+                      {!currentUser ||
+                        (currentUser.id !== listing.providerId && (
+                          <Button
+                            className="w-full bg-pink-500 hover:bg-pink-600"
+                            onClick={() => {
+                              console.log("ckick");
+                              handleMessageClick();
+                            }}
+                          >
+                            <MessageCircle className="mr-2 h-4 w-4" />
+                            Message
+                          </Button>
+                        ))}
                     </div>
                   </DialogContent>
                 </Dialog>
@@ -176,10 +204,19 @@ export default function ProviderCard({
                 <Link href={`/provider/${listing.id}`}>View profile</Link>
               )}
             </Button>
-            <Button className="bg-pink-500 hover:bg-pink-600">
-              <MessageCircle className="mr-2 h-4 w-4" />
-              Message
-            </Button>
+            {!currentUser ||
+              (currentUser.id !== listing.providerId && (
+                <Button
+                  className="bg-pink-500 hover:bg-pink-600"
+                  onClick={() => {
+                    console.log("clicked");
+                    handleMessageClick();
+                  }}
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Message
+                </Button>
+              ))}
           </CardFooter>
         </>
       )}

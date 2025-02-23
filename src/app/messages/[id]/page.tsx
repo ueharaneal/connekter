@@ -1,7 +1,8 @@
 import React from "react";
+import MessagingPage from "../_components/MessagingPage";
 
 function page({ params }: { params: { id: string } }) {
-  return <div>conversation id {params.id}</div>;
+  return <MessagingPage />;
 }
 
 export default page;

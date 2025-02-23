@@ -21,8 +21,8 @@ type ConversationsState = Record<
 type MessageState = {
   conversations: ConversationsState;
   currentUserConversationIds: string[];
-  fetchUserConversationIds: (userId: string) => Promise<void>;
   currentConversationId: string | null;
+  setCurrentUserConversationIds: (conversationIds: string[]) => void;
   setCurrentConversationId: (id: string) => void;
   switchConversation: (conversationId: string) => void;
   addMessageToConversation: (
@@ -45,28 +45,13 @@ type MessageState = {
   unsubscribeRealtime: () => void;
 };
 
+// refer to useMessageWIthUtils.ts
 export const useMessage = create<MessageState>((set, get) => {
-  const utils = trpc.useUtils();
-
   return {
     conversations: {},
     currentUserConversationIds: [],
-    fetchUserConversationIds: async (userId: string) => {
-      try {
-        const conversations = await utils.messages.getUserConversations.fetch({
-          userId,
-        });
-
-        if (conversations) {
-          const conversationIds = conversations.map(
-            (conversation) => conversation.id,
-          );
-          set({ currentUserConversationIds: conversationIds });
-        }
-      } catch (error) {
-        console.error("Error fetching user conversations for IDs:", error);
-        toast.error("Error fetching conversations.");
-      }
+    setCurrentUserConversationIds: (conversationIds: string[]) => {
+      set({ currentUserConversationIds: conversationIds });
     },
     currentConversationId: null,
     setCurrentConversationId: (id: string) => {
