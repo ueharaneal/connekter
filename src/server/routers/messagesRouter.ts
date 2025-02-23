@@ -1,7 +1,7 @@
 import { publicProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import db from "@/server/db";
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { messages, MessageType } from "../db/schema/tables/messages";
 import {
   conversationParticipants,
@@ -12,7 +12,7 @@ import { TRPCError } from "@trpc/server";
 import supabase from "../db/supabase-client";
 
 export const messagesRouter = createTRPCRouter({
-  createConversation: protectedProcedure
+  createOrFindConversation: protectedProcedure
     .input(
       z.object({
         participantUserIds: z.string().array().min(1),
@@ -23,6 +23,7 @@ export const messagesRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { participantUserIds, name, listingId } = input;
       const currentUserId = ctx.user.id;
+      console.log(input);
       if (!currentUserId) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
@@ -32,6 +33,46 @@ export const messagesRouter = createTRPCRouter({
       //add current user as a participant
       if (!participantUserIds.includes(currentUserId)) {
         participantUserIds.push(currentUserId);
+      }
+
+      // First, try to find existing conversation
+      const allParticipants = [...participantUserIds].sort(); // Sort to ensure consistent order
+
+      // Get all conversations where these users are participants
+      const existingConversations = await db
+        .select({
+          conversationId: conversationParticipants.conversationId,
+          participantCount: sql`count(*)`.as("participantCount"),
+        })
+        .from(conversationParticipants)
+        .where(inArray(conversationParticipants.userId, allParticipants))
+        .groupBy(conversationParticipants.conversationId)
+        .having(({ participantCount }) =>
+          eq(participantCount, allParticipants.length),
+        );
+
+      // If we found matching conversations, verify they contain exactly these participants
+      for (const conv of existingConversations) {
+        const participants = await db
+          .select()
+          .from(conversationParticipants)
+          .where(
+            eq(conversationParticipants.conversationId, conv.conversationId),
+          );
+
+        // Check if this conversation has exactly the same participants
+        if (participants.length === allParticipants.length) {
+          const participantIds = participants.map((p) => p.userId).sort();
+          if (
+            JSON.stringify(participantIds) === JSON.stringify(allParticipants)
+          ) {
+            // Found exact match - return existing conversation
+            const conversation = await db.query.conversations.findFirst({
+              where: eq(conversations.id, conv.conversationId),
+            });
+            return conversation;
+          }
+        }
       }
 
       const conversationValues = {
@@ -197,3 +238,78 @@ export const messagesRouter = createTRPCRouter({
       }
     }),
 });
+
+type CreateOrFindConversationParams = {
+  participantUserIds: string[];
+  currentUserId: string;
+  name?: string;
+  listingId?: number;
+};
+
+export async function createOrFindConversation({
+  participantUserIds,
+  currentUserId,
+  name,
+  listingId,
+}: CreateOrFindConversationParams) {
+  // Add current user as a participant if not included
+  if (!participantUserIds.includes(currentUserId)) {
+    participantUserIds.push(currentUserId);
+  }
+
+  // Sort participants for consistent comparison
+  const allParticipants = [...participantUserIds].sort();
+
+  // Find existing conversations
+  const existingConversations = await db
+    .select({
+      conversationId: conversationParticipants.conversationId,
+      participantCount: sql`count(*)`.as("participantCount"),
+    })
+    .from(conversationParticipants)
+    .where(inArray(conversationParticipants.userId, allParticipants))
+    .groupBy(conversationParticipants.conversationId)
+    .having(({ participantCount }) =>
+      eq(participantCount, allParticipants.length),
+    );
+
+  // Check for exact participant matches
+  for (const conv of existingConversations) {
+    const participants = await db
+      .select()
+      .from(conversationParticipants)
+      .where(eq(conversationParticipants.conversationId, conv.conversationId));
+
+    if (participants.length === allParticipants.length) {
+      const participantIds = participants.map((p) => p.userId).sort();
+      if (JSON.stringify(participantIds) === JSON.stringify(allParticipants)) {
+        return await db.query.conversations.findFirst({
+          where: eq(conversations.id, conv.conversationId),
+        });
+      }
+    }
+  }
+
+  // Create new conversation if no match found
+  const conversationValues = {
+    ...(listingId && { listingId }),
+    ...(name && { name }),
+  };
+
+  const newConversation = await db
+    .insert(conversations)
+    .values(conversationValues)
+    .returning()
+    .then((res) => res[0]!);
+
+  // Add participants
+  const participantPromises = participantUserIds.map((participant) =>
+    db.insert(conversationParticipants).values({
+      conversationId: newConversation.id,
+      userId: participant,
+    }),
+  );
+  await Promise.all(participantPromises);
+
+  return newConversation;
+}
