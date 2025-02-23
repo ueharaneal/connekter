@@ -12,6 +12,53 @@ import { TRPCError } from "@trpc/server";
 import supabase from "../db/supabase-client";
 
 export const messagesRouter = createTRPCRouter({
+  createConversation: protectedProcedure
+    .input(
+      z.object({
+        participantUserIds: z.string().array().min(1),
+        name: z.string().optional(),
+        listingId: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { participantUserIds, name, listingId } = input;
+      const currentUserId = ctx.user.id;
+      if (!currentUserId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Not authenticated",
+        });
+      }
+      //add current user as a participant
+      if (!participantUserIds.includes(currentUserId)) {
+        participantUserIds.push(currentUserId);
+      }
+
+      const conversationValues = {
+        ...(listingId && { listingId }), // Only add listingId if it exists
+        ...(name && { name }), // Only add name if it exists
+      };
+
+      const newConversation = await db
+        .insert(conversations)
+        .values(conversationValues)
+        .returning()
+        .then((res) => res[0]!);
+
+      const curConversationId = newConversation.id;
+      //insert each participant into  the conversation
+      const conversationParticipantsPromise = participantUserIds.map(
+        (participant) =>
+          db.insert(conversationParticipants).values({
+            conversationId: curConversationId,
+            userId: participant,
+          }),
+      );
+      await Promise.all(conversationParticipantsPromise);
+
+      return newConversation;
+    }),
+
   getUserConversations: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input, ctx }) => {
