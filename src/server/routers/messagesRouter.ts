@@ -10,6 +10,7 @@ import {
 import { LIMIT_MESSAGE } from "@/lib/constants";
 import { TRPCError } from "@trpc/server";
 import supabase from "../db/supabase-client";
+import { createOrFindConversationBetweenUsers } from "../server-utils/messages-utils";
 
 export const messagesRouter = createTRPCRouter({
   createOrFindConversation: protectedProcedure
@@ -30,74 +31,11 @@ export const messagesRouter = createTRPCRouter({
           message: "Not authenticated",
         });
       }
-      //add current user as a participant
-      if (!participantUserIds.includes(currentUserId)) {
-        participantUserIds.push(currentUserId);
-      }
 
-      // First, try to find existing conversation
-      const allParticipants = [...participantUserIds].sort(); // Sort to ensure consistent order
-
-      // Get all conversations where these users are participants
-      const existingConversations = await db
-        .select({
-          conversationId: conversationParticipants.conversationId,
-          participantCount: sql`count(*)`.as("participantCount"),
-        })
-        .from(conversationParticipants)
-        .where(inArray(conversationParticipants.userId, allParticipants))
-        .groupBy(conversationParticipants.conversationId)
-        .having(({ participantCount }) =>
-          eq(participantCount, allParticipants.length),
-        );
-
-      // If we found matching conversations, verify they contain exactly these participants
-      for (const conv of existingConversations) {
-        const participants = await db
-          .select()
-          .from(conversationParticipants)
-          .where(
-            eq(conversationParticipants.conversationId, conv.conversationId),
-          );
-
-        // Check if this conversation has exactly the same participants
-        if (participants.length === allParticipants.length) {
-          const participantIds = participants.map((p) => p.userId).sort();
-          if (
-            JSON.stringify(participantIds) === JSON.stringify(allParticipants)
-          ) {
-            // Found exact match - return existing conversation
-            const conversation = await db.query.conversations.findFirst({
-              where: eq(conversations.id, conv.conversationId),
-            });
-            return conversation;
-          }
-        }
-      }
-
-      const conversationValues = {
-        ...(listingId && { listingId }), // Only add listingId if it exists
-        ...(name && { name }), // Only add name if it exists
-      };
-
-      const newConversation = await db
-        .insert(conversations)
-        .values(conversationValues)
-        .returning()
-        .then((res) => res[0]!);
-
-      const curConversationId = newConversation.id;
-      //insert each participant into  the conversation
-      const conversationParticipantsPromise = participantUserIds.map(
-        (participant) =>
-          db.insert(conversationParticipants).values({
-            conversationId: curConversationId,
-            userId: participant,
-          }),
-      );
-      await Promise.all(conversationParticipantsPromise);
-
-      return newConversation;
+      return await createOrFindConversationBetweenUsers({
+        ...input,
+        currentUserId,
+      });
     }),
 
   getUserConversations: publicProcedure

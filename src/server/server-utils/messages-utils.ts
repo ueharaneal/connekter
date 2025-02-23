@@ -13,7 +13,7 @@ type CreateOrFindConversationParams = {
   listingId?: number;
 };
 
-export async function createOrFindConversation({
+export async function createOrFindConversationBetweenUsers({
   participantUserIds,
   currentUserId,
   name,

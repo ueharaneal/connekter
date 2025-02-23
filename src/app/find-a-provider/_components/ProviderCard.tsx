@@ -64,7 +64,11 @@ export default function ProviderCard({
         participantUserIds: [currentUser.id!, listing.providerId],
       });
       console.log(newConversation);
-      router.push(`/messages/${newConversation.id}`);
+      if (newConversation) {
+        router.push(`/messages/${newConversation.id}`);
+      } else {
+        toast.error("Message Error");
+      }
     }
   };
   return (
