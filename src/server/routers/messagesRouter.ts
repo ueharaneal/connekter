@@ -43,28 +43,6 @@ export const messagesRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { userId } = input;
 
-      type ConversationWithRelations = {
-        id: string;
-        messages: {
-          id: string;
-          message: string;
-          createdAt: Date;
-          user: {
-            id: string;
-            name: string | null;
-            image: string | null;
-          };
-        }[];
-        participants: {
-          userId: string;
-          user: {
-            id: string;
-            name: string | null;
-            image: string | null;
-          };
-        }[];
-      };
-
       const userConversations =
         await db.query.conversationParticipants.findMany({
           where: eq(conversationParticipants.userId, userId),

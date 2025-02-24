@@ -5,11 +5,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Circle } from "lucide-react";
 import { ResizablePanel } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useMessage, type AllUserConversations } from "@/store/messagingStore";
+import { useMessageWithUtils } from "@/hooks/use-message-with-utilts";
+import { useRouter } from "next/navigation";
 
-const contacts = [
+const conversations = [
   {
-    id: 1,
+    id: "1",
     name: "Mom",
     avatar: "/avatar1.png",
     lastMessage: "Where u at now",
@@ -17,7 +20,7 @@ const contacts = [
     unread: true,
   },
   {
-    id: 2,
+    id: "2",
     name: "Devin Yerasi",
     avatar: "/avatar2.png",
     lastMessage: "How'd your day go? Also no more Friday?",
@@ -25,19 +28,52 @@ const contacts = [
     unread: true,
   },
   {
-    id: 3,
+    id: "3",
     name: "Kaitlynee BAWDYY",
     avatar: "/avatar3.png",
     lastMessage: "I'm supposed to see my grandma idk what time though",
     time: "6:33 AM",
     unread: true,
   },
-  // ... add more contacts as needed
+  // ... add more conversations as needed
 ];
 
 function MessagingSidebar() {
+  const router = useRouter();
+
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selectedContact, setSelectedContact] = useState(contacts[0]);
+  const [selectedconversation, setSelectedconversation] = useState<
+    AllUserConversations[number] | undefined
+  >();
+
+  const { allUserConversations } = useMessage();
+
+  const memoizedUserConversations = useMemo(() => {
+    // Sort conversations by most recent message
+    return [...allUserConversations].sort((a, b) => {
+      const aLatestMessage = a.messages?.[a.messages.length - 1];
+      const bLatestMessage = b.messages?.[b.messages.length - 1];
+
+      // If no messages, sort by conversation creation date
+      if (!aLatestMessage && !bLatestMessage) {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }
+
+      // If one conversation has messages and the other doesn't
+      if (!aLatestMessage) return 1;
+      if (!bLatestMessage) return -1;
+
+      // Sort by latest message date
+      return (
+        new Date(bLatestMessage.createdAt).getTime() -
+        new Date(aLatestMessage.createdAt).getTime()
+      );
+    });
+  }, [allUserConversations]);
+
+  console.log(memoizedUserConversations);
 
   const onResize = (size: number) => {
     // Snap to either collapsed (10%) or expanded (25%) state
@@ -46,6 +82,13 @@ function MessagingSidebar() {
     } else {
       setIsCollapsed(false);
     }
+  };
+
+  const handleConversationClick = (
+    conversation: AllUserConversations[number],
+  ) => {
+    setSelectedconversation(conversation);
+    void router.push(`/messages/${conversation.id}`);
   };
   return (
     <ResizablePanel
@@ -64,38 +107,47 @@ function MessagingSidebar() {
         </div>
       )}
       <ScrollArea className="">
-        {contacts.map((contact) => (
+        {memoizedUserConversations.map((conversation) => (
           <div
-            key={contact.id}
+            key={conversation.id}
             className={cn(
               "relative flex h-full cursor-pointer items-center gap-4 p-4 transition-colors hover:bg-white/5",
-              selectedContact.id === contact.id && "bg-white/10",
+              // selectedconversation.id === conversation.id && "bg-white/10",
               isCollapsed && "justify-center",
             )}
-            onClick={() => setSelectedContact(contact)}
+            onClick={() => handleConversationClick(conversation)}
           >
-            {contact.unread && (
-              <Circle className="absolute left-1 top-1/2 h-2 w-2 -translate-y-1/2 fill-blue-500 text-blue-500" />
-            )}
+            {/* {conversation.messages[0].read !== undefined ||
+              (conversation.messages[0].read !== true && (
+                <Circle className="absolute left-1 top-1/2 h-2 w-2 -translate-y-1/2 fill-blue-500 text-blue-500" />
+              ))} */}
             <Avatar className="h-10 w-10 flex-shrink-0">
-              <AvatarImage src={contact.avatar} alt={contact.name} />
+              <AvatarImage
+                src={conversation.participants[0].user.image ?? ""}
+                alt={conversation.participants[0].user.name ?? ""}
+              />
               <AvatarFallback className="bg-gray-600 text-white">
-                {contact.name.split(" ")[0][0]}
+                {conversation.participants[0].user.name}
               </AvatarFallback>
             </Avatar>
             {!isCollapsed && (
               <div className="flex w-full min-w-0 flex-row items-start justify-between">
                 <div className="">
                   <p className="truncate font-medium text-gray-200">
-                    {contact.name}
+                    {conversation.name ??
+                      conversation.participants[0].user.name}
                   </p>
-                  <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-gray-400">
-                    {contact.lastMessage}
-                  </p>
+                  {conversation.messages.length > 0 && (
+                    <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-gray-400">
+                      {conversation.messages[0].message}
+                    </p>
+                  )}
                 </div>
-                <span className="absolute right-8 ml-2 whitespace-nowrap text-xs text-gray-400">
-                  {contact.time}
-                </span>
+                {conversation.messages.length > 0 && (
+                  <span className="absolute right-8 ml-2 whitespace-nowrap text-xs text-gray-400">
+                    {conversation.messages[0].createdAt}
+                  </span>
+                )}
               </div>
             )}
           </div>

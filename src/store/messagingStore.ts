@@ -4,7 +4,10 @@ import supabase from "@/server/db/supabase-client";
 import { LIMIT_MESSAGE } from "@/lib/constants";
 import { toast } from "sonner";
 import { RealtimeChannel } from "@supabase/supabase-js";
-import { trpc } from "@/server/client";
+import { trpc, type RouterOutputs } from "@/server/client";
+
+export type AllUserConversations =
+  RouterOutputs["messages"]["getUserConversations"];
 
 export type ChatMessageType = MessageType & { userId: string }; // make userId non-null
 
@@ -24,6 +27,11 @@ type MessageState = {
   currentConversationId: string | null;
   setCurrentUserConversationIds: (conversationIds: string[]) => void;
   setCurrentConversationId: (id: string) => void;
+
+  //all convserations for side bar
+  allUserConversations: AllUserConversations;
+  setAllUserConversations: (conversations: AllUserConversations) => void;
+
   switchConversation: (conversationId: string) => void;
   addMessageToConversation: (
     conversationId: string,
@@ -58,6 +66,12 @@ export const useMessage = create<MessageState>((set, get) => {
       set(() => ({
         currentConversationId: id,
       }));
+    },
+
+    //all userConversations
+    allUserConversations: [],
+    setAllUserConversations: (conversations: AllUserConversations) => {
+      set({ allUserConversations: conversations });
     },
     switchConversation: (conversationId: string) => {
       set({ currentConversationId: conversationId });

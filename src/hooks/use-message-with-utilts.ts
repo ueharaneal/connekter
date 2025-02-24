@@ -5,8 +5,8 @@ import { toast } from "sonner";
 
 export const useMessageWithUtils = () => {
   const utils = trpc.useUtils();
-  const setCurrentUserConversationIds = useMessage(
-    (state) => state.setCurrentUserConversationIds,
+  const setAllUserConversations = useMessage(
+    (state) => state.setAllUserConversations,
   );
 
   const fetchUserConversationIds = useCallback(
@@ -17,17 +17,14 @@ export const useMessageWithUtils = () => {
         });
 
         if (conversations) {
-          const conversationIds = conversations.map(
-            (conversation) => conversation.id,
-          );
-          setCurrentUserConversationIds(conversationIds);
+          setAllUserConversations(conversations);
         }
       } catch (error) {
         console.error("Error fetching user conversations for IDs:", error);
         toast.error("Error fetching conversations.");
       }
     },
-    [utils, setCurrentUserConversationIds],
+    [utils, setAllUserConversations],
   );
 
   return {
