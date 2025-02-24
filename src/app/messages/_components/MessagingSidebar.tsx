@@ -132,7 +132,7 @@ function MessagingSidebar() {
             </Avatar>
             {!isCollapsed && (
               <div className="flex w-full min-w-0 flex-row items-start justify-between">
-                <div className="">
+                <div className="flex h-full flex-col items-start">
                   <p className="truncate font-medium text-gray-200">
                     {conversation.name ??
                       conversation.participants[0].user.name}
