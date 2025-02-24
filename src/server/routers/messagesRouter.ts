@@ -139,11 +139,11 @@ export const messagesRouter = createTRPCRouter({
 
         // --- Supabase Realtime ---
         // Trigger a Realtime event so other clients in the conversation get the new message
-        await supabase
-          .from("messages") // Use the same table name as your schema
-          .insert([newMessage[0]]); // Send the newly created message (or just its ID if you prefer)
+        // await supabase
+        //   .from("messages") // Use the same table name as your schema
+        //   .insert([newMessage[0]]); // Send the newly created message (or just its ID if you prefer)
 
-        return newMessage[0]; // Return the newly created message
+        // return newMessage[0]; // Return the newly created message
       } catch (error) {
         console.error("Error sending message:", error);
         throw new TRPCError({
