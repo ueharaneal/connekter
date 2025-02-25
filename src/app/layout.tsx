@@ -30,8 +30,7 @@ export default function RootLayout({
             <HydrateClient>
               <ThemeProvider
                 attribute="class"
-                defaultTheme="dark"
-                enableSystem
+                defaultTheme="light"
                 disableTransitionOnChange
               >
                 <Script
