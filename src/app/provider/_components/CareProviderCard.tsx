@@ -14,18 +14,18 @@ export default function CareProviderCard({
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-3xl text-foreground">
         <CardHeader className="flex flex-row justify-between space-y-1">
-          <h2 className="text-2xl font-semibold">Meet the Care Provider</h2>
+          <h2 className="text-2xl font-semibold">Meet the Contracter</h2>
           <Badge
             variant="secondary"
             className="text-nowrap rounded-full text-xs"
           >
-            Verified Provider ✓
+            Verified Contracter ✓
           </Badge>
         </CardHeader>
         <CardContent className="flex flex-col justify-between gap-x-2 gap-y-4">
           <Image
             src={listing.provider.image || ""}
-            alt="Care provider portrait"
+            alt=" Contracter portrait"
             width={300}
             height={200}
             className="w-full rounded-lg object-cover"

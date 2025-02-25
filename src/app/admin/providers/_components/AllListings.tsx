@@ -40,7 +40,7 @@ export async function AllListings() {
         <TableHeader>
           <TableRow>
             <TableHead>Facility Name</TableHead>
-            <TableHead>Provider</TableHead>
+            <TableHead>Contracter</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Rooms</TableHead>

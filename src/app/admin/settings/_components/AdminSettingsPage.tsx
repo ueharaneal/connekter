@@ -200,7 +200,7 @@ export default function AdminSettingsPage() {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="user">User</SelectItem>
-                          <SelectItem value="provider">Provider</SelectItem>
+                          <SelectItem value="contracter">Contracter</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
                         </SelectContent>
                       </Select>

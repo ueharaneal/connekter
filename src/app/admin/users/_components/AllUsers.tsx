@@ -33,7 +33,7 @@ const mockUsers: User[] = [
     id: 1,
     name: "John Doe",
     email: "john@example.com",
-    role: "Provider",
+    role: "Contracter",
     joinDate: "2023-01-15",
   },
   {

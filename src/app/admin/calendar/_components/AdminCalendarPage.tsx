@@ -37,9 +37,9 @@ export default function AdminCalendarPage() {
   const appointmentTypes: AppointmentType[] = [
     {
       icon: <Users className="mr-2 h-4 w-4" />,
-      title: "Provider Review",
-      description: "Review and approve new care provider applications",
-      calendlyLink: "https://calendly.com/admin_provider_review",
+      title: "Contracter Review",
+      description: "Review and approve new care Contracter applications",
+      calendlyLink: "https://calendly.com/admin_Contracter_review",
     },
     {
       icon: <Briefcase className="mr-2 h-4 w-4" />,
@@ -56,7 +56,7 @@ export default function AdminCalendarPage() {
   ];
 
   const upcomingAppointments: UpcomingAppointment[] = [
-    { type: "Provider Review", date: "2025-02-22", time: "10:00 AM" },
+    { type: "Contracter Review", date: "2025-02-22", time: "10:00 AM" },
     { type: "Facility Inspection", date: "2025-02-23", time: "2:00 PM" },
     { type: "Performance Review", date: "2025-02-24", time: "11:00 AM" },
   ];

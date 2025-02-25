@@ -8,7 +8,7 @@ import { AllListings } from "./AllListings";
 export default function AdminProviderPage() {
   return (
     <div className="container p-6">
-      <h1 className="mb-6 text-3xl font-bold">Provider Management</h1>
+      <h1 className="mb-6 text-3xl font-bold">Contracter Management</h1>
 
       <Tabs defaultValue="providers" className="space-y-4">
         <TabsList>

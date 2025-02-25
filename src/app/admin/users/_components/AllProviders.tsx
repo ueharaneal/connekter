@@ -18,8 +18,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-// Define the type for a Provider object
-interface Provider {
+// Define the type for a Contracter object
+interface Contracter {
   id: number;
   name: string;
   email: string;
@@ -28,7 +28,7 @@ interface Provider {
 }
 
 // Mock data - replace with actual data fetching
-const mockProviders: Provider[] = [
+const mockContracters: Contracter[] = [
   {
     id: 1,
     name: "John Doe",
@@ -45,11 +45,10 @@ const mockProviders: Provider[] = [
   },
 ];
 
-export function AllProviders() {
-  // Explicitly type selectedProvider using the Provider interface or Provider | null
-  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(
-    null,
-  );
+export function AllContracters() {
+  // Explicitly type selectedContracter using the Contracter interface or Contracter | null
+  const [selectedContracter, setSelectedContracter] =
+    useState<Contracter | null>(null);
 
   return (
     <div className="rounded-md border">
@@ -64,44 +63,44 @@ export function AllProviders() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {mockProviders.map((provider) => (
-            <TableRow key={provider.id}>
-              <TableCell className="font-medium">{provider.name}</TableCell>
-              <TableCell>{provider.email}</TableCell>
-              <TableCell>{provider.facility}</TableCell>
-              <TableCell>{provider.licenseNumber}</TableCell>
+          {mockContracters.map((Contracter) => (
+            <TableRow key={Contracter.id}>
+              <TableCell className="font-medium">{Contracter.name}</TableCell>
+              <TableCell>{Contracter.email}</TableCell>
+              <TableCell>{Contracter.facility}</TableCell>
+              <TableCell>{Contracter.licenseNumber}</TableCell>
               <TableCell>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setSelectedProvider(provider)}
+                      onClick={() => setSelectedContracter(Contracter)}
                     >
                       View More
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Provider Details</DialogTitle>
+                      <DialogTitle>Contracter Details</DialogTitle>
                     </DialogHeader>
-                    {selectedProvider && (
+                    {selectedContracter && (
                       <div className="grid gap-4 py-4">
                         <div>
                           <h3 className="font-semibold">Name</h3>
-                          <p>{selectedProvider.name}</p>
+                          <p>{selectedContracter.name}</p>
                         </div>
                         <div>
                           <h3 className="font-semibold">Email</h3>
-                          <p>{selectedProvider.email}</p>
+                          <p>{selectedContracter.email}</p>
                         </div>
                         <div>
                           <h3 className="font-semibold">Facility</h3>
-                          <p>{selectedProvider.facility}</p>
+                          <p>{selectedContracter.facility}</p>
                         </div>
                         <div>
                           <h3 className="font-semibold">License Number</h3>
-                          <p>{selectedProvider.licenseNumber}</p>
+                          <p>{selectedContracter.licenseNumber}</p>
                         </div>
                       </div>
                     )}

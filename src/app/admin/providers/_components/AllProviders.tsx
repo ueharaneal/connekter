@@ -37,7 +37,7 @@ export function AllProviders() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Provider Name</TableHead>
+            <TableHead>Contracter Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Facility</TableHead>
             <TableHead>Status</TableHead>
