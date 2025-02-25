@@ -7,13 +7,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { CheckCircle, ImagesIcon, MessageCircle, Star } from "lucide-react";
-import Link from "next/link";
-import {
-  DialogContentNoDrawer,
-  DialogNoDrawer,
-  DialogTriggerNoDrawer,
-} from "@/components/ui/dialog-no-drawer";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import ListingImages from "@/components/common/images/ListingImages";
 import { Button } from "@/components/ui/button";
