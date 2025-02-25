@@ -1,64 +1,69 @@
+"use client";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { CheckCircle } from "lucide-react";
 
-const images = [
-  {
-    src: "https://plus.unsplash.com/premium_photo-1664301132849-f52af765df79?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Contractor working",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1611843467160-25afb8df1074?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    alt: "Garden",
-  },
-];
-
-export function Header() {
+export default function Header() {
   return (
-    <header className="relative overflow-hidden text-white">
-      <div className="absolute inset-0 z-0">
+    <main className="flex-grow">
+      {/* Enhanced Hero Section */}
+      <section className="relative flex items-center">
         <Image
-          src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Header background"
+          src="https://plus.unsplash.com/premium_photo-1682617326551-4749611516f6?q=80&w=3866&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Home renovation"
           layout="fill"
           objectFit="cover"
+          className="brightness-70"
           priority
-          className=""
         />
-        <div className="absolute inset-0 bg-blue-900/80" />
-      </div>
-      <div className="container relative z-30 mx-auto px-4 py-16 md:py-24">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-          <div>
-            <h1 className="mb-4 text-4xl font-bold md:text-6xl">
-              Find Your Perfect Contractor with Connekter
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+        <div className="container relative mx-auto px-4 py-24 text-white sm:px-6 lg:px-8">
+          <div className="max-w-3xl space-y-6">
+            <h1 className="text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
+              Find the Perfect Contractor for Your Home Project
             </h1>
-            <p className="mb-8 text-xl md:text-2xl">
-              Post jobs effortlessly, receive competitive bids, and connect with
-              skilled professionals today!
+            <p className="text-xl sm:text-2xl">
+              Connect with skilled professionals, get competitive bids, and
+              transform your home with ease.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <Link href="/provider-onboarding">
-                <Button
-                  size="lg"
-                  className="bg-primary px-8 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:bg-primary/90"
-                >
-                  Post a Job Now
-                </Button>
-              </Link>
-              <Link href="/provider-onboarding">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white bg-transparent px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-white hover:text-primary"
-                >
-                  Find Work as a Contractor
-                </Button>
-              </Link>
+            <ul className="space-y-2">
+              <li className="flex items-center space-x-2">
+                <CheckCircle className="text-green-400" />
+                <span>
+                  Post jobs and receive bids from top-rated contractors
+                </span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <CheckCircle className="text-green-400" />
+                <span>Read verified reviews and browse detailed profiles</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <CheckCircle className="text-green-400" />
+                <span>
+                  Secure the best deals for your home improvement projects
+                </span>
+              </li>
+            </ul>
+            <div className="space-x-2">
+              <Button size="lg" className="px-6 py-3 text-lg">
+                Get Started
+              </Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="px-6 py-3 text-lg"
+              >
+                How It Works
+              </Button>
             </div>
+            <p className="text-sm opacity-80">
+              Join thousands of homeowners who have found their perfect
+              contractor through HomeProConnect.
+            </p>
           </div>
         </div>
-      </div>
-    </header>
+      </section>
+    </main>
   );
 }

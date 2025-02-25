@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function VerificationEmailClient() {
-  const router = useRouter();
   const email = "ueharaneal@gmail.com";
 
   const handleResendEmail = async () => {

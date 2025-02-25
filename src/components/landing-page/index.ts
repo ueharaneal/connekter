@@ -1,5 +1,5 @@
-export { Header } from "./Header";
-export { HowItWorks } from "./HowItWorks";
+import Header from "./Header";
+export { Header }; 
 export { Testimonials } from "./Testimonials";
 export * from "./Safety";
 export * from "./Footer";

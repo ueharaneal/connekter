@@ -39,3 +39,8 @@ node_modules
 
 # email
 packages/transactionals/node_modules/
+
+
+#/hidden page 
+/src/app/hidden-test.tsx
+/src/app/hidden-test/layout.tsx

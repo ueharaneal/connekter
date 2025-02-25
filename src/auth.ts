@@ -25,7 +25,7 @@ const nextAuth = NextAuth({
           if (!user.password) throw new OAuthAccountAlreadyLinkedError();
           console.log("This is user", user);
           const passwordsMatch = await argon2.verify(user.password, password);
-          console.log("PAsswords match", passwordsMatch);
+          console.log("Passwords match", passwordsMatch);
           if (passwordsMatch) {
             //remove password from user object
             const { password: _, ...userWithoutPassword } = user;

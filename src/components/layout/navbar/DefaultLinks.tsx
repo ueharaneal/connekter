@@ -1,15 +1,20 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { clientLinks } from "./links";
 
 export default function DefaultLinks() {
   return (
-    <div>
-      <Link href="/about">
-        <Button variant="link">About</Button>
-      </Link>
-      <Link href="/contract">
-        <Button variant="link">Contracts</Button>
-      </Link>
+    <div className="flex">
+      {clientLinks.map((link) => (
+        <Button
+          key={link.href}
+          variant="link"
+          asChild
+          className="text-foreground"
+        >
+          <Link href={link.href}>{link.label} </Link>
+        </Button>
+      ))}
     </div>
   );
 }

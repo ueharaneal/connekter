@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import {
   Form,
   FormItem,
@@ -23,6 +23,10 @@ import { Button } from "@/components/ui/button";
 import { signupUserAction } from "@/actions/auth/signup-user-action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import {
+  OAuthSignInButton,
+  OAuthSignInButtonSkeleton,
+} from "@/components/auth/OAuthSignInButtons";
 
 function SignupForm() {
   const router = useRouter();
@@ -74,13 +78,25 @@ function SignupForm() {
   };
 
   return (
-    <Card>
-      <CardHeader>Sign Up</CardHeader>
-      <CardContent>
+    <Card className="w-full">
+      <CardHeader className="mx-auto w-full text-center text-2xl font-semibold">
+        Create an Account
+      </CardHeader>
+      <CardContent className="flex flex-col gap-y-8">
+        <Suspense fallback={<OAuthSignInButtonSkeleton signUp={false} />}>
+          <OAuthSignInButton signUp={true} />
+        </Suspense>
+        <div className="max-w-11/12 relative mx-1 flex flex-row items-center gap-x-4">
+          <div className="w-full border-b border-border" />
+          <p className="whitespace-nowrap text-nowrap text-xs font-semibold text-muted-foreground">
+            OR CONTINUE WITH EMAIL
+          </p>
+          <div className="w-full border-b border-border" />
+        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-3"
+            className="flex flex-col gap-y-4"
           >
             <div className="flex w-full flex-row justify-around gap-x-4">
               <FormField

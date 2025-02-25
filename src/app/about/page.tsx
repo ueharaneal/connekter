@@ -165,7 +165,7 @@ export default function Page() {
         </p>
         <div className="space-x-4">
           <Button asChild>
-            <Link href="/signup">
+            <Link href="auth/signup">
               Sign Up <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>

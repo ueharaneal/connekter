@@ -1,11 +1,17 @@
 import { defineConfig } from "drizzle-kit";
-import type { Config } from "drizzle-kit";
 
-const drizzleConfig = {
-  schema: "./src/server/db/schema",
-  out: "./migrations",
+interface DBCredentials {
+  url: string;
+}
+
+export default defineConfig({
+  schema: "./src/server/db/schema/*", //separate the schemas
   dialect: "postgresql",
-  dbCredentials: { url: process.env.DATABASE_URL as string },
-} satisfies Config;
-
-export default defineConfig(drizzleConfig);
+  extensionsFilters: ["postgis"],
+  verbose: true,
+  strict: true,
+  dbCredentials: {
+    url: process.env.DATABASE_URL,
+  } as DBCredentials,
+  out: "./src/server/drizzle",
+});
