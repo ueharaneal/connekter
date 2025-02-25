@@ -61,7 +61,12 @@ export const messagesRouter = createTRPCRouter({
                 participants: {
                   with: {
                     user: {
-                      columns: { name: true, image: true, id: true },
+                      columns: {
+                        name: true,
+                        image: true,
+                        id: true,
+                        email: true,
+                      },
                     },
                   },
                 },

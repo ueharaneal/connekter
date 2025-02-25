@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { useMessage } from "@/store/messagingStore";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
+import { UserAvatarsTooltip } from "@/components/common/UsersAvatarTooltip";
 
 function ChatHeader() {
   const session = useSession({ required: true });
@@ -19,16 +19,9 @@ function ChatHeader() {
 
   return (
     <div className="flex items-center border-b border-white/10 p-4">
-      <Avatar className="h-10 w-10">
-        {participantsWithouMe && (
-          <AvatarImage
-            className=""
-            src={participantsWithouMe[0].user.image ?? ""}
-            alt={participantsWithouMe[0].user.name ?? ""}
-          />
-        )}
-        <AvatarFallback>User</AvatarFallback>
-      </Avatar>
+      {participantsWithouMe && (
+        <UserAvatarsTooltip users={participantsWithouMe} useDialog />
+      )}
       <div className="ml-4">
         {participantsWithouMe && (
           <h2 className="text-lg font-semibold capitalize text-gray-200">
