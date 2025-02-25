@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
-import { useCallback, useState } from "react"
-import Image from "next/image"
-import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-
-interface Room {
-  id: string
-  photos: string[]
-  roomType: string
-  bathroomType: string
-  availableTo: string[]
-  isAvailable: boolean
-}
+import { useCallback, useState } from "react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Room } from "../page";
 
 interface RoomPhotoUploadProps {
-  rooms: Room[]
-  setRooms: (rooms: Room[]) => void
+  rooms: Room[];
+  setRooms: (rooms: Room[]) => void;
 }
 
 export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState<Record<string, number>>({})
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState<
+    Record<string, number>
+  >({});
 
   const createRoom = useCallback(
     (files: FileList) => {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (e) => {
-        const url = e.target?.result as string
+        const url = e.target?.result as string;
         setRooms([
           ...rooms,
           {
@@ -39,45 +39,59 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
             availableTo: [],
             isAvailable: true,
           },
-        ])
-      }
-      reader.readAsDataURL(files[0])
+        ]);
+      };
+      reader.readAsDataURL(files[0]);
     },
     [rooms, setRooms],
-  )
+  );
 
   const addPhotosToRoom = (roomId: string, files: FileList) => {
-    const newPhotos: string[] = []
-    let processed = 0
+    const newPhotos: string[] = [];
+    let processed = 0;
 
     Array.from(files).forEach((file) => {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (e) => {
-        const url = e.target?.result as string
-        newPhotos.push(url)
-        processed++
+        const url = e.target?.result as string;
+        newPhotos.push(url);
+        processed++;
 
         if (processed === files.length) {
           setRooms(
-            rooms.map((room) => (room.id === roomId ? { ...room, photos: [...room.photos, ...newPhotos] } : room)),
-          )
+            rooms.map((room) =>
+              room.id === roomId
+                ? { ...room, photos: [...room.photos, ...newPhotos] }
+                : room,
+            ),
+          );
         }
-      }
-      reader.readAsDataURL(file)
-    })
-  }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
   const toggleAvailability = (roomId: string) => {
-    setRooms(rooms.map((room) => (room.id === roomId ? { ...room, isAvailable: !room.isAvailable } : room)))
-  }
+    setRooms(
+      rooms.map((room) =>
+        room.id === roomId ? { ...room, isAvailable: !room.isAvailable } : room,
+      ),
+    );
+  };
 
   const updateRoomType = (roomId: string, roomType: string) => {
-    setRooms(rooms.map((room) => (room.id === roomId ? { ...room, roomType } : room)))
-  }
+    setRooms(
+      rooms.map((room) => (room.id === roomId ? { ...room, roomType } : room)),
+    );
+  };
 
   const updateBathroomType = (roomId: string, bathroomType: string) => {
-    setRooms(rooms.map((room) => (room.id === roomId ? { ...room, bathroomType } : room)))
-  }
+    setRooms(
+      rooms.map((room) =>
+        room.id === roomId ? { ...room, bathroomType } : room,
+      ),
+    );
+  };
 
   const updateAvailableTo = (roomId: string, value: string) => {
     setRooms(
@@ -85,17 +99,17 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
         if (room.id === roomId) {
           const availableTo = room.availableTo.includes(value)
             ? room.availableTo.filter((v) => v !== value)
-            : [...room.availableTo, value]
-          return { ...room, availableTo }
+            : [...room.availableTo, value];
+          return { ...room, availableTo };
         }
-        return room
+        return room;
       }),
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-4">
-      <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center">
+      <div className="rounded-lg border-2 border-dashed border-gray-700 p-8 text-center">
         <input
           type="file"
           accept="image/*"
@@ -105,21 +119,21 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
         />
         <label
           htmlFor="room-upload"
-          className="flex items-center justify-center gap-2 cursor-pointer text-gray-400 hover:text-white transition-colors"
+          className="flex cursor-pointer items-center justify-center gap-2 text-gray-400 transition-colors hover:text-white"
         >
           <Plus className="h-5 w-5" />
           Create new room
         </label>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {rooms.map((room) => (
-          <div key={room.id} className="bg-gray-900 rounded-lg overflow-hidden">
+          <div key={room.id} className="overflow-hidden rounded-lg bg-gray-900">
             <div className="relative">
-              <div className="absolute top-2 left-2 z-10">
+              <div className="absolute left-2 top-2 z-10">
                 <Badge
                   variant={room.isAvailable ? "primary" : "red"}
-                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                  className="cursor-pointer transition-opacity hover:opacity-80"
                   onClick={() => toggleAvailability(room.id)}
                 >
                   {room.isAvailable ? "Available" : "Unavailable"}
@@ -128,13 +142,18 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
               <Button
                 variant="destructive"
                 size="icon"
-                className="absolute top-2 right-2 z-10"
+                className="absolute right-2 top-2 z-10"
                 onClick={() => setRooms(rooms.filter((r) => r.id !== room.id))}
               >
                 <X className="h-4 w-4" />
               </Button>
               <div className="relative aspect-video">
-                <Image src={room.photos[currentPhotoIndex[room.id] || 0]} alt="" fill className="object-cover" />
+                <Image
+                  src={room.photos[currentPhotoIndex[room.id] || 0]}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
                 {room.photos.length > 1 && (
                   <>
                     <Button
@@ -161,7 +180,8 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
                         setCurrentPhotoIndex({
                           ...currentPhotoIndex,
                           [room.id]:
-                            (currentPhotoIndex[room.id] || 0) < room.photos.length - 1
+                            (currentPhotoIndex[room.id] || 0) <
+                            room.photos.length - 1
                               ? (currentPhotoIndex[room.id] || 0) + 1
                               : 0,
                         })
@@ -171,24 +191,26 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
                     </Button>
                   </>
                 )}
-                <div className="absolute bottom-2 right-2 bg-black/50 px-2 py-1 rounded text-sm">
+                <div className="absolute bottom-2 right-2 rounded bg-black/50 px-2 py-1 text-sm">
                   {(currentPhotoIndex[room.id] || 0) + 1}/{room.photos.length}
                 </div>
               </div>
             </div>
 
-            <div className="p-4 space-y-4">
+            <div className="space-y-4 p-4">
               <input
                 type="file"
                 multiple
                 accept="image/*"
-                onChange={(e) => e.target.files && addPhotosToRoom(room.id, e.target.files)}
+                onChange={(e) =>
+                  e.target.files && addPhotosToRoom(room.id, e.target.files)
+                }
                 className="hidden"
                 id={`add-photos-${room.id}`}
               />
               <label
                 htmlFor={`add-photos-${room.id}`}
-                className="block text-sm text-gray-400 hover:text-white cursor-pointer transition-colors"
+                className="block cursor-pointer text-sm text-gray-400 transition-colors hover:text-white"
               >
                 Add more photos
               </label>
@@ -197,7 +219,9 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
                 <p className="text-sm font-medium">Room Type</p>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
-                    variant={room.roomType === "private-room" ? "default" : "outline"}
+                    variant={
+                      room.roomType === "private-room" ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => updateRoomType(room.id, "private-room")}
                     className="w-full"
@@ -205,7 +229,9 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
                     Private Room
                   </Button>
                   <Button
-                    variant={room.roomType === "shared-room" ? "default" : "outline"}
+                    variant={
+                      room.roomType === "shared-room" ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => updateRoomType(room.id, "shared-room")}
                     className="w-full"
@@ -219,17 +245,29 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
                 <p className="text-sm font-medium">Bathroom Type</p>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
-                    variant={room.bathroomType === "private-bathroom" ? "default" : "outline"}
+                    variant={
+                      room.bathroomType === "private-bathroom"
+                        ? "default"
+                        : "outline"
+                    }
                     size="sm"
-                    onClick={() => updateBathroomType(room.id, "private-bathroom")}
+                    onClick={() =>
+                      updateBathroomType(room.id, "private-bathroom")
+                    }
                     className="w-full"
                   >
                     Private Bathroom
                   </Button>
                   <Button
-                    variant={room.bathroomType === "shared-bathroom" ? "default" : "outline"}
+                    variant={
+                      room.bathroomType === "shared-bathroom"
+                        ? "default"
+                        : "outline"
+                    }
                     size="sm"
-                    onClick={() => updateBathroomType(room.id, "shared-bathroom")}
+                    onClick={() =>
+                      updateBathroomType(room.id, "shared-bathroom")
+                    }
                     className="w-full"
                   >
                     Shared Bathroom
@@ -241,14 +279,22 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
                 <p className="text-sm font-medium">Available to</p>
                 <div className="flex gap-2">
                   <Button
-                    variant={room.availableTo.includes("private-pay") ? "default" : "outline"}
+                    variant={
+                      room.availableTo.includes("private-pay")
+                        ? "default"
+                        : "outline"
+                    }
                     size="sm"
                     onClick={() => updateAvailableTo(room.id, "private-pay")}
                   >
                     Private pay
                   </Button>
                   <Button
-                    variant={room.availableTo.includes("medicaid") ? "default" : "outline"}
+                    variant={
+                      room.availableTo.includes("medicaid")
+                        ? "default"
+                        : "outline"
+                    }
                     size="sm"
                     onClick={() => updateAvailableTo(room.id, "medicaid")}
                   >
@@ -261,6 +307,5 @@ export function RoomPhotoUpload({ rooms, setRooms }: RoomPhotoUploadProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

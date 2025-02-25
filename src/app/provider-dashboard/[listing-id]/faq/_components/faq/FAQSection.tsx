@@ -1,17 +1,22 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { DragDropContext, Droppable, type DroppableProvided, type DropResult } from "@hello-pangea/dnd"
-import { Plus } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { FAQItem } from "./FAQItem"
-import { AddEditFAQDialog } from "./AddEditFaqDialog"
+import { useState, useEffect } from "react";
+import {
+  DragDropContext,
+  Droppable,
+  type DroppableProvided,
+  type DropResult,
+} from "@hello-pangea/dnd";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FAQItem } from "./FAQItem";
+import { AddEditFAQDialog } from "./AddEditFaqDialog";
 import { trpc } from "@/server/client";
 import { useParams } from "next/navigation";
 export interface FAQ {
-  id: string
-  question: string
-  answer: string
+  id: string;
+  question: string;
+  answer: string;
 }
 
 // const initialFaqs: FAQ[] = [
@@ -30,35 +35,39 @@ export interface FAQ {
 // ]
 
 export function FAQSection({ initialFaqs }: { initialFaqs: FAQ[] }) {
-  const { "listing-id": listingId } = useParams()
+  const { "listing-id": listingId } = useParams();
 
-  const [faqs, setFaqs] = useState<FAQ[]>(initialFaqs)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [editingFaq, setEditingFaq] = useState<FAQ | null>(null)
+  const [faqs, setFaqs] = useState<FAQ[]>(initialFaqs);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingFaq, setEditingFaq] = useState<FAQ | null>(null);
 
-  const { mutate: createFaq } = trpc.faq.createFaq.useMutation()
-  const { mutate: updateFaq } = trpc.faq.updateFaq.useMutation()
-  const { mutate: deleteFaq } = trpc.faq.deleteFaq.useMutation()
+  const { mutate: createFaq } = trpc.faq.createFaq.useMutation();
+  const { mutate: updateFaq } = trpc.faq.updateFaq.useMutation();
+  const { mutate: deleteFaq } = trpc.faq.deleteFaq.useMutation();
 
   const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return
+    if (!result.destination) return;
 
-    const items = Array.from(faqs)
-    const [reorderedItem] = items.splice(result.source.index, 1)
-    items.splice(result.destination.index, 0, reorderedItem)
-    setFaqs(items)
-  }
+    const items = Array.from(faqs);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setFaqs(items);
+  };
 
   useEffect(() => {
-    setFaqs(initialFaqs)
-  }, [initialFaqs])
+    setFaqs(initialFaqs);
+  }, [initialFaqs]);
 
   const handleSave = (question: string, answer: string) => {
     if (editingFaq) {
-      updateFaq({ id: editingFaq.id, question, answer })
-      setFaqs(faqs.map((faq) => (faq.id === editingFaq.id ? { ...faq, question, answer } : faq)))
+      updateFaq({ id: editingFaq.id, question, answer });
+      setFaqs(
+        faqs.map((faq) =>
+          faq.id === editingFaq.id ? { ...faq, question, answer } : faq,
+        ),
+      );
     } else {
-      createFaq({ listingId: listingId as string, question, answer })
+      createFaq({ listingId: parseInt(listingId as string), question, answer });
       setFaqs([
         ...faqs,
         {
@@ -66,34 +75,34 @@ export function FAQSection({ initialFaqs }: { initialFaqs: FAQ[] }) {
           question,
           answer,
         },
-      ])
+      ]);
     }
-    handleClose()
-  }
+    handleClose();
+  };
 
   const handleEdit = (faq: FAQ) => {
-    setEditingFaq(faq)
-    setIsDialogOpen(true)
-  }
+    setEditingFaq(faq);
+    setIsDialogOpen(true);
+  };
 
   const handleDelete = (id: string) => {
-    deleteFaq({ id })
-    setFaqs(faqs.filter((faq) => faq.id !== id))
-  }
+    deleteFaq({ id });
+    setFaqs(faqs.filter((faq) => faq.id !== id));
+  };
 
   const handleClose = () => {
-    setIsDialogOpen(false)
-    setEditingFaq(null)
-  }
+    setIsDialogOpen(false);
+    setEditingFaq(null);
+  };
 
   return (
     <>
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Frequently Asked Questions</h1>
         <Button
           variant="outline"
           onClick={() => setIsDialogOpen(true)}
-          className="bg-transparent border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
+          className="border-orange-500 bg-transparent text-orange-500 hover:bg-orange-500 hover:text-white"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Question
@@ -103,9 +112,19 @@ export function FAQSection({ initialFaqs }: { initialFaqs: FAQ[] }) {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="faqs" type="faq">
           {(provided: DroppableProvided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4 mb-8">
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="mb-8 space-y-4"
+            >
               {faqs.map((faq, index) => (
-                <FAQItem key={faq.id} faq={faq} index={index} onEdit={handleEdit} onDelete={handleDelete} />
+                <FAQItem
+                  key={faq.id}
+                  faq={faq}
+                  index={index}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
               {provided.placeholder}
             </div>
@@ -120,6 +139,5 @@ export function FAQSection({ initialFaqs }: { initialFaqs: FAQ[] }) {
         editingFaq={editingFaq}
       />
     </>
-  )
+  );
 }
-

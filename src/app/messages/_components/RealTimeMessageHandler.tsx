@@ -4,13 +4,20 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useMessageWithUtils } from "@/hooks/use-message-with-utilts";
 import { useMessage } from "@/store/messagingStore";
+import { useParams } from "next/navigation";
 
 const RealtimeMessageHandler = () => {
   const { data: session } = useSession();
+  const params = useParams();
+
+  const currentConversationId = params.id as string;
+
   const userId = session?.user?.id;
 
   // Get functions from our custom hook that includes TRPC utils
   const { fetchUserConversationIds } = useMessageWithUtils();
+
+  const { fetchInitialMessages, conversations } = useMessage();
 
   // Get realtime-related functions directly from the store
   const setupRealtimeSubscriptions = useMessage(
@@ -52,6 +59,15 @@ const RealtimeMessageHandler = () => {
     setupRealtimeSubscriptions,
     unsubscribeRealtime,
   ]);
+
+  //fetching current conversation
+  useEffect(() => {
+    const loadInitialMessages = async () => {
+      await fetchInitialMessages(currentConversationId);
+      console.log("ran", conversations);
+    };
+    loadInitialMessages();
+  }, [currentConversationId]);
 
   return null;
 };

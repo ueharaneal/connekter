@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { oathSignInAction } from "@/actions/auth/oauth-signin-action";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 type OAuthSigninButtonProps = {
   signUp: boolean;

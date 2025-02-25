@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import nextAuth from "@/auth";
 import { redirect } from "next/navigation";
 import db from "@/server/db";
-import { providers, listings } from "@/server/db/schema";
+import { listings } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 export default async function Page() {
   const session = await nextAuth.auth();
@@ -13,7 +13,7 @@ export default async function Page() {
     redirect("/");
   }
   const providersListings = await db.query.listings.findMany({
-    where: eq(listings.userId, session.user.id),
+    where: eq(listings.providerId, session.user.id),
   });
   return (
     <div className="min-h-screen bg-background p-4 text-white">
