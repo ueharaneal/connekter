@@ -19,7 +19,7 @@ function ChatHeader() {
   console.log(participantsWithouMe);
 
   return (
-    <div className="flex w-full flex-row items-center justify-between border-b border-white/10 px-4 pb-4 pt-5">
+    <div className="sticky flex w-full flex-row items-center justify-between border-b border-white/10 px-4 pb-4 pt-5">
       <div className="flex flex-row items-center">
         {participantsWithouMe && (
           <UserAvatarsTooltip users={participantsWithouMe} useDialog />
