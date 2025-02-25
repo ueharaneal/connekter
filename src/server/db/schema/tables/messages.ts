@@ -36,7 +36,7 @@ export const messages = pgTable(
     userId: text("user_id").references(() => users.id, {
       onDelete: "set null",
     }),
-    message: varchar("message", { length: 1500 }).notNull(),
+    message: varchar("message", { length: 10000 }).notNull(),
     read: boolean("read").default(false),
     isEdit: boolean("is_edit").default(false),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
