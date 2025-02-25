@@ -42,7 +42,7 @@ export function FaqSection() {
 
           <AccordionItem value="item-3" className="border-b-white/20">
             <AccordionTrigger className="text-xl font-normal hover:text-white/90 hover:no-underline">
-              How is Carefinder unbiased?
+              How is Connekter unbiased?
             </AccordionTrigger>
             <AccordionContent className="text-gray-100">
               Unlike traditional referral services, we don&apos;t accept
@@ -54,7 +54,7 @@ export function FaqSection() {
 
           <AccordionItem value="item-4" className="border-b-white/20">
             <AccordionTrigger className="text-xl font-normal hover:text-white/90 hover:no-underline">
-              Why is Carefinder better for the industry?
+              Why is Connekter better for the industry?
             </AccordionTrigger>
             <AccordionContent className="text-gray-100">
               We&apos;re modernizing senior care matching by eliminating bias,

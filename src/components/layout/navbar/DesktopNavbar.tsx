@@ -16,7 +16,7 @@ function DesktopNavbar() {
                 <Image src={Logo} alt="logo" className="w-7 object-contain" />
               </Link>
               <Link href="/">
-                <p>Carefinder</p>
+                <p>Connekter</p>
               </Link>
             </div>
           </h3>

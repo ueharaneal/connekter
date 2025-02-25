@@ -107,7 +107,7 @@ export default function ProvdierPriceCard({
                     <span>$9,000</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Carefinder Service fee</span>
+                    <span>Connekter Service fee</span>
                     <span>$0</span>
                   </div>
                   <div className="flex justify-between">
@@ -139,8 +139,8 @@ export default function ProvdierPriceCard({
                   <div className="mx-auto flex items-start gap-2 text-xs text-muted-foreground">
                     <Info className="mt-0.5 size-3 flex-shrink-0" />
                     <p>
-                      Carefinder is a care matching, booking service,
-                      independent of all care options. We do not provide care.
+                      Connekter is a care matching, booking service, independent
+                      of all care options. We do not provide care.
                     </p>
                   </div>
                 </>

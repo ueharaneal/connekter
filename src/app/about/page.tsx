@@ -49,9 +49,9 @@ export default function Page() {
 
   return (
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-center text-4xl font-bold">About Carefinder</h1>
+      <h1 className="mb-8 text-center text-4xl font-bold">About Connekter</h1>
       <p className="mb-12 text-center text-xl text-muted-foreground">
-        Carefinder is the premier platform connecting skilled contractors with
+        Connekter is the premier platform connecting skilled contractors with
         users who need their services.
       </p>
 
@@ -86,7 +86,7 @@ export default function Page() {
           <CardHeader>
             <CardTitle>For Users</CardTitle>
             <CardDescription>
-              How Carefinder works for those seeking services
+              How Connekter works for those seeking services
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -113,7 +113,7 @@ export default function Page() {
           <CardHeader>
             <CardTitle>For Contractors</CardTitle>
             <CardDescription>
-              How Carefinder empowers skilled professionals
+              How Connekter empowers skilled professionals
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -136,7 +136,7 @@ export default function Page() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Why Choose Carefinder?</CardTitle>
+            <CardTitle>Why Choose Connekter?</CardTitle>
             <CardDescription>Our commitment to excellence</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -161,8 +161,7 @@ export default function Page() {
       <div className="mt-16 text-center">
         <h2 className="mb-4 text-2xl font-semibold">Ready to get started?</h2>
         <p className="mb-8 text-muted-foreground">
-          Join Carefinder today and experience the future of service
-          contracting.
+          Join Connekter today and experience the future of service contracting.
         </p>
         <div className="space-x-4">
           <Button asChild>

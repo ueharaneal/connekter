@@ -19,7 +19,7 @@ export function Footer() {
           <Separator className="mx-auto w-11/12 bg-pink-600 md:hidden" />
           <Column title="Care Provider" links={careProviderLinks} />
           <Separator className="mx-auto w-11/12 bg-pink-600 md:hidden" />
-          <Column title="Carefinder" links={carefinderLinks} />
+          <Column title="Connekter" links={carefinderLinks} />
         </div>
       </div>
     </footer>

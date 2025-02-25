@@ -144,10 +144,10 @@ export default function Header() {
           <p className="text-xl">
             Thanks to modern technology, families no longer need senior advisors
             to determine cost of care, search for homes, or find comparable
-            options. You just use Carefinder.
+            options. You just use Connekter.
           </p>
           <p className="text-gray-400">
-            All options on Carefinder are pre-vetted, meet high standards for
+            All options on Connekter are pre-vetted, meet high standards for
             providing quality care and are highly recommendable.
           </p>
         </div>

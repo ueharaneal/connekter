@@ -62,7 +62,7 @@ function SignInForm() {
   return (
     <Card className="flex w-full flex-col items-center py-8">
       <CardHeader className="mb-4 text-center text-3xl font-semibold">
-        Log in to Carefinder
+        Log in to Connekter
       </CardHeader>
       <CardContent className="relative mx-auto flex w-5/6 flex-col gap-y-8">
         <Suspense fallback={<OAuthSignInButtonSkeleton signUp={false} />}>

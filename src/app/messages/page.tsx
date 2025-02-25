@@ -1,7 +1,7 @@
 import MessagingPage from "./_components/MessagingPage";
 
 export const metadata = {
-  title: "Message | Carefinder",
+  title: "Message | Connekter",
   description: " Messages",
 };
 
