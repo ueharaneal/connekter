@@ -36,7 +36,7 @@ export default function MessagingPage() {
       {/* Chat header */}
       <ChatHeader />
       {/* Messages area */}
-      <ScrollArea className="flex-1 bg-background p-4">
+      <ScrollArea className="h-[calc(80vh)] bg-background px-4">
         {/* Messages would go here */}
         {conversationMessages ? ( // Conditionally render messages if available
           conversationMessages.map((message) => (
