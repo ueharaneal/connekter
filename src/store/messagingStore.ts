@@ -9,6 +9,9 @@ import { trpc, type RouterOutputs } from "@/server/client";
 export type AllUserConversations =
   RouterOutputs["messages"]["getUserConversations"];
 
+export type ConversationWithParticipants =
+  RouterOutputs["messages"]["getUserConversations"][0];
+
 export type ChatMessageType = MessageType & { userId: string }; // make userId non-null
 
 type ConversationsState = Record<
@@ -23,9 +26,14 @@ type ConversationsState = Record<
 
 type MessageState = {
   conversations: ConversationsState;
-  currentUserConversationIds: string[];
+
+  // Store the currently selected conversation with all its details
+  currentConversationWithParticipants: ConversationWithParticipants | null;
+  setCurrentConversationWithParticipants: (
+    conversation: ConversationWithParticipants | null,
+  ) => void;
+
   currentConversationId: string | null;
-  setCurrentUserConversationIds: (conversationIds: string[]) => void;
 
   //all convserations for side bar
   allUserConversations: AllUserConversations;
@@ -53,14 +61,22 @@ type MessageState = {
   unsubscribeRealtime: () => void;
 };
 
-// refer to useMessageWIthUtils.ts
 export const useMessage = create<MessageState>((set, get) => {
   return {
     conversations: {},
-    currentUserConversationIds: [],
-    setCurrentUserConversationIds: (conversationIds: string[]) => {
-      set({ currentUserConversationIds: conversationIds });
+
+    // Store the currently selected conversation with all its details
+    currentConversationWithParticipants: null,
+    setCurrentConversationWithParticipants: (
+      conversation: ConversationWithParticipants | null,
+    ) => {
+      set({
+        currentConversationWithParticipants: conversation,
+        // Also update the currentConversationId for consistency
+        currentConversationId: conversation?.id || null,
+      });
     },
+
     currentConversationId: null,
     setCurrentConversationId: (id: string) => {
       set(() => ({
@@ -74,7 +90,16 @@ export const useMessage = create<MessageState>((set, get) => {
       set({ allUserConversations: conversations });
     },
     switchConversation: (conversationId: string) => {
-      set({ currentConversationId: conversationId });
+      // Find the conversation in allUserConversations
+      const conversation =
+        get().allUserConversations.find((conv) => conv.id === conversationId) ||
+        null;
+
+      // Update both the ID and the full conversation object
+      set({
+        currentConversationId: conversationId,
+        currentConversationWithParticipants: conversation,
+      });
     },
     addMessageToConversation: (
       conversationId: string,
@@ -261,8 +286,12 @@ export const useMessage = create<MessageState>((set, get) => {
             console.log("Realtime payload received:", payload);
             const newMessage = payload.new as MessageType;
             const conversationId = newMessage.conversationId;
-            const isRelevantConversation =
-              get().currentUserConversationIds.includes(conversationId);
+
+            // We now need to check against allUserConversations since we don't store all IDs anymore
+            const isRelevantConversation = get().allUserConversations.some(
+              (conv) => conv.id === conversationId,
+            );
+
             if (isRelevantConversation) {
               if (get().conversations[conversationId]) {
                 const chatMessage: ChatMessageType = {

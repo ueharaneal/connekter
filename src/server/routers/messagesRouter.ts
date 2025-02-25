@@ -105,11 +105,10 @@ export const messagesRouter = createTRPCRouter({
     .input(
       z.object({
         conversationId: z.string(),
-        message: z.string().min(1).max(1500), // Match your schema length
+        message: z.string().min(1),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // `ctx` is available in protectedProcedure, for user info
       const { conversationId, message } = input;
       const userId = ctx.user.id; // Get user ID from context (assuming you have auth setup)
 
@@ -136,14 +135,6 @@ export const messagesRouter = createTRPCRouter({
             message: "Failed to insert new message.",
           });
         }
-
-        // --- Supabase Realtime ---
-        // Trigger a Realtime event so other clients in the conversation get the new message
-        // await supabase
-        //   .from("messages") // Use the same table name as your schema
-        //   .insert([newMessage[0]]); // Send the newly created message (or just its ID if you prefer)
-
-        // return newMessage[0]; // Return the newly created message
       } catch (error) {
         console.error("Error sending message:", error);
         throw new TRPCError({

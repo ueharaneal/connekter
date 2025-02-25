@@ -7,46 +7,15 @@ import { ResizablePanel } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import { useMessage, type AllUserConversations } from "@/store/messagingStore";
-import { useMessageWithUtils } from "@/hooks/use-message-with-utilts";
 import { useRouter } from "next/navigation";
-
-const conversations = [
-  {
-    id: "1",
-    name: "Mom",
-    avatar: "/avatar1.png",
-    lastMessage: "Where u at now",
-    time: "11:27 AM",
-    unread: true,
-  },
-  {
-    id: "2",
-    name: "Devin Yerasi",
-    avatar: "/avatar2.png",
-    lastMessage: "How'd your day go? Also no more Friday?",
-    time: "9:53 AM",
-    unread: true,
-  },
-  {
-    id: "3",
-    name: "Kaitlynee BAWDYY",
-    avatar: "/avatar3.png",
-    lastMessage: "I'm supposed to see my grandma idk what time though",
-    time: "6:33 AM",
-    unread: true,
-  },
-  // ... add more conversations as needed
-];
 
 function MessagingSidebar() {
   const router = useRouter();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selectedconversation, setSelectedconversation] = useState<
-    AllUserConversations[number] | undefined
-  >();
 
-  const { allUserConversations } = useMessage();
+  const { allUserConversations, setCurrentConversationWithParticipants } =
+    useMessage();
 
   const memoizedUserConversations = useMemo(() => {
     // Sort conversations by most recent message
@@ -87,7 +56,7 @@ function MessagingSidebar() {
   const handleConversationClick = (
     conversation: AllUserConversations[number],
   ) => {
-    setSelectedconversation(conversation);
+    setCurrentConversationWithParticipants(conversation);
     void router.push(`/messages/${conversation.id}`);
   };
   return (
@@ -126,12 +95,12 @@ function MessagingSidebar() {
                 src={conversation.participants[0].user.image ?? ""}
                 alt={conversation.participants[0].user.name ?? ""}
               />
-              <AvatarFallback className="bg-gray-600 text-white">
+              <AvatarFallback className="bg-gray-600 capitalize text-white">
                 {conversation.participants[0].user.name}
               </AvatarFallback>
             </Avatar>
             {!isCollapsed && (
-              <div className="flex w-full min-w-0 flex-row items-start justify-between">
+              <div className="flex w-full min-w-0 flex-row items-start justify-between capitalize">
                 <div className="flex h-full flex-col items-start">
                   <p className="truncate font-medium text-gray-200">
                     {conversation.name ??
