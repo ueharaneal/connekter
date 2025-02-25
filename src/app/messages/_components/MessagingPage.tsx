@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,17 +17,36 @@ import UserAvatar from "@/components/common/UserAvatar";
 
 export default function MessagingPage() {
   const params = useParams();
-  const { id: conversationId } = params; // Rename 'id' to 'conversationId' for clarity
+  const { id: conversationId } = params;
   const session = useSession({ required: true });
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const me = session.data?.user?.id;
-  console.log(me);
 
   const conversationMessages = useMessage(
     (state) => state.conversations[conversationId as string]?.messages,
   );
 
   const { currentConversationWithParticipants } = useMessage();
+
+  // Then, scroll whenever messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [conversationMessages]);
+
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]",
+      );
+      if (scrollContainer) {
+        // Force a small delay to ensure DOM updates have completed
+        setTimeout(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }, 100);
+      }
+    }
+  };
 
   const getParicipantInfoById = (currentMessageUserId: string) => {
     const messager = currentConversationWithParticipants?.participants.find(
@@ -38,17 +57,16 @@ export default function MessagingPage() {
   };
 
   return (
-    <ResizablePanel
-      className="relative flex min-h-[94vh] flex-col bg-[#1c1c1c]"
-      defaultSize={50}
-      minSize={50}
-    >
+    <div>
       {/* Chat header */}
       <ChatHeader />
 
       {/* Messages area */}
-      <ScrollArea className="h-[calc(80vh)] bg-background px-4">
-        <div className="my-4 flex flex-col space-y-3">
+      <ScrollArea
+        ref={scrollAreaRef}
+        className="h-[calc(80vh)] bg-background px-4"
+      >
+        <div className="my-8 flex flex-col space-y-3">
           {conversationMessages && conversationMessages.length > 0 ? (
             conversationMessages.map((message) => {
               const isCurrentUser = message.userId === me;
@@ -102,6 +120,6 @@ export default function MessagingPage() {
       </ScrollArea>
 
       <MessageInput />
-    </ResizablePanel>
+    </div>
   );
 }

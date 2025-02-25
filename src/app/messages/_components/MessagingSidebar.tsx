@@ -5,12 +5,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Circle } from "lucide-react";
 import { ResizablePanel } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useMessage, type AllUserConversations } from "@/store/messagingStore";
 import { useRouter } from "next/navigation";
+import { formatRelative } from "date-fns";
+import { useSession } from "next-auth/react";
 
 function MessagingSidebar() {
   const router = useRouter();
+  const { data } = useSession();
+
+  const curSessionId = data?.user?.id;
 
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -44,6 +49,13 @@ function MessagingSidebar() {
 
   console.log(memoizedUserConversations);
 
+  const handleConversationClick = (
+    conversation: AllUserConversations[number],
+  ) => {
+    setCurrentConversationWithParticipants(conversation);
+    void router.push(`/messages/${conversation.id}`);
+  };
+
   const onResize = (size: number) => {
     // Snap to either collapsed (10%) or expanded (25%) state
     if (size < 15) {
@@ -53,17 +65,25 @@ function MessagingSidebar() {
     }
   };
 
-  const handleConversationClick = (
-    conversation: AllUserConversations[number],
-  ) => {
-    setCurrentConversationWithParticipants(conversation);
-    void router.push(`/messages/${conversation.id}`);
-  };
+  const [panelSize, setPanelSize] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedSize = localStorage.getItem("sidebar-size");
+      return savedSize ? Number(savedSize) : 20;
+    }
+    return 20;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("sidebar-size", String(panelSize));
+  }, [panelSize]);
+
+  console.log(panelSize);
+
   return (
     <ResizablePanel
-      defaultSize={21}
-      minSize={8}
-      maxSize={21}
+      defaultSize={panelSize}
+      maxSize={20}
+      minSize={5}
       onResize={onResize}
       className={cn(
         "relative flex flex-col gap-y-4 bg-[#1c1c1c] transition-all duration-300",
@@ -91,20 +111,34 @@ function MessagingSidebar() {
                 <Circle className="absolute left-1 top-1/2 h-2 w-2 -translate-y-1/2 fill-blue-500 text-blue-500" />
               ))} */}
             <Avatar className="h-10 w-10 flex-shrink-0">
-              <AvatarImage
-                src={conversation.participants[0].user.image ?? ""}
-                alt={conversation.participants[0].user.name ?? ""}
-              />
-              <AvatarFallback className="bg-gray-600 capitalize text-white">
-                {conversation.participants[0].user.name}
-              </AvatarFallback>
+              {/* Find the first participant that isn't the current user */}
+              {(() => {
+                const otherParticipant = conversation.participants.find(
+                  (p) => p.user.id !== curSessionId,
+                )?.user;
+
+                return (
+                  <>
+                    <AvatarImage
+                      src={otherParticipant?.image ?? ""}
+                      alt={otherParticipant?.name ?? ""}
+                    />
+                    <AvatarFallback className="bg-gray-600 capitalize text-white">
+                      {otherParticipant?.name?.charAt(0) || "?"}
+                    </AvatarFallback>
+                  </>
+                );
+              })()}
             </Avatar>
             {!isCollapsed && (
               <div className="flex w-full min-w-0 flex-row items-start justify-between capitalize">
                 <div className="flex h-full flex-col items-start">
                   <p className="truncate font-medium text-gray-200">
                     {conversation.name ??
-                      conversation.participants[0].user.name}
+                      (conversation.participants.find(
+                        (p) => p.user.id !== curSessionId,
+                      )?.user.name ||
+                        "Chat")}
                   </p>
                   {conversation.messages.length > 0 && (
                     <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-gray-400">
@@ -114,7 +148,10 @@ function MessagingSidebar() {
                 </div>
                 {conversation.messages.length > 0 && (
                   <span className="absolute right-8 ml-2 whitespace-nowrap text-xs text-gray-400">
-                    {conversation.messages[0].createdAt}
+                    {formatRelative(
+                      conversation.messages[0].createdAt,
+                      new Date(),
+                    )}
                   </span>
                 )}
               </div>

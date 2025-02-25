@@ -30,7 +30,7 @@ export default function StepZero() {
     },
     {
       icon: <Award className="h-6 w-6 text-primary" />,
-      title: "Showcase Your Expertise",
+      title: "Fully book your AFH",
       description:
         "Build your reputation with our rating system and portfolio features.",
     },
@@ -47,15 +47,15 @@ export default function StepZero() {
       <Card className="mx-auto w-full max-w-4xl">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">
-            Join Carefinder as a Contractor
+            Join Carefinder as a Provider
           </CardTitle>
           <CardDescription className="mt-2 text-xl">
-            Unlock Your Potential, Showcase Your Skills, and Grow Your Career
+            Unlock Your Potential, and fill your homes
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-center text-lg text-muted-foreground">
-            Carefinder is the premier platform for skilled contractors to find
+            Carefinder is the premier platform for skilled providers to find
             exciting projects, connect with clients, and take their careers to
             the next level.
           </p>
