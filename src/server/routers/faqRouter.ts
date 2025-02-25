@@ -13,7 +13,7 @@ export const faqRouter = createTRPCRouter({
   createFaq: protectedProcedure
     .input(
       z.object({
-        listingId: z.string(),
+        listingId: z.number(),
         question: z.string().min(1, "Question is required"),
         answer: z.string().min(1, "Answer is required"),
       }),

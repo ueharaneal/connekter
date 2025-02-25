@@ -11,7 +11,7 @@ export default async function Page() {
   }
 
   const providersListings = await db.query.listings.findFirst({
-    where: eq(listings.userId, session.user.id),
+    where: eq(listings.providerId, session.user.id),
   });
 
   // If the provider has listings, redirect them to the first one
