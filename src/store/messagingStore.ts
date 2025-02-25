@@ -26,13 +26,13 @@ type MessageState = {
   currentUserConversationIds: string[];
   currentConversationId: string | null;
   setCurrentUserConversationIds: (conversationIds: string[]) => void;
-  setCurrentConversationId: (id: string) => void;
 
   //all convserations for side bar
   allUserConversations: AllUserConversations;
   setAllUserConversations: (conversations: AllUserConversations) => void;
 
   switchConversation: (conversationId: string) => void;
+
   addMessageToConversation: (
     conversationId: string,
     messages: ChatMessageType,
