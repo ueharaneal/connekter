@@ -124,7 +124,7 @@ function MessageInput() {
   };
 
   return (
-    <div className="border-t border-white/10 p-4">
+    <div className="border-t border-white/10 p-4 pb-5">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

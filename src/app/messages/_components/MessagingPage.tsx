@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,54 +13,113 @@ import { useMessage } from "@/store/messagingStore";
 import MessageInput from "./MessageInput";
 import ChatHeader from "./ChatHeader";
 import { useSession } from "next-auth/react";
+import UserAvatar from "@/components/common/UserAvatar";
 
 export default function MessagingPage() {
   const params = useParams();
-  const { id: conversationId } = params; // Rename 'id' to 'conversationId' for clarity
+  const { id: conversationId } = params;
   const session = useSession({ required: true });
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const curUserId = session.data?.user?.id;
-  console.log(curUserId);
-  // Access conversationMessages from Zustand store
+  const me = session.data?.user?.id;
+
   const conversationMessages = useMessage(
     (state) => state.conversations[conversationId as string]?.messages,
   );
-  console.log(conversationMessages);
+
+  const { currentConversationWithParticipants } = useMessage();
+
+  // Then, scroll whenever messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [conversationMessages]);
+
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]",
+      );
+      if (scrollContainer) {
+        // Force a small delay to ensure DOM updates have completed
+        setTimeout(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }, 100);
+      }
+    }
+  };
+
+  const getParicipantInfoById = (currentMessageUserId: string) => {
+    const messager = currentConversationWithParticipants?.participants.find(
+      (participant) => participant.userId === currentMessageUserId,
+    );
+
+    return messager?.user ?? { id: "", name: "", email: "", image: "" };
+  };
 
   return (
-    <ResizablePanel
-      className="flex min-h-[94vh] flex-col bg-[#1c1c1c]"
-      defaultSize={50}
-      minSize={50}
-    >
+    <div>
       {/* Chat header */}
       <ChatHeader />
+
       {/* Messages area */}
-      <ScrollArea className="flex-1 bg-background p-4">
-        {/* Messages would go here */}
-        {conversationMessages ? ( // Conditionally render messages if available
-          conversationMessages.map((message) => (
-            <Card
-              key={message.id}
-              className={`mb-4 ${
-                message.userId === "YOUR_USER_ID_HERE" // Replace with logic to check if message is from current user
-                  ? "ml-auto bg-blue-500 text-white" // Example styling for current user's messages
-                  : "mr-auto bg-gray-700 text-white" // Example styling for other user's messages
-              } max-w-[70%]`}
-            >
-              <CardContent className="p-3">
-                <p className="text-sm dark:text-white">{message.message}</p>
-                <p className="mt-1 text-xs text-gray-300 dark:text-gray-400">
-                  {new Date(message.createdAt).toLocaleString()}
-                </p>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <p className="mt-4 text-center text-gray-300">Loading messages...</p> // Display loading message
-        )}
+      <ScrollArea
+        ref={scrollAreaRef}
+        className="h-[calc(80vh)] bg-background px-4"
+      >
+        <div className="my-8 flex flex-col space-y-3">
+          {conversationMessages && conversationMessages.length > 0 ? (
+            conversationMessages.map((message) => {
+              const isCurrentUser = message.userId === me;
+
+              return (
+                <div
+                  key={message.id}
+                  className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`flex flex-row items-end gap-x-2 ${isCurrentUser ? "flex-row-reverse" : "flex-row"}`}
+                  >
+                    <div className="mb-1">
+                      <UserAvatar
+                        size="sm"
+                        image={getParicipantInfoById(message.userId).image}
+                        name={message.userId}
+                      />
+                    </div>
+                    <div
+                      className={` ${isCurrentUser ? "text-end" : "text-start"} "h-full flex-col items-start`}
+                    >
+                      <div className={`text-xs opacity-60`}>
+                        {new Date(message.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                      <div
+                        className={` ${
+                          isCurrentUser
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-foreground"
+                        } mt-1 max-w-72 rounded-2xl px-3 py-2 sm:max-w-96 lg:max-w-prose`}
+                      >
+                        <p className="w-full text-center text-sm">
+                          {message.message}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <p className="py-10 text-center text-muted-foreground">
+              No messages yet. Start the conversation!
+            </p>
+          )}
+        </div>
       </ScrollArea>
+
       <MessageInput />
-    </ResizablePanel>
+    </div>
   );
 }

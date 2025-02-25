@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import { useMessage } from "@/store/messagingStore";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
+import { UserAvatarsTooltip } from "@/components/common/UsersAvatarTooltip";
+import { Button } from "@/components/ui/button";
 
 function ChatHeader() {
   const session = useSession({ required: true });
@@ -18,26 +19,22 @@ function ChatHeader() {
   console.log(participantsWithouMe);
 
   return (
-    <div className="flex items-center border-b border-white/10 p-4">
-      <Avatar className="h-10 w-10">
+    <div className="sticky flex w-full flex-row items-center justify-between border-b border-white/10 px-4 pb-4 pt-5">
+      <div className="flex flex-row items-center">
         {participantsWithouMe && (
-          <AvatarImage
-            className=""
-            src={participantsWithouMe[0].user.image ?? ""}
-            alt={participantsWithouMe[0].user.name ?? ""}
-          />
+          <UserAvatarsTooltip users={participantsWithouMe} useDialog />
         )}
-        <AvatarFallback>User</AvatarFallback>
-      </Avatar>
-      <div className="ml-4">
-        {participantsWithouMe && (
-          <h2 className="text-lg font-semibold capitalize text-gray-200">
-            {participantsWithouMe.length > 1
-              ? participantsWithouMe.map((user) => user.user.name)
-              : participantsWithouMe[0].user.name}
-          </h2>
-        )}
+        <div className="ml-4">
+          {participantsWithouMe && (
+            <h2 className="text-lg font-semibold capitalize text-gray-200">
+              {participantsWithouMe.length > 1
+                ? participantsWithouMe.map((user) => user.user.name)
+                : participantsWithouMe[0].user.name}
+            </h2>
+          )}
+        </div>
       </div>
+      <Button className="mx-8">Details</Button>
     </div>
   );
 }
