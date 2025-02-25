@@ -87,7 +87,7 @@ export default function MessagingPage() {
                       />
                     </div>
                     <div
-                      className={` ${isCurrentUser ? "justify-start" : "justify-start"} "h-full flex-col items-start`}
+                      className={` ${isCurrentUser ? "text-end" : "text-start"} "h-full flex-col items-start`}
                     >
                       <div className={`text-xs opacity-60`}>
                         {new Date(message.createdAt).toLocaleTimeString([], {
@@ -100,7 +100,7 @@ export default function MessagingPage() {
                           isCurrentUser
                             ? "bg-primary text-primary-foreground"
                             : "bg-muted text-foreground"
-                        } mt-1 rounded-2xl px-3 py-2`}
+                        } mt-1 max-w-72 rounded-2xl px-3 py-2 sm:max-w-96 lg:max-w-prose`}
                       >
                         <p className="w-full text-center text-sm">
                           {message.message}
