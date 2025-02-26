@@ -6,12 +6,9 @@ import {
   useMap,
   useApiIsLoaded,
 } from "@vis.gl/react-google-maps";
-import Spinner from "@/components/ui/Spinner";
 import { useEffect, useMemo, useState } from "react";
-import { trpc, type RouterOutputs } from "@/server/client";
 import { useListingsMap, AdjustedListings } from "@/store/listingMapStore";
-import { debounce } from "lodash";
-import { Listing } from "@/server/db/schema";
+import debounce from "lodash/debounce";
 import PoiMarkers from "./PoiMarkers";
 
 export type Poi = {
