@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 //im too lazy to move auth.config logic to this file

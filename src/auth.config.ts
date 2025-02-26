@@ -1,6 +1,9 @@
 //this file is because crypt can not run correctly on the middleware
 //originall this was in the auth.ts file but moved here with a new authConfig
 //this file has everything except for the credential providers.
+
+export const runtime = "nodejs"; // Force Node.js runtime
+
 import type { NextAuthConfig } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/server/db";

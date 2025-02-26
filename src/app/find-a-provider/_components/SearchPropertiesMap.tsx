@@ -8,7 +8,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useEffect, useMemo, useState } from "react";
 import { useListingsMap, AdjustedListings } from "@/store/listingMapStore";
-import debounce from "lodash/debounce";
+import { debounce } from "lodash";
 import PoiMarkers from "./PoiMarkers";
 
 export type Poi = {
