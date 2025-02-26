@@ -11,7 +11,7 @@ import { trpc } from "@/server/client";
 // 2. listings recieves new properties
 // 3. searchbar changes will change the bounding boxes and update the new proprerties
 
-function ProvidersPage() {
+function FindAProviderPage() {
   const {
     adjustedListings,
     setAdjustedListings,
@@ -70,4 +70,4 @@ function ProvidersPage() {
   );
 }
 
-export default ProvidersPage;
+export default FindAProviderPage;
