@@ -29,37 +29,37 @@ export default function Header() {
             </p>
             <ul className="space-y-2">
               <li className="flex items-center space-x-2">
-                <CheckCircle className="text-green-400" />
+                <CheckCircle className="size-4 text-green-600" />
                 <span>
                   Post jobs and receive bids from top-rated contractors
                 </span>
               </li>
               <li className="flex items-center space-x-2">
-                <CheckCircle className="text-green-400" />
+                <CheckCircle className="size-4 text-green-600" />
                 <span>Read verified reviews and browse detailed profiles</span>
               </li>
               <li className="flex items-center space-x-2">
-                <CheckCircle className="text-green-400" />
+                <CheckCircle className="size-4 text-green-600" />
                 <span>
                   Secure the best deals for your home improvement projects
                 </span>
               </li>
             </ul>
-            <div className="space-x-2">
+            <div className="grid grid-cols-2 gap-x-2">
               <Button size="lg" className="px-6 py-3 text-lg">
-                Get Started
+                Post a job
               </Button>
               <Button
                 size="lg"
                 variant="secondary"
                 className="px-6 py-3 text-lg"
               >
-                How It Works
+                Become a contracter
               </Button>
             </div>
             <p className="text-sm opacity-80">
               Join thousands of homeowners who have found their perfect
-              contractor through HomeProConnect.
+              contractor through Connekter.
             </p>
           </div>
         </div>
