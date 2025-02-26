@@ -124,7 +124,7 @@ function MessageInput() {
   };
 
   return (
-    <div className="border-t border-white/10 p-4 pb-5">
+    <div className="border-t border-border p-4 pb-5">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -139,7 +139,7 @@ function MessageInput() {
                   <Input
                     type="text"
                     placeholder="Message"
-                    className="border-0 bg-white/5 focus-visible:ring-1 focus-visible:ring-gray-400"
+                    className="border-0 bg-background focus-visible:ring-1 focus-visible:ring-gray-400"
                     {...field}
                   />
                 </FormControl>

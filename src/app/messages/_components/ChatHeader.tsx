@@ -19,14 +19,14 @@ function ChatHeader() {
   console.log(participantsWithouMe);
 
   return (
-    <div className="sticky flex w-full flex-row items-center justify-between border-b border-white/10 px-4 pb-4 pt-5">
+    <div className="sticky flex w-full flex-row items-center justify-between border-b border-border px-4 pb-4 pt-5">
       <div className="flex flex-row items-center">
         {participantsWithouMe && (
           <UserAvatarsTooltip users={participantsWithouMe} useDialog />
         )}
         <div className="ml-4">
           {participantsWithouMe && (
-            <h2 className="text-lg font-semibold capitalize text-gray-200">
+            <h2 className="text-lg font-semibold capitalize text-foreground">
               {participantsWithouMe.length > 1
                 ? participantsWithouMe.map((user) => user.user.name)
                 : participantsWithouMe[0].user.name}

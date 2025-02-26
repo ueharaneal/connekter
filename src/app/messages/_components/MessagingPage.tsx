@@ -1,13 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Send } from "lucide-react";
-import { ResizablePanel } from "@/components/ui/resizable";
 import { useParams } from "next/navigation";
 import { useMessage } from "@/store/messagingStore";
 import MessageInput from "./MessageInput";
