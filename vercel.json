@@ -1,0 +1,17 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node",
+      "config": {
+        "installCommand": "pnpm install",
+        "buildCommand": "pnpm vercel-build"
+      }
+    }
+  ],
+  "functions": {
+    "*": {
+      "memory": 1024
+    }
+  }
+}
