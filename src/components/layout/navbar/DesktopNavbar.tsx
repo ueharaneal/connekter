@@ -11,9 +11,9 @@ function DesktopNavbar() {
       <div className="container mx-auto flex h-full items-center justify-between">
         <div className="flex flex-row gap-x-8">
           <h3 className="text-2xl font-semibold tracking-tight">
-            <div className="flex flex-row items-center gap-x-4">
+            <div className="flex flex-row items-center gap-x-1">
               <Link href="/">
-                <Image src={Logo} alt="logo" className="w-7 object-contain" />
+                <Image src={Logo} alt="logo" className="w-9 object-contain" />
               </Link>
               <Link href="/">
                 <p>Connekter</p>

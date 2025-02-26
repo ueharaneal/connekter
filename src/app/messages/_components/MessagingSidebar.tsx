@@ -85,12 +85,12 @@ function MessagingSidebar() {
       minSize={5}
       onResize={onResize}
       className={cn(
-        "relative flex flex-col gap-y-4 bg-[#1c1c1c] transition-all duration-300",
+        "relative flex flex-col gap-y-4 bg-zinc-50 transition-all duration-300",
         isCollapsed ? "min-w-[4rem] max-w-[4rem]" : "min-w-[100px]",
       )}
     >
       {!isCollapsed && (
-        <div className="sticky w-full border-b-2 border-border px-4 text-start text-3xl font-bold">
+        <div className="sticky w-full border-b border-border px-4 text-start text-3xl font-bold">
           <p className="px-3 pb-4 pt-5">Messages</p>
         </div>
       )}
@@ -99,7 +99,7 @@ function MessagingSidebar() {
           <div
             key={conversation.id}
             className={cn(
-              "relative flex h-full cursor-pointer items-center gap-4 p-4 transition-colors hover:bg-white/5",
+              "relative flex h-full cursor-pointer items-center gap-4 p-4 transition-colors hover:bg-zinc-200",
               // selectedconversation.id === conversation.id && "bg-white/10",
               isCollapsed && "justify-center",
             )}
@@ -122,7 +122,7 @@ function MessagingSidebar() {
                       src={otherParticipant?.image ?? ""}
                       alt={otherParticipant?.name ?? ""}
                     />
-                    <AvatarFallback className="bg-gray-600 capitalize text-white">
+                    <AvatarFallback className="bg-gray-600 capitalize text-foreground">
                       {otherParticipant?.name?.charAt(0) || "?"}
                     </AvatarFallback>
                   </>
@@ -132,7 +132,7 @@ function MessagingSidebar() {
             {!isCollapsed && (
               <div className="flex w-full min-w-0 flex-row items-start justify-between capitalize">
                 <div className="flex h-full flex-col items-start">
-                  <p className="truncate font-medium text-gray-200">
+                  <p className="truncate font-medium text-gray-900">
                     {conversation.name ??
                       (conversation.participants.find(
                         (p) => p.user.id !== curSessionId,
@@ -140,13 +140,13 @@ function MessagingSidebar() {
                         "Chat")}
                   </p>
                   {conversation.messages.length > 0 && (
-                    <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-gray-400">
+                    <p className="line-clamp-2 overflow-hidden text-ellipsis text-sm text-gray-900">
                       {conversation.messages[0].message}
                     </p>
                   )}
                 </div>
                 {conversation.messages.length > 0 && (
-                  <span className="absolute right-8 ml-2 whitespace-nowrap text-xs text-gray-400">
+                  <span className="absolute right-8 ml-2 whitespace-nowrap text-xs text-zinc-700">
                     {formatRelative(
                       conversation.messages[0].createdAt,
                       new Date(),

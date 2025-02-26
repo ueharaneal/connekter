@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AllUsers } from "./_components/AllUsers";
-import { AllProviders } from "./_components/AllProviders";
+import { AllContracters } from "./_components/AllContracters";
 import { AllNurses } from "./_components/AllNurses";
 
 export default function UsersPage() {
@@ -20,7 +20,7 @@ export default function UsersPage() {
         </TabsContent>
 
         <TabsContent value="providers" className="space-y-4">
-          <AllProviders />
+          <AllContracters />
         </TabsContent>
 
         <TabsContent value="nurses" className="space-y-4">

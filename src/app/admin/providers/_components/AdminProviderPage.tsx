@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Suspense } from "react";
-import { AllProviders } from "./AllProviders";
+import { AllContracters } from "./AllContracters";
 import { AllListings } from "./AllListings";
 
 export default function AdminProviderPage() {
@@ -18,7 +18,7 @@ export default function AdminProviderPage() {
 
         <TabsContent value="providers" className="space-y-4">
           <Suspense fallback={<div>Loading providers...</div>}>
-            <AllProviders />
+            <AllContracters />
           </Suspense>
         </TabsContent>
 

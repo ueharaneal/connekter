@@ -43,13 +43,13 @@ export const providerRouter = createTRPCRouter({
     }
   }),
   getProvider: protectedProcedure.query(async ({ ctx }) => {
-    const allProviders = await db.query.providerProfiles.findFirst({
+    const AllContracters = await db.query.providerProfiles.findFirst({
       with: {
         user: true,
       },
     });
 
-    return allProviders;
+    return AllContracters;
   }),
   updateProvider: protectedProcedure
     .input(providerUpdateSchema.omit({ userId: true }))
