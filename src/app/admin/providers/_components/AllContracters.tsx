@@ -31,7 +31,7 @@ const mockProviders = [
   },
 ];
 
-export function AllProviders() {
+export function AllContracters() {
   return (
     <div className="rounded-md border">
       <Table>
