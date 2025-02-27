@@ -4,14 +4,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, ArrowRight, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { resendVerificationEmail } from "@/actions/auth/resend-verification-email";
+import { toast } from "sonner";
 
 export default function VerificationEmailClient() {
-  const email = "ueharaneal@gmail.com";
+  const email = "sharpsnipexxx@icloud.com";
 
-  const handleResendEmail = async () => {
-    // Add your resend verification email logic here
-    console.log("Resending verification email to:", email);
+  const handleResendEmail = async (email: string) => {
+    console.log("called");
+    try {
+      const result = await resendVerificationEmail(email);
+      if (result.success) {
+        toast.success("Verification email sent successfully");
+      } else {
+        toast.error(result.error || "Failed to send verification email");
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again");
+    }
   };
 
   return (
@@ -39,7 +49,7 @@ export default function VerificationEmailClient() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={handleResendEmail}
+              onClick={() => handleResendEmail(email)}
             >
               <RefreshCw className="mr-2 h-4 w-4" />
               Resend verification email

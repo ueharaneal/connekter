@@ -76,7 +76,7 @@ export const SignedOut = () => {
         <Link href="/auth/signin">Sign In</Link>
       </Button>
       <Button variant="default" size="lg" asChild>
-        <Link href="/auth/signin">Sign up</Link>
+        <Link href="/auth/signup">Sign up</Link>
       </Button>
     </div>
   );

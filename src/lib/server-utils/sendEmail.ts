@@ -1,20 +1,9 @@
 import { render } from "@react-email/render";
-import nodemailler, { type TransportOptions } from "nodemailer";
+import sgMail from "@sendgrid/mail";
 import { ReactElement } from "react";
 
-const transporter = nodemailler.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    type: "OAuth2",
-    user: process.env.NODEMAILER_GOOGLE_SMTP_USER,
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    accessToken: process.env.NODEMAILER_GOOGLE_ACCESS_TOKEN,
-    refreshToken: process.env.NODEMAILER_GOOGLE_REFRESH_TOKEN,
-  },
-} as TransportOptions);
+// Initialize SendGrid with your API key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
 export async function sendEmail({
   to,
@@ -25,23 +14,23 @@ export async function sendEmail({
   subject: string;
   content: ReactElement;
 }) {
+  console.log("Preparing to send email via SendGrid");
   const htmlContent = await render(content);
-  console.log("SENT BABY GIRL");
-  return await new Promise((resolve, reject) => {
-    transporter.sendMail(
-      {
-        from: process.env.EMAIL_FROM,
-        to,
-        subject,
-        html: htmlContent,
-      },
-      (err, info) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(info);
-        }
-      },
-    );
-  });
+  console.log(process.env.EMAIL_FROM);
+  console.log(to);
+  const msg = {
+    to,
+    from: process.env.EMAIL_FROM!, // Verified sender in SendGrid
+    subject,
+    html: htmlContent,
+  };
+
+  try {
+    const response = await sgMail.send(msg);
+    console.log("Email sent successfully");
+    return response;
+  } catch (error) {
+    console.error("SendGrid email error:", error);
+    throw error;
+  }
 }
