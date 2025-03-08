@@ -1,5 +1,6 @@
 "use server";
-import argon2 from "argon2";
+
+import bcrypt from "bcryptjs";
 import { SignupSchema } from "@/validators/auth-validators";
 import db from "@/server/db";
 import { lower, users, verificationTokens } from "@/server/db/schema";
@@ -17,8 +18,8 @@ type Res =
   | { success: true }
   | { success: false; error: ErrorItem[]; statusCode: 400 }
   | { success: false; error: string; statusCode: 500 | 409 };
+
 export async function signupUserAction(values: unknown): Promise<Res> {
-  //values.email = undefined;
   const parsedValues = SignupSchema.safeParse(values);
   if (!parsedValues.success) {
     const flatErrors = parsedValues.error.errors.map((error) => ({
@@ -30,9 +31,6 @@ export async function signupUserAction(values: unknown): Promise<Res> {
   }
 
   const { firstName, lastName, email, password } = parsedValues.data;
-
-  //to do hash password
-  //TODO save user to database if does not already exist
 
   const existingUser = await db.query.users.findFirst({
     where: eq(lower(users.email), email.toLowerCase()),
@@ -53,36 +51,48 @@ export async function signupUserAction(values: unknown): Promise<Res> {
       });
       return {
         success: false,
-        error: "User exist but not verified. Verification link resent",
+        error: "User exists but not verified. Verification link resent",
         statusCode: 409,
       };
-      //send verification email
     } else {
-      return { success: false, error: "Email already exist", statusCode: 409 };
+      return { success: false, error: "Email already exists", statusCode: 409 };
     }
   }
 
   try {
-    const hashedPassword = await argon2.hash(password);
-    console.log(hashedPassword);
+    // Using bcrypt.hash instead of argon2.hash
+    // The number 10 is the salt rounds - increase for stronger hashing (but slower)
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await db
       .insert(users)
       .values({
         email,
         password: hashedPassword,
+        // Add these if your schema has these fields
+        name: `${firstName} ${lastName}`,
       })
       .returning({
         id: users.id,
         email: users.email,
         emailVerified: users.emailVerified,
+        name: users.name,
       })
       .then((res) => res![0]);
 
     const verificationToken = await createVerificationTokenActions(
       newUser.email,
     );
-    console.log(verificationToken);
-    //todo send verification email
+
+    // Send verification email
+    await sendEmail({
+      to: newUser.email,
+      subject: "Verify your email",
+      content: VerifyEmail({
+        name: newUser.name ?? "User",
+        verificationToken: verificationToken,
+      }),
+    });
 
     return { success: true };
   } catch (err) {

@@ -1,11 +1,13 @@
 "use server";
+
 import { findVerificationTokenByToken } from "@/lib/server-utils/auth/tokenQueries";
 import { findUserByEmail } from "@/lib/server-utils/userQueries";
 import { z } from "zod";
-import argon2 from "argon2";
+import bcrypt from "bcryptjs";
 import db from "@/server/db";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+
 type Res =
   | { success: true }
   | { success: false; error: string[]; statusCode: 400 }
@@ -79,7 +81,9 @@ export async function passwordResetAction({
     }
 
     try {
-      const hashedPassword = await argon2.hash(password);
+      // Using bcrypt.hash instead of argon2.hash
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       await db
         .update(users)
         .set({ password: hashedPassword })
