@@ -1,9 +1,10 @@
+export const runtime = "nodejs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { SignInSchema } from "@/validators/auth-validators";
 import { findUserByEmail } from "@/lib/server-utils/userQueries";
-import argon2 from "argon2";
+import bcrypt from "bcryptjs";
 import { OAuthAccountAlreadyLinkedError } from "./lib/auth/customErrors";
 import { authConfig } from "@/auth.config";
 
@@ -23,13 +24,13 @@ const nextAuth = NextAuth({
           const user = await findUserByEmail(email);
           if (!user) return null;
           if (!user.password) throw new OAuthAccountAlreadyLinkedError();
-          console.log("This is user", user);
-          const passwordsMatch = await argon2.verify(user.password, password);
-          console.log("Passwords match", passwordsMatch);
+
+          // Using bcrypt.compare instead of argon2.verify
+          const passwordsMatch = await bcrypt.compare(password, user.password);
+
           if (passwordsMatch) {
             //remove password from user object
             const { password: _, ...userWithoutPassword } = user;
-            console.log("userWithoutPassword", userWithoutPassword);
             return userWithoutPassword;
           }
         }
