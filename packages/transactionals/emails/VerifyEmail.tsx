@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@/lib/utils";
 import { Button } from "@react-email/components";
 import { Html } from "@react-email/components";
 import { Section } from "@react-email/components";
@@ -8,10 +9,7 @@ interface VerifyEmailProps {
   verificationToken: string;
 }
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? `http://localhost:3000`
-    : `http://localhost:3000`;
+const baseUrl = getBaseUrl();
 
 export const VerifyEmail = ({ name, verificationToken }: VerifyEmailProps) => {
   return (

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { makeQueryClient } from "@/server/query-client";
 import type { AppRouter } from "@/server/routers/index";
 import superjson from "superjson";
+import { getBaseUrl } from "@/lib/utils";
 
 export const trpc = createTRPCReact<AppRouter>();
 let clientQueryClientSingleton: QueryClient;
@@ -20,11 +21,7 @@ function getQueryClient() {
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
 function getUrl(): string {
-  const base = (() => {
-    if (typeof window !== "undefined") return "";
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-    return "http://localhost:3000";
-  })();
+  const base = getBaseUrl();
   return `${base}/api/trpc`;
 }
 
