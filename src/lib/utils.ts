@@ -6,9 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getBaseUrl() {
-  return process.env.NODE_ENV === "production"
-    ? process.env.PROD_URL
-    : `http://localhost:3000`;
+  return process.env.BASE_URL;
 }
 
 export function formatCurrency(cents: number, { round = false } = {}) {
