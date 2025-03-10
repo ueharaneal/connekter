@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { createVerificationTokenActions } from "./create-verification-token";
 import { sendEmail } from "@/lib/server-utils/sendEmail";
 import ForgotPasswordEmail from "@/../packages/transactionals/emails/ForgotPasswordEmail";
+import { getBaseUrl } from "@/lib/utils";
 
 type ErrorItem = {
   field: string;
@@ -19,6 +20,7 @@ type Res =
   | { success: false; error: ErrorItem; statusCode: 400 | 401 | 500 };
 
 export async function forgotPasswordAction(values: unknown): Promise<Res> {
+  const baseUrl = getBaseUrl();
   const parsedValues = ForgotPasswordSchema.safeParse(values);
 
   if (!parsedValues.success) {
@@ -62,7 +64,7 @@ export async function forgotPasswordAction(values: unknown): Promise<Res> {
       subject: "Password Reset",
       content: ForgotPasswordEmail({
         userFirstName: curUser.name ?? "User",
-        resetPasswordUrl: `http://localhost:3000/auth/signin/forgot-password?token=${verificationToken}`,
+        resetPasswordUrl: `${baseUrl}/auth/signin/forgot-password?token=${verificationToken}`,
       }),
     });
   } catch (error) {
