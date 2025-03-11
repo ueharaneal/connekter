@@ -12,6 +12,7 @@ import { getBaseUrl } from "@/lib/utils";
 
 export const trpc = createTRPCReact<AppRouter>();
 let clientQueryClientSingleton: QueryClient;
+const baseUrl = getBaseUrl();
 function getQueryClient() {
   if (typeof window === "undefined") {
     // Server: always make a new query client
@@ -21,7 +22,11 @@ function getQueryClient() {
   return (clientQueryClientSingleton ??= makeQueryClient());
 }
 function getUrl(): string {
-  const base = getBaseUrl();
+  const base = (() => {
+    if (typeof window !== "undefined") return "";
+    if (process.env.BASE_URL) return baseUrl;
+    return baseUrl;
+  })();
   return `${base}/api/trpc`;
 }
 

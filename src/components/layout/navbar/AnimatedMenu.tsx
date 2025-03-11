@@ -63,7 +63,7 @@ const NavLink = ({
       }}
       exit={{ opacity: 0, y: -8 }}
       href={href}
-      className="0 block text-3xl font-semibold text-primary-foreground transition-colors hover:text-primary md:text-5xl"
+      className="0 block text-2xl font-semibold text-foreground transition-colors hover:text-primary md:text-3xl"
     >
       {children}
     </motion.a>
@@ -116,17 +116,17 @@ const HamburgerButton = ({
       >
         <motion.span
           variants={HAMBURGER_VARIANTS.top}
-          className="absolute block h-1 w-5 bg-white"
+          className="absolute block h-1 w-5 bg-foreground"
           style={{ y: "-50%", left: "50%", x: "-50%" }}
         />
         <motion.span
           variants={HAMBURGER_VARIANTS.middle}
-          className="absolute block h-1 w-5 bg-white"
+          className="absolute block h-1 w-5 bg-foreground"
           style={{ left: "50%", x: "-50%", top: "50%", y: "-50%" }}
         />
         <motion.span
           variants={HAMBURGER_VARIANTS.bottom}
-          className="absolute block h-1 w-5 bg-white"
+          className="absolute block h-1 w-5 bg-foreground"
           style={{ x: "-50%", y: "50%" }}
         />
       </motion.button>

@@ -12,7 +12,7 @@ import { AnimatedMenu } from "./AnimatedMenu";
 
 function MobileNavbar() {
   return (
-    <nav className="fixed top-0 z-20 flex w-full flex-row items-center justify-between border-t border-border bg-black px-8 py-3 lg:hidden">
+    <nav className="fixed top-0 z-20 flex w-full flex-row items-center justify-between border-b border-border bg-background px-8 py-3 lg:hidden">
       <Link href="/">
         <Image src={Logo} alt="logo" className="size-11 object-contain" />
       </Link>
