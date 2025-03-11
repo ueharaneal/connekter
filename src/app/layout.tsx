@@ -38,7 +38,7 @@ export default function RootLayout({
                   strategy="beforeInteractive"
                 />{" "}
                 <GoogleMapsClientProvider>
-                  <NextTopLoader color="#FF47A3" />
+                  <NextTopLoader color="#2563eb" />
 
                   {/* Use the client wrapper here */}
                   <Navbar />
