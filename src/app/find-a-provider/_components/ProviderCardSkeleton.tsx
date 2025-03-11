@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProviderCardSkeleton() {
   return (
-    <Card className="max-w-lg overflow-hidden bg-black text-white">
+    <Card className="max-w-lg overflow-hidden bg-blue-100 text-black">
       <div className="relative h-48">
         <Skeleton className="absolute inset-0 h-full w-full" />
         {/* Badge skeleton */}

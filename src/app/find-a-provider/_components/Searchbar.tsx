@@ -79,7 +79,7 @@ export default function SearchBar() {
   if (!ready) {
     return (
       <div className="mx-auto w-full max-w-5xl">
-        <div className="flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 p-1">
+        <div className="flex items-center gap-2 rounded-full border border-zinc-100 bg-zinc-100 p-1">
           <Button
             variant="ghost"
             className="h-12 flex-1 justify-start rounded-full text-left font-normal text-muted-foreground hover:bg-zinc-900 hover:text-zinc-300"
@@ -95,21 +95,21 @@ export default function SearchBar() {
 
   return (
     <div className="mx-auto w-full max-w-5xl">
-      <div className="flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 p-1">
+      <div className="flex items-center gap-2 rounded-full border-2 border-border bg-zinc-100 p-1">
         <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="ghost"
-              className="h-12 flex-1 justify-start rounded-full text-left font-normal text-muted-foreground hover:bg-zinc-900 hover:text-zinc-300"
+              className="h-12 flex-1 justify-start rounded-full text-left font-normal text-muted-foreground hover:bg-zinc-50"
             >
               <Search className="mr-2 h-4 w-4" />
               {input || "Search locations..."}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[calc(var(--radix-popover-trigger-width)_-_20px)] border-zinc-800 bg-zinc-900 p-0">
+          <PopoverContent className="w-[calc(var(--radix-popover-trigger-width)_-_20px)] p-0">
             <Command>
               <div className="flex w-full items-center p-2">
-                <MapPin className="mr-2 h-4 w-4 text-zinc-400" />
+                <MapPin className="mr-2 h-4 w-4 text-foreground" />
                 <CommandInput
                   value={input}
                   onValueChange={(value) => {
@@ -117,7 +117,7 @@ export default function SearchBar() {
                     if (value === "") clearSuggestions();
                   }}
                   placeholder="Enter location..."
-                  className="w-[1000px] bg-transparent text-white placeholder:text-zinc-500 focus-visible:ring-0"
+                  className="w-[1000px] bg-transparent text-foreground placeholder:text-zinc-700 focus-visible:ring-0"
                 />
               </div>
 
@@ -131,10 +131,10 @@ export default function SearchBar() {
                         onSelect={() =>
                           handleLocationSelect(suggestion.description)
                         }
-                        className="flex items-center px-2 py-3 text-white hover:bg-zinc-800"
+                        className="flex items-center px-2 py-3 text-foreground hover:bg-zinc-800"
                       >
                         <div className="flex flex-1 items-center">
-                          <div className="mr-2 rounded-md bg-zinc-800 p-2">
+                          <div className="mr-2 rounded-md bg-zinc-300 p-2">
                             <MapPin className="h-4 w-4" />
                           </div>
                           <p className="line-clamp-1 flex-1">
